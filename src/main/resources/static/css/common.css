@@ -1,0 +1,111 @@
+*:after,
+*:before {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-size: cover;
+    background: radial-gradient(circle at 90% top,
+    #121212 0%,
+    #181818 20%,
+    #1c1c1c 40%,
+    #202020 60%,
+    #262626 80%,
+    #2b2b2b 100%) no-repeat fixed;
+    font-style: normal;
+    font-family: 'Roboto Light', sans-serif;
+    color: #e0e0e0;
+    letter-spacing: 0.5px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.header {
+    padding: 2% 6%;
+}
+
+.header-inner {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.button {
+    display: inline-block;
+    text-decoration: none;
+    appearance: none;
+    width: 5.4em;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 15px;
+    font-size: 20px;
+    line-height: 1;
+    color: #121212;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid #ffa726;
+    background: #ffa726;
+    transition: box-shadow 0.3s ease, background-color 0.3s ease;
+    box-shadow: inset 0 1px 9px rgba(255, 167, 38, 0.8);
+}
+
+.button.login:hover, .button.register:hover {
+    background: linear-gradient(90deg, #ff8c00, #ffa726, #ffaf50);
+    color: white;
+    box-shadow: 0 4px 12px rgba(255, 167, 38, 0.5);
+}
+
+.logo-big {
+    display: inline-block;
+    max-width: 700px;
+}
+
+.logo-big img {
+    display: inline-block;
+    width: 100%;
+    height: auto;
+}
+
+.footer {
+    color: #aaaaaa;
+    text-align: center;
+    margin-top: auto;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+}
+
+.alert-warning {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    background: linear-gradient(to left, #ffa726, #ff9800, #fb8c00);
+    background-size: 200%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+p.alert-warning {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    background: linear-gradient(to left, #ffa726, #ff9800, #fb8c00);
+    background-size: 200%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 5px 0 0;
+}

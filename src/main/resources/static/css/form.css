@@ -1,0 +1,187 @@
+.section {
+    padding: 50px 0;
+}
+
+.section.full-height {
+    display: flex;
+    flex-direction: column;
+}
+
+.section.full-height .container {
+    display: flex;
+    flex-direction: column;
+}
+
+.section.full-height .container .logo {
+    margin: auto 0;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 36px auto;
+    padding: 0 16px;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+}
+
+form {
+    height: auto;
+    width: 400px;
+    background: radial-gradient(
+            circle at center,
+            #2b2b2b 0%,
+            #1f1f1f 50%,
+            #121212 100%
+    );
+    border-radius: 10px;
+    backdrop-filter: blur(12px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+    padding: 36px 35px;
+    align-self: center;
+}
+
+form * {
+    font-family: 'Roboto Light', sans-serif;
+    color: #f0f0f0;
+    letter-spacing: 0.5px;
+    outline: none;
+    border: none;
+}
+
+form h3 {
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 42px;
+    text-align: center;
+    margin: auto;
+    color: white
+}
+
+label {
+    display: block;
+    margin-top: 30px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+input, select {
+    display: block;
+    height: 50px;
+    width: 95%;
+    background-color: rgba(255, 255, 255, 0.06);
+    border-radius: 2.5px;
+    padding: 0 10px;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 300;
+    border: 1px solid rgba(0, 0, 0, 0.6);
+    transition: all 0.3s ease;
+}
+
+input::placeholder {
+    color: #cccccc;
+}
+
+select {
+    width: 100%;
+    height: 50px;
+    background-color: #1f1f1f;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    padding: 0 10px;
+    font-size: 14px;
+    font-weight: 300;
+    appearance: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+select:hover {
+    box-shadow: 0 2px 10px rgba(255, 255, 255, 0.2);
+}
+
+option {
+    background-color: #1f1f1f;
+    color: #ffffff;
+    padding: 10px;
+    cursor: pointer;
+}
+
+option:hover {
+    background-color: #ffa726;
+    cursor: pointer;
+}
+/* Additional styling to remove highlight on active options in Chrome */
+select option:checked {
+    background-color: #1f1f1f;
+    color: #ffffff;
+}
+
+button {
+    margin-top: 30px;
+    width: 100%;
+    background: linear-gradient(90deg,
+    #ffa726,
+    #ff8f00,
+    #fb8c00
+    );
+    color: #ffffff;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(255, 167, 38, 0.4);
+}
+
+button:hover {
+    background: linear-gradient(90deg,
+    #ff7043,
+    #ffa726,
+    #ffcc80
+    );
+    box-shadow: 0 6px 15px rgba(255, 167, 38, 0.7);
+}
+
+input:hover {
+    box-shadow: 0 2px 10px rgba(255, 255, 255, 0.2);
+}
+
+.form-already {
+    color: #e0e0e0;
+    font-weight: 300;
+    text-align: center;
+    font-size: 12px;
+    margin: 20px auto auto;
+}
+
+.form-already a {
+    text-decoration: none;
+    background: linear-gradient(
+            90deg,
+            #ffa726,
+            #ffcc80,
+            #ffe0b2
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: all 0.3s ease;
+}
+
+.form-already a:hover {
+    background-position: right;
+    color: #ffa726;
+    transition: 0.5s ease-out;
+}

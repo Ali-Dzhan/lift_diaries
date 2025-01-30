@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}">
+    <title>Register</title>
+</head>
+<body>
+
+<main>
+    <section class="section full-height">
+
+        <div class="container">
+            <a th:href="@{/}" class="logo-big">
+                <img src="" alt="Logo Image">
+            </a>
+        </div>
+
+        <form class="form"
+              th:action="@{/register}"
+              th:method="post"
+              th:object="${registerRequest}">
+
+            <h3>Register Here</h3>
+
+            <label for="username">Username</label>
+            <input type="text" placeholder="Username" id="username" th:field="*{username}">
+            <p class="alert-warning" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+
+            <label for="password">Password</label>
+            <input type="password" placeholder="Password" id="password" th:field="*{password}">
+            <p class="alert-warning" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+
+            <label for="gender">Gender</label>
+            <select name="gender" id="gender" th:field="*{gender}">
+                <option th:each="gender : ${T(app.user.model.Gender).values()}" th:value="${gender}" th:text="${gender}"></option>
+            </select>
+
+            <button>Register</button>
+            <p class="form-already">Already have an account? <a th:href="@{/login}">Login</a>!</p>
+        </form>
+
+    </section>
+</main>
+</body>
+</html>
