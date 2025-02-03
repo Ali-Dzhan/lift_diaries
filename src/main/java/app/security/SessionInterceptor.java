@@ -28,7 +28,6 @@ public class SessionInterceptor implements HandlerInterceptor {
 
         String endpoint = request.getServletPath();
         if (UNAUTHENTICATED_ENDPOINTS.contains(endpoint)) {
-            // няма сесия - пусни напред
             return true;
         }
 
