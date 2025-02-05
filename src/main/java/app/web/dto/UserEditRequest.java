@@ -1,6 +1,5 @@
 package app.web.dto;
 
-import app.user.model.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
@@ -11,22 +10,15 @@ import org.hibernate.validator.constraints.URL;
 @Builder
 public class UserEditRequest {
 
-    @Size(max = 50)
+    @Size(max = 30, message = "First name can't have more than 30 symbols")
     private String firstName;
-    @Size(max = 50)
+
+    @Size(max = 30, message = "Last name can't have more than 30 symbols")
     private String lastName;
-    @Email
+
+    @Email(message = "Requires correct email format")
     private String email;
-    @URL
+
+    @URL(message = "Requires correct web link format")
     private String profilePicture;
-
-    public static UserEditRequest buildFromUser(User user){
-
-        return UserEditRequest.builder()
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .email(user.getEmail())
-                .profilePicture(user.getProfilePicture())
-                .build();
-    }
 }

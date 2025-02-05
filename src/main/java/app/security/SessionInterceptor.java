@@ -1,8 +1,8 @@
 package app.security;
 
-import app.user.model.User;
-import app.user.model.UserRole;
-import app.user.service.UserService;
+import app.entity.user.model.User;
+import app.entity.user.model.UserRole;
+import app.entity.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;

@@ -1,18 +1,25 @@
 package app.web.dto;
 
-import app.user.model.Gender;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class RegisterRequest {
 
-    @Size(min = 8, message = "Username must be at least 8 characters")
+    private String firstName;
+
+    private String lastName;
+
+    @Size(min = 8, message = "Username must be at least 8 symbols")
     private String username;
 
-    @Pattern(regexp = "\\d{8}", message = "Password must be exactly 8 digits")
+    @Size(min = 8, message = "Password must be at least 8 symbols")
     private String password;
-
-    private Gender gender;
 }
