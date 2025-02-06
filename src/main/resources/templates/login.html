@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#efd36c">
+  <title>Lifting Diaries | Login</title>
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/form.css">
+  <link rel="icon" href="/images/fav_48px.ico">
+</head>
+
+<body>
+<div id="app">
+  <main class="layout">
+    <div class="main-card">
+
+      <div class="form-title">
+        <h1>Welcome Back</h1>
+        <p>Please enter your credentials to login</p>
+      </div>
+
+      <form class="form" th:action="@{/login}" th:method="POST" th:object="${loginRequest}">
+
+        <label for="username">Username</label>
+        <input type="text" placeholder="Username" id="username" th:field="*{username}" required>
+        <p class="alert-warning" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+
+        <label for="password">Password</label>
+        <input type="password" placeholder="Password" id="password" th:field="*{password}" required>
+        <p class="alert-warning" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+
+        <button type="submit">Log In</button>
+
+        <p class="form-already">Don't have an account? <a href="/register">Register now</a>!</p>
+
+      </form>
+
+    </div>
+  </main>
+</div>
+</body>
+
+</html>

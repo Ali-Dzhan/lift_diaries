@@ -1,6 +1,6 @@
 package app.web.dto;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,9 +13,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RegisterRequest {
 
-    private String firstName;
-
-    private String lastName;
+    @Email(message = "Requires correct email format")
+    private String email;
 
     @Size(min = 8, message = "Username must be at least 8 symbols")
     private String username;

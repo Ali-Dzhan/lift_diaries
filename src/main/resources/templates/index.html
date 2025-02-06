@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#efd36c">
+    <title>Lifting Diaries | Welcome</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="icon" href="/images/fav_48px.ico">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+
+<body>
+<div id="app">
+    <main class="layout">
+        <div class="main-card">
+
+            <div class="app-title">
+                <h1>Lifting Diaries
+                    <span>A simple workout app</span>
+                </h1>
+            </div>
+
+            <div class="logo-wrap">
+                <a href="/" class="logo-big">
+                   <img src="/images/logo-384x384.jpg" loading="lazy" alt="Lifting Diaries logo" class="logo-img">
+                </a>
+            </div>
+
+            <div class="button-group">
+                <a th:href="@{/login}" class="button-lg">Login</a>
+                <a th:href="@{/register}" class="button-lg">Register</a>
+            </div>
+            <!-- Footer as a Thymeleaf fragment -->
+            <th:block th:insert="fragments/footer :: footer"></th:block>
+        </div>
+    </main>
+</div>
+</body>
+
+</html>

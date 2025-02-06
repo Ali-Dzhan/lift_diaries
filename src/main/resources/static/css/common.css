@@ -1,0 +1,84 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    font-family: sans-serif;
+    line-height: 1.15;
+    text-size-adjust: 100%;
+    color-scheme: light;
+}
+
+body {
+    text-size-adjust: 100%;
+    color-scheme: light;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+    background-color: #fff;
+    color: #000;
+    line-height: 1.55;
+    font-size: 1rem;
+    -webkit-font-smoothing: antialiased;
+}
+
+#app {
+    flex: 1;
+    text-size-adjust: 100%;
+    color-scheme: light;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+    color: #000;
+    line-height: 1.55;
+    font-size: 1rem;
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+}
+
+.layout {
+    justify-content: center;
+    text-size-adjust: 100%;
+    color-scheme: light;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+    color: #000;
+    line-height: 1.55;
+    font-size: 1rem;
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    min-height: 100vh;
+    background-image: radial-gradient(circle at 82% 60%,rgba(59,59,59,.06) 0,rgba(59,59,59,.06) 69%,
+    transparent 0,transparent 100%),radial-gradient(circle at 36% 0,hsla(0,0%,73%,.06) 0,hsla(0,0%,73%,.06) 59%,
+    transparent 0,transparent 100%),radial-gradient(circle at 58% 82%,hsla(0,0%,72%,.06) 0,hsla(0,0%,72%,.06) 17%,
+    transparent 0,transparent 100%),radial-gradient(circle at 71% 32%,hsla(0,0%,7%,.06) 0,hsla(0,0%,7%,.06) 40%,
+    transparent 0,transparent 100%),radial-gradient(circle at 77% 5%,rgba(31,31,31,.06) 0,rgba(31,31,31,.06) 52%,
+    transparent 0,transparent 100%),radial-gradient(circle at 96% 80%,hsla(0,0%,4%,.06) 0,hsla(0,0%,4%,.06) 73%,
+    transparent 0,transparent 100%),radial-gradient(circle at 91% 59%,hsla(0,0%,99%,.06) 0,hsla(0,0%,99%,.06) 44%,
+    transparent 0,transparent 100%),radial-gradient(circle at 52% 82%,hsla(0,0%,87%,.06) 0,hsla(0,0%,87%,.06) 87%,
+    transparent 0,transparent 100%),radial-gradient(circle at 84% 89%,hsla(0,0%,63%,.06) 0,hsla(0,0%,63%,.06) 57%,
+    transparent 0,transparent 100%),linear-gradient(90deg, #e0f7fa, #b3e5fc);
+}
+
+.main-card {
+    text-size-adjust: 100%;
+    color-scheme: light;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+    line-height: 1.55;
+    font-size: 1rem;
+    -webkit-font-smoothing: antialiased;
+    outline: 0px;
+    -webkit-tap-highlight-color: transparent;
+    display: block;
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    box-sizing: border-box;
+    border-radius: 0.5rem;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0.0625rem 0.1875rem, rgba(0, 0, 0, 0.05) 0px 0.625rem 0.9375rem -0.3125rem, rgba(0, 0, 0, 0.04) 0px 0.4375rem 0.4375rem -0.3125rem;
+    position: relative;
+    overflow: hidden;
+    background-color: rgb(255, 255, 255);
+    padding: 1.25rem;
+    max-width: 760px;
+    border: 0.0625rem solid rgb(222, 226, 230);
+}
+

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#efd36c">
+    <title>Lifting Diaries | Register</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="icon" href="/images/fav_48px.ico">
+</head>
+
+<body>
+<div id="app">
+    <main class="layout">
+        <div class="main-card">
+
+            <div class="form-title">
+                <h1>Register here</h1>
+            </div>
+
+            <form class="form" th:action="@{/register}" th:method="POST" th:object="${registerRequest}">
+
+                <label for="email">Email</label>
+                <input type="email" placeholder="Enter your email address" id="email" th:field="*{email}" required>
+                <p class="alert-warning" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+
+                <label for="username">Username</label>
+                <input type="text" placeholder="Choose a username" id="username" th:field="*{username}" required>
+                <p class="alert-warning" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+
+                <label for="password">Password</label>
+                <input type="password" placeholder="Create a password" id="password" th:field="*{password}" required>
+                <p class="alert-warning" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+
+                <button type="submit">Register</button>
+
+                <p class="form-already">Already have an account? <a href="/login">Sign in</a>!</p>
+
+            </form>
+
+        </div>
+    </main>
+</div>
+</body>
+
+</html>
