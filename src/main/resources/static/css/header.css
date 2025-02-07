@@ -1,194 +1,148 @@
+
 .header {
-    text-size-adjust: 100%;
-    color-scheme: light;
-    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
-    line-height: 1.55;
-    font-size: 1rem;
-    -webkit-font-smoothing: antialiased;
-    -webkit-tap-highlight-color: transparent;
-    color: rgb(0, 0, 0);
-    box-sizing: border-box;
-    display: block;
-    margin-left: calc(-1.25rem);
-    margin-right: calc(-1.25rem);
-    padding: 0.625rem 1.25rem;
-    margin-top: calc(-1.25rem);
-    border-top: 0px;
-    border-bottom: 0.0625rem solid rgb(222, 226, 230);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #dee2e6;
 }
 
 .header-wrap {
-    text-size-adjust: 100%;
-    color-scheme: light;
-    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
-    line-height: 1.55;
-    font-size: 1rem;
-    -webkit-font-smoothing: antialiased;
-    -webkit-tap-highlight-color: transparent;
-    color: rgb(0, 0, 0);
-    box-sizing: border-box;
     display: flex;
-    flex-flow: wrap;
-    -webkit-box-align: center;
     align-items: center;
-    -webkit-box-pack: justify;
+    width: 100%;
     justify-content: space-between;
-    gap: 1rem;
-}
-
-.header-left {
-    text-size-adjust: 100%;
-    color-scheme: light;
-    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
-    line-height: 1.55;
-    font-size: 1rem;
-    -webkit-font-smoothing: antialiased;
-    -webkit-tap-highlight-color: transparent;
-    color: rgb(0, 0, 0);
-    -webkit-box-flex: 0;
-    flex-grow: 0;
-    box-sizing: border-box;
-    display: flex;
-    flex-flow: wrap;
-    -webkit-box-align: center;
-    align-items: center;
-    -webkit-box-pack: start;
-    justify-content: flex-start;
-    gap: 1rem;
-}
-
-.logo-link {
-    text-size-adjust: 100%;
-    color-scheme: light;
-    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
-    line-height: 1.55;
-    font-size: 1rem;
-    -webkit-font-smoothing: antialiased;
-    -webkit-tap-highlight-color: transparent;
-    background: transparent;
-    box-sizing: border-box;
-    -webkit-box-flex: 0;
-    flex-grow: 0;
-    text-decoration: none;
 }
 
 .logo-wrap {
-    text-size-adjust: 100%;
-    color-scheme: light;
-    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
-    line-height: 1.55;
-    font-size: 1rem;
-    -webkit-font-smoothing: antialiased;
-    -webkit-tap-highlight-color: transparent;
-    box-sizing: border-box;
     display: flex;
-    flex-flow: wrap;
-    -webkit-box-align: center;
     align-items: center;
-    -webkit-box-pack: start;
-    justify-content: flex-start;
+}
+
+.logo-title {
+    margin-left: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    text-decoration: none; /* Remove underline */
+}
+
+a {
+    text-decoration: none;
+}
+
+.header-nav .nav-list {
+    list-style: none;
+    display: flex;
     gap: 1rem;
+    margin: 0;
+    padding: 0;
 }
 
-.group {
+.nav-link {
+    text-decoration: none; /* Remove underline */
+    font-size: 1rem;
+    color: #333;
+    transition: color 0.3s;
+}
+
+.nav-link:hover {
+    color: #228be6;
+}
+
+.header-utils {
     display: flex;
     align-items: center;
-    gap: 10px;
-    background: none;
-    padding: 10px;
-    border-radius: 12px;
+    gap: 1.5rem;
 }
 
-/* Checkbox Styling */
-.checkbox-group {
-    display: flex;
-    gap: 5px;
-}
-
-.checkbox {
-    width: 24px;
-    height: 24px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid #dcdcdc;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: border-color 0.3s;
-}
-
-.checkbox:hover {
-    border-color: #228be6;
-}
-
-.checkbox input {
-    display: none;
-}
-
-.checkbox-icon {
-    display: none;
-    width: 16px;
-    height: 16px;
-    fill: #228be6;
-}
-
-.checkbox input:checked + .checkbox-icon {
-    display: block;
-}
-
-/* Button Styling */
 .icon-button {
-    width: 32px;
-    height: 32px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid transparent;
-    border-radius: 50%;
-    background-color: white;
+    background: none;
+    border: none;
     cursor: pointer;
-    transition: border-color 0.3s, background-color 0.3s;
+    width: 40px;
+    height: 40px;
+    position: relative;
 }
 
-.icon-button:hover {
-    border-color: #228be6;
-    background-color: #f0f8ff;
-}
-
-.icon-button svg {
-    width: 20px;
-    height: 20px;
-    stroke: #555;
-    transition: stroke 0.3s;
-}
-
-.icon-button:hover svg {
-    stroke: #228be6;
-}
-
-/* Avatar Styling */
 .avatar {
-    background-color: #dcdcdc;
-    width: 32px;
-    height: 32px;
+    background-color: #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid transparent;
+    border: 2px solid black;
     border-radius: 50%;
     cursor: pointer;
+    position: relative; /* Ensure dropdown stays aligned */
 }
 
 .avatar:hover {
-    border-color: #228be6;
-    background-color: #f0f8ff;
+   border-color: #228be6;
 }
 
-.avatar svg {
-    width: 20px;
-    height: 20px;
+.avatar-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
 }
 
-.avatar:hover svg {
-    stroke: #228be6;
+/* Dropdown */
+.dropdown {
+    position: absolute;
+    background: rgb(255, 255, 255);
+    border: 1px solid rgb(233, 236, 239);
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0.0625rem 0.1875rem, rgba(0, 0, 0, 0.05) 0px 1.25rem 1.5625rem -0.3125rem, rgba(0, 0, 0, 0.04) 0px 0.625rem 0.625rem -0.3125rem;
+    border-radius: 0.25rem;
+    padding: 0.25rem 0;
+    opacity: 1;
+    z-index: 300;
+    top: calc(100% + 0.5rem);
+    width: 131px;
+    display: none;
+    transition: opacity 150ms ease, transform 150ms ease;
+    transform: scale(0.95);
+    transform-origin: top right;
 }
+
+.dropdown.show {
+    display: block;
+    transform: scale(1);
+    opacity: 1;
+}
+
+.dropdown-item {
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    color: rgb(33, 37, 41);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s ease, color 0.2s ease, fill 0.2s ease;
+    cursor: pointer;
+    width: 100%;
+    gap: 0.75rem;
+}
+
+.dropdown-item:hover {
+    background: #f8f9fa;
+}
+
+.dropdown-item:active {
+    background: #e9ecef;
+}
+
+/* Ensure the icon matches the text color dynamically */
+.dropdown-icon {
+    width: 18px;
+    height: 18px;
+    fill: currentColor; /* Icon matches text color */
+    transition: fill 0.2s ease;
+}
+
+.avatar {
+    position: relative;
+    cursor: pointer;
+}
+
+
