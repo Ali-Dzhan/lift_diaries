@@ -141,6 +141,11 @@ form.form button:active {
     text-decoration: underline;
 }
 
+.alert-danger {
+    color: red;
+    text-align: center;
+}
+
 @media (max-width: 480px) {
     .main-card.login-card {
         margin: 1rem;

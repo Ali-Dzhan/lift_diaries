@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="/css/workout.css">
     <link rel="icon" href="/images/fav_48px.ico">
     <script src="/css/dropdown.js" defer></script>
+    <script src="/css/workout.js" defer></script>
+
 </head>
 
 <body>
@@ -36,6 +38,11 @@
                     </a>
                 </div>
             </div>
+
+            <div class="start-workout-container">
+                <button id="startWorkoutButton" class="startWorkoutButton" disabled onclick="startWorkout()">Start Workout</button>
+            </div>
+
             <!-- Footer Fragment -->
             <footer th:replace="fragments/footer :: footer"></footer>
 
@@ -56,74 +63,6 @@
         </div>
     </div>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Add event listener for category links
-        const categoryLinks = document.querySelectorAll('.category-link');
-        categoryLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault(); // Prevent default link behavior
-                const categoryName = link.dataset.name; // Get the category name from data attribute
-                if (categoryName) {
-                    console.log(`Fetching exercises for category: ${categoryName}`);
-                    fetchExercises(categoryName);
-                } else {
-                    console.error("Category name not found in data-name attribute.");
-                }
-            });
-        });
-    });
-
-    // Fetch exercises for a specific category
-    function fetchExercises(categoryName) {
-        fetch(`/workout/exercise?categoryName=${categoryName}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Network response was not ok: ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log("Exercises fetched successfully:", data);
-                const exerciseList = document.getElementById('exerciseList');
-                exerciseList.innerHTML = ''; // Clear previous exercises
-                if (data.length === 0) {
-                    exerciseList.innerHTML = '<li>No exercises found for this category.</li>';
-                } else {
-                    data.forEach(exercise => {
-                        const li = document.createElement('li');
-                        li.textContent = exercise.name; // Only display the exercise name
-                        exerciseList.appendChild(li);
-                    });
-                }
-                showModal();
-            })
-            .catch(err => {
-                console.error('Error fetching exercises:', err);
-            });
-    }
-
-    // Show the modal
-    function showModal() {
-        const modal = document.getElementById('exerciseModal');
-        if (modal) {
-            modal.style.display = 'flex';
-        } else {
-            console.error("Modal element not found.");
-        }
-    }
-
-    // Close the modal
-    function closeModal() {
-        const modal = document.getElementById('exerciseModal');
-        if (modal) {
-            modal.style.display = 'none';
-        } else {
-            console.error("Modal element not found.");
-        }
-    }
-</script>
 
 </body>
 

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#efd36c">
+    <title>Lifting Diaries | Workout Session</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/workout.css">
+    <link rel="icon" href="/images/fav_48px.ico">
+    <script src="/css/dropdown.js" defer></script>
+</head>
+
+<body>
+<div id="app">
+
+    <main class="layout">
+        <div class="main-card">
+
+            <!-- Header Fragment -->
+            <header th:replace="fragments/header :: header"></header>
+
+            <div class="app-title">
+                <h1>Your Workout Session</h1>
+            </div>
+
+            <div class="workout-container">
+                <div th:if="${exercises == null or exercises.isEmpty()}" class="no-exercises">
+                    <p>No exercises selected. Please go back and select some.</p>
+                    <a href="/workout" class="button-lg">Go Back</a>
+                </div>
+
+                <div th:each="exercise : ${exercises}" class="exercise-card">
+                    <img th:src="@{${exercise.gifUrl}}" th:alt="${exercise.name}" class="exercise-image">
+                    <div class="exercise-details">
+                        <h2 th:text="${exercise.name}" class="exercise-name"></h2>
+                        <p><strong>Description:</strong> <span th:text="${exercise.description}"></span></p>
+                        <p><strong>Sets:</strong> <span th:text="${exercise.sets}"></span></p>
+                        <p><strong>Reps:</strong> <span th:text="${exercise.reps}"></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="start-workout-container">
+                <a href="/workout" class="button-lg">Finish Workout</a>
+            </div>
+
+            <!-- Footer Fragment -->
+            <footer th:replace="fragments/footer :: footer"></footer>
+
+        </div>
+    </main>
+
+</div>
+</body>
+</html>

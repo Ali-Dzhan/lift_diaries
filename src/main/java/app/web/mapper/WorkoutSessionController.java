@@ -6,7 +6,10 @@ import app.entity.exercise.model.Exercise;
 import app.entity.exercise.service.ExerciseService;
 import app.web.dto.CategoryDTO;
 import app.web.dto.ExerciseDTO;
+import app.web.dto.SelectedExercisesRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -46,6 +49,7 @@ public class WorkoutSessionController {
         List<Exercise> exercises = exerciseService.getExercisesByCategory(categoryName);
         return exercises.stream()
                 .map(exercise -> new ExerciseDTO(
+                        exercise.getId(),
                         exercise.getName(),
                         exercise.getDescription(),
                         exercise.getGifUrl(),
@@ -54,22 +58,35 @@ public class WorkoutSessionController {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping("/start")
-    public ModelAndView startWorkout(@RequestParam("selectedExercises") List<UUID> selectedExerciseIds) {
-        List<Exercise> selectedExercises = exerciseService.getExercisesByIds(selectedExerciseIds);
+    @PostMapping("/selectExercises")
+    public ResponseEntity<String> selectExercises(@RequestBody SelectedExercisesRequest request, HttpSession session) {
+        if (request.getSelectedExercises() == null || request.getSelectedExercises().isEmpty()) {
+            return ResponseEntity.badRequest().body("No exercises selected.");
+        }
+        session.setAttribute("selectedExercises", request.getSelectedExercises());
+        return ResponseEntity.ok("Exercises saved successfully.");
+    }
 
-        List<ExerciseDTO> exerciseDTOs = selectedExercises.stream()
-                .map(exercise -> new ExerciseDTO(
-                        exercise.getName(),
-                        exercise.getDescription(),
-                        exercise.getGifUrl(),
-                        exercise.getSets(),
-                        exercise.getReps()
-                ))
+    @GetMapping("/startWorkout")
+    public ModelAndView startWorkout(HttpSession session) {
+        Object attribute = session.getAttribute("selectedExercises");
+
+        if (!(attribute instanceof List<?> rawList)) {
+            return new ModelAndView("redirect:/workout");
+        }
+
+        List<UUID> selectedExerciseIds = rawList.stream()
+                .filter(item -> item instanceof UUID)
+                .map(UUID.class::cast)
                 .collect(Collectors.toList());
 
-        ModelAndView modelAndView = new ModelAndView("workout/startWorkout");
-        modelAndView.addObject("exercises", exerciseDTOs);
+        if (selectedExerciseIds.isEmpty()) {
+            return new ModelAndView("redirect:/workout");
+        }
+
+        List<Exercise> selectedExercises = exerciseService.getExercisesByIds(selectedExerciseIds);
+        ModelAndView modelAndView = new ModelAndView("startWorkout");
+        modelAndView.addObject("exercises", selectedExercises);
         return modelAndView;
     }
 

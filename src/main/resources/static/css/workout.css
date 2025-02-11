@@ -117,3 +117,129 @@
 .modal-body li:last-child {
     border-bottom: none;
 }
+
+.start-workout-container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.75rem;
+    margin-bottom: 1.75rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.startWorkoutButton {
+    appearance: none;
+    background-color: transparent;
+    border: 2px solid #2980b9;
+    border-radius: 15px;
+    box-sizing: border-box;
+    color: #2980b9;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Roobert, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 16px;
+    font-weight: 600;
+    line-height: normal;
+    margin: 0;
+    min-height: 60px;
+    min-width: 0;
+    outline: none;
+    padding: 16px 24px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: 30%;
+    will-change: transform;
+}
+
+.startWorkoutButton:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.startWorkoutButton:hover {
+    color: #fff;
+    background-color: #2980b9;
+    box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+    transform: translateY(-2px);
+}
+
+.startWorkoutButton:active {
+    box-shadow: none;
+    transform: translateY(0);
+}
+
+
+
+.workout-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.exercise-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    width: 300px;
+    text-align: center;
+}
+
+.exercise-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.exercise-details p {
+    margin: 0.5rem 0;
+    font-size: 14px;
+}
+
+.start-workout-container {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.no-exercises {
+    text-align: center;
+    font-size: 18px;
+}
+
+.button-lg {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 18px;
+    background-color: #2980b9;
+    color: white;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.button-lg:hover {
+    background-color: #1c6692;
+}
+
+.exercise-item {
+    padding: 10px;
+
+    margin: 5px 0;
+    cursor: pointer;
+    transition: color 0.3s ease, font-weight 0.3s ease;
+    border-radius: 5px;
+}
+
+.exercise-item:hover {
+    background-color: #f0f0f0;
+}
+
+.selected-exercise {
+    color: #2980b9;  /* Blue text color */
+    font-weight: bold;
+}

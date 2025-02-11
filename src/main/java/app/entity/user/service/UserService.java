@@ -40,12 +40,12 @@ public class UserService {
 
         Optional<User> optionUser = userRepository.findByUsername(loginRequest.getUsername());
         if (optionUser.isEmpty()) {
-            throw new DomainException("Username or password are incorrect.");
+            throw new DomainException("*Username or password are incorrect.*");
         }
 
         User user = optionUser.get();
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw new DomainException("Username or password are incorrect.");
+            throw new DomainException("*Username or password are incorrect.*");
         }
 
         return user;
@@ -114,13 +114,7 @@ public class UserService {
     public void switchRole(UUID userId) {
 
         User user = getById(userId);
-
-        if (user.getRole() == UserRole.USER) {
-            user.setRole(UserRole.ADMIN);
-        } else {
-            user.setRole(UserRole.USER);
-        }
-
+        user.setActive(!user.isActive());
         userRepository.save(user);
     }
 }
