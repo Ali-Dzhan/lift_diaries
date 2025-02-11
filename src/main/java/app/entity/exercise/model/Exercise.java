@@ -1,7 +1,6 @@
 package app.entity.exercise.model;
 
 import app.entity.category.model.Category;
-import app.entity.workout.model.Workout;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,13 +21,19 @@ public class Exercise {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private String description;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @Column
+    private String gifUrl; // Optional GIF URL for the exercise
+
+    @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "workout_id", nullable = true) // Nullable to allow exercises to exist without a workout
-    private Workout workout;
+    @Column
+    private int sets; // Recommended sets
+
+    @Column
+    private int reps; // Recommended reps
 }

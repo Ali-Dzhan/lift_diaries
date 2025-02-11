@@ -24,43 +24,20 @@ public class ExerciseService {
         this.categoryRepository = categoryRepository;
     }
 
-    public Exercise createExercise(String name, String description, UUID categoryId) {
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new IllegalArgumentException("Category with ID " + categoryId + " not found"));
-
-        Exercise exercise = Exercise.builder()
-                .name(name)
-                .description(description)
-                .category(category)
-                .build();
-
-        return exerciseRepository.save(exercise);
+    public List<Exercise> getExercisesByCategories(List<Category> categories) {
+        return exerciseRepository.findByCategoryIn(categories);
     }
 
-    public Exercise getExerciseById(UUID id) {
-        return exerciseRepository.findById(id).orElse(null);
+    public List<Exercise> getExercisesByIds(List<UUID> exerciseIds) {
+        return exerciseRepository.findAllById(exerciseIds);
     }
 
-    public List<Exercise> getExercisesByCategory(UUID categoryId) {
-        return exerciseRepository.findByCategoryId(categoryId);
-    }
-
-    public List<Exercise> getAllExercises() {
-        return exerciseRepository.findAll();
-    }
-
-    public Exercise updateExercise(UUID id, String name, String description) {
-        Exercise exercise = getExerciseById(id);
-
-        if (exercise != null) {
-            exercise.setName(name);
-            exercise.setDescription(description);
-            return exerciseRepository.save(exercise);
+    public List<Exercise> getExercisesByCategory(String categoryName) {
+        Category category = categoryRepository.findByName(categoryName);
+        if (category == null) {
+            return List.of(); // Return empty list if category is not found
         }
-        return null;
+        return exerciseRepository.findByCategory(category);
     }
 
-    public void deleteExercise(UUID id) {
-        exerciseRepository.deleteById(id);
-    }
 }

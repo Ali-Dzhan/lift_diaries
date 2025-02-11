@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#efd36c">
+    <title>Lifting Diaries | Workout Categories</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/workout.css">
+    <link rel="icon" href="/images/fav_48px.ico">
+    <script src="/css/dropdown.js" defer></script>
+</head>
+
+<body>
+<div id="app">
+
+    <main class="layout">
+        <div class="main-card">
+
+            <!-- Header Fragment -->
+            <header th:replace="fragments/header :: header"></header>
+
+            <div class="app-title">
+                <h1>Choose the muscle group you want to train.</h1>
+            </div>
+
+            <div class="category-grid">
+                <div th:each="category : ${categories}" class="category-card">
+                    <a href="#" class="category-link" th:data-name="${category.name}">
+                        <img th:src="@{${'/images/' + category.name.toLowerCase() + '.jpg'}}"
+                             th:alt="${category.name}" class="category-image">
+                        <h3 th:text="${category.name}" class="category-name"></h3>
+                    </a>
+                </div>
+            </div>
+            <!-- Footer Fragment -->
+            <footer th:replace="fragments/footer :: footer"></footer>
+
+        </div>
+
+    </main>
+
+    <!-- Modal for showing exercises -->
+    <div class="modal" id="exerciseModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Exercises</h2>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <ul id="exerciseList"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Add event listener for category links
+        const categoryLinks = document.querySelectorAll('.category-link');
+        categoryLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault(); // Prevent default link behavior
+                const categoryName = link.dataset.name; // Get the category name from data attribute
+                if (categoryName) {
+                    console.log(`Fetching exercises for category: ${categoryName}`);
+                    fetchExercises(categoryName);
+                } else {
+                    console.error("Category name not found in data-name attribute.");
+                }
+            });
+        });
+    });
+
+    // Fetch exercises for a specific category
+    function fetchExercises(categoryName) {
+        fetch(`/workout/exercise?categoryName=${categoryName}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Exercises fetched successfully:", data);
+                const exerciseList = document.getElementById('exerciseList');
+                exerciseList.innerHTML = ''; // Clear previous exercises
+                if (data.length === 0) {
+                    exerciseList.innerHTML = '<li>No exercises found for this category.</li>';
+                } else {
+                    data.forEach(exercise => {
+                        const li = document.createElement('li');
+                        li.textContent = exercise.name; // Only display the exercise name
+                        exerciseList.appendChild(li);
+                    });
+                }
+                showModal();
+            })
+            .catch(err => {
+                console.error('Error fetching exercises:', err);
+            });
+    }
+
+    // Show the modal
+    function showModal() {
+        const modal = document.getElementById('exerciseModal');
+        if (modal) {
+            modal.style.display = 'flex';
+        } else {
+            console.error("Modal element not found.");
+        }
+    }
+
+    // Close the modal
+    function closeModal() {
+        const modal = document.getElementById('exerciseModal');
+        if (modal) {
+            modal.style.display = 'none';
+        } else {
+            console.error("Modal element not found.");
+        }
+    }
+</script>
+
+</body>
+
+</html>

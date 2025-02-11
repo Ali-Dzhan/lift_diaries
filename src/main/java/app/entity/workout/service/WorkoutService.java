@@ -1,5 +1,6 @@
 package app.entity.workout.service;
 
+import app.entity.exercise.model.Exercise;
 import app.entity.user.model.User;
 import app.entity.user.repository.UserRepository;
 import app.entity.workout.model.Workout;
@@ -26,14 +27,15 @@ public class WorkoutService {
     }
 
     @Transactional
-    public Workout createWorkout(String name, String description, UUID userId) {
+    public Workout createWorkout(String name, UUID userId, List<Exercise> exercises) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User with ID " + userId + " not found"));
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         Workout workout = Workout.builder()
                 .name(name)
-                .description(description)
                 .user(user)
+                .exercises(exercises)
+                .completed(false) // Default to not completed
                 .build();
 
         return workoutRepository.save(workout);
@@ -41,28 +43,30 @@ public class WorkoutService {
 
     public Workout getWorkoutById(UUID id) {
         return workoutRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Workout with ID " + id + " not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Workout not found"));
     }
 
     public List<Workout> getWorkoutsByUser(UUID userId) {
         return workoutRepository.findByUserId(userId);
     }
 
-    public List<Workout> getAllWorkouts() {
-        return workoutRepository.findAll();
-    }
-
-    @Transactional
-    public Workout updateWorkout(UUID id, String name, String description) {
-        Workout workout = getWorkoutById(id);
-        workout.setName(name);
-        workout.setDescription(description);
-        return workoutRepository.save(workout);
-    }
-
     @Transactional
     public void deleteWorkout(UUID id) {
         Workout workout = getWorkoutById(id);
         workoutRepository.delete(workout);
+    }
+
+    @Transactional
+    public void markWorkoutAsCompleted(UUID id) {
+        Workout workout = getWorkoutById(id);
+        workout.setCompleted(true);
+        workoutRepository.save(workout);
+    }
+
+    @Transactional
+    public void markWorkoutAsNotCompleted(UUID id) {
+        Workout workout = getWorkoutById(id);
+        workout.setCompleted(false);
+        workoutRepository.save(workout);
     }
 }

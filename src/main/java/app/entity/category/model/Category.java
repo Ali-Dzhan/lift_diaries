@@ -21,9 +21,9 @@ public class Category {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(length = 500)
-    private String description;
+    @Column
+    private String imageUrl; // URL for the category image
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Exercise> exercises; // Bidirectional relationship
+    private List<Exercise> exercises; // Related exercises
 }
