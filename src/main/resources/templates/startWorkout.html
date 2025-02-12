@@ -9,51 +9,143 @@
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/footer.css">
     <link rel="stylesheet" href="/css/header.css">
-    <link rel="stylesheet" href="/css/workout.css">
+    <link rel="stylesheet" href="/css/startWorkout.css">
     <link rel="icon" href="/images/fav_48px.ico">
     <script src="/css/dropdown.js" defer></script>
 </head>
 
 <body>
-<div id="app">
 
+<div id="app">
     <main class="layout">
         <div class="main-card">
-
-            <!-- Header Fragment -->
             <header th:replace="fragments/header :: header"></header>
 
             <div class="app-title">
-                <h1>Your Workout Session</h1>
+                <h1>Session ID - </h1>
             </div>
 
-            <div class="workout-container">
-                <div th:if="${exercises == null or exercises.isEmpty()}" class="no-exercises">
-                    <p>No exercises selected. Please go back and select some.</p>
-                    <a href="/workout" class="button-lg">Go Back</a>
+            <div class="workout-layout">
+                <!-- Stepper Section -->
+                <div class="stepper-container">
+                    <ul class="stepper">
+                        <li th:each="exercise, iterStat : ${exercises}"
+                            class="step"
+                            th:classappend="${iterStat.index < 0} ? 'completed' : (${iterStat.index == 0} ? 'active' : '')">
+                            <div class="v-stepper">
+                                <div class="circle"></div>
+                                <div class="line"></div>
+                            </div>
+                            <div class="content" th:text="${exercise.name}"></div>
+                        </li>
+                    </ul>
                 </div>
 
-                <div th:each="exercise : ${exercises}" class="exercise-card">
-                    <img th:src="@{${exercise.gifUrl}}" th:alt="${exercise.name}" class="exercise-image">
-                    <div class="exercise-details">
-                        <h2 th:text="${exercise.name}" class="exercise-name"></h2>
-                        <p><strong>Description:</strong> <span th:text="${exercise.description}"></span></p>
-                        <p><strong>Sets:</strong> <span th:text="${exercise.sets}"></span></p>
-                        <p><strong>Reps:</strong> <span th:text="${exercise.reps}"></span></p>
+                <!-- Exercise Display Section -->
+                <div class="exercise-display">
+                    <div class="exercise-card">
+                        <!-- Exercise Image -->
+                        <img id="exerciseImage" class="exercise-image"
+                             th:src="@{${exercises[0].gifUrl}}" th:alt="${exercises[0].name}">
+
+                        <div class="exercise-details">
+                            <h2 id="exerciseName" class="exercise-name" th:text="${exercises[0].name}"></h2>
+                            <p><strong>Description:</strong> <span id="exerciseDescription"
+                                                                   th:text="${exercises[0].description}"></span></p>
+
+                            <!-- Sets and Reps Input Fields -->
+                            <div class="exercise-inputs">
+                                <label for="setsInput"><strong>Sets:</strong></label>
+                                <input type="number" id="setsInput" min="1" required>
+
+                                <label for="repsInput"><strong>Reps:</strong></label>
+                                <input type="number" id="repsInput" min="1" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="start-workout-container">
+                        <button id="prevExercise" class="button-lg">Prev Exercise</button>
+                        <button id="nextExercise" class="button-lg">Next Exercise</button>
                     </div>
                 </div>
             </div>
 
-            <div class="start-workout-container">
-                <a href="/workout" class="button-lg">Finish Workout</a>
-            </div>
-
-            <!-- Footer Fragment -->
             <footer th:replace="fragments/footer :: footer"></footer>
-
         </div>
     </main>
-
 </div>
+
+<script th:inline="javascript">
+    window.onload = function () {
+        let exercises = /*[[${exercises}]]*/ [];
+        if (!exercises || exercises.length === 0) return;
+
+        let currentExerciseIndex = 0;
+        let setsRepsData = new Map();
+
+        function updateUI() {
+            if (currentExerciseIndex >= exercises.length) {
+                window.location.href = "/complete";
+                return;
+            }
+
+            document.getElementById("exerciseName").textContent = exercises[currentExerciseIndex].name;
+            document.getElementById("exerciseDescription").textContent = exercises[currentExerciseIndex].description;
+
+            if (setsRepsData.has(currentExerciseIndex)) {
+                document.getElementById("setsInput").value = setsRepsData.get(currentExerciseIndex).sets;
+                document.getElementById("repsInput").value = setsRepsData.get(currentExerciseIndex).reps;
+            } else {
+                document.getElementById("setsInput").value = exercises[currentExerciseIndex].sets;
+                document.getElementById("repsInput").value = exercises[currentExerciseIndex].reps;
+            }
+
+            document.querySelectorAll(".step").forEach((step, index) => {
+                step.classList.remove("active", "completed");
+                if (index < currentExerciseIndex) {
+                    step.classList.add("completed");
+                } else if (index === currentExerciseIndex) {
+                    step.classList.add("active");
+                }
+            });
+
+            document.getElementById("prevExercise").disabled = currentExerciseIndex === 0;
+
+            let nextButton = document.getElementById("nextExercise");
+            if (currentExerciseIndex === exercises.length - 1) {
+                nextButton.textContent = "Finish Workout";
+                nextButton.onclick = function () {
+                    window.location.href = "/complete";
+                };
+            } else {
+                nextButton.textContent = "Next Exercise";
+                nextButton.onclick = function () {
+                    saveSetsReps();
+                    currentExerciseIndex++;
+                    updateUI();
+                };
+            }
+        }
+
+        function saveSetsReps() {
+            let sets = document.getElementById("setsInput").value;
+            let reps = document.getElementById("repsInput").value;
+            setsRepsData.set(currentExerciseIndex, { sets, reps });
+        }
+
+        document.getElementById("prevExercise").addEventListener("click", function () {
+            if (currentExerciseIndex > 0) {
+                saveSetsReps();
+                currentExerciseIndex--;
+                updateUI();
+            }
+        });
+
+        updateUI();
+    };
+</script>
+
 </body>
 </html>

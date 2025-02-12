@@ -40,7 +40,7 @@ public class UserService {
 
         Optional<User> optionUser = userRepository.findByUsername(loginRequest.getUsername());
         if (optionUser.isEmpty()) {
-            throw new DomainException("*Username or password are incorrect.*");
+            throw new DomainException("*Username doesn't exist.*");
         }
 
         User user = optionUser.get();
@@ -56,7 +56,7 @@ public class UserService {
 
         Optional<User> optionUser = userRepository.findByUsername(registerRequest.getUsername());
         if (optionUser.isPresent()) {
-            throw new DomainException("Username [%s] already exist.".formatted(registerRequest.getUsername()));
+            throw new DomainException("*Username [%s] already exist.*".formatted(registerRequest.getUsername()));
         }
 
         User user = userRepository.save(initializeUser(registerRequest));

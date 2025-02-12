@@ -1,0 +1,160 @@
+/* Main Layout */
+.workout-layout {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+}
+
+/* Stepper Section */
+.stepper-container {
+    width: 25%;
+}
+
+/* Stepper List */
+.stepper {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Step */
+.step {
+    padding: 10px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+/* Vertical Stepper */
+.v-stepper {
+    position: relative;
+}
+
+/* Step Circle */
+.circle {
+    width: 27px;
+    height: 27px;
+    border-radius: 50%;
+    border: 2px solid gray;
+    background-color: white;
+    position: relative;
+    display: inline-block;
+    z-index: 2;
+}
+
+/* Connecting Line */
+.line {
+
+    background-color: gray;
+    position: absolute;
+    top: 28px;
+    left: 13px;
+    height: 100%;
+    width: 2px;
+}
+
+/* Last Step: Remove Line */
+.step:last-child .line {
+    display: none;
+}
+
+/* Completed Step: Filled Circle */
+.step.completed .circle {
+    background-color: #2980b9;
+    border-color: #2980b9;
+}
+
+/* Active Step: Only Bordered */
+.step.active .circle {
+    border-color: #2980b9;
+    background-color: white;
+}
+
+/* Fix Stepper Appearance */
+.step .content {
+    font-size: 16px;
+    font-weight: bold;
+    color: #555;
+}
+
+/* Exercise Display */
+.exercise-display {
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Exercise Card */
+.exercise-card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 1rem;
+    width: 100%;
+    text-align: left;
+}
+
+.exercise-image {
+    box-shadow: 2px 2px 2px 2px rgba(0, 0.05, 0.05, 0.05);
+    max-width: 100%;
+    height: auto;
+}
+
+/* Inputs */
+.exercise-inputs {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.exercise-inputs input {
+    width: 50px;
+    padding: 5px;
+    font-size: 14px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* Navigation Buttons */
+.start-workout-container {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.button-lg {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button-lg:hover {
+    background-color: #1c6692;
+}
+
+.button-lg:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .workout-layout {
+        flex-direction: column;
+        align-items: center;
+    }
+}

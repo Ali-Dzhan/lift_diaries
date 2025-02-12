@@ -4,12 +4,14 @@ import app.entity.category.model.Category;
 import app.entity.category.repository.CategoryRepository;
 import app.entity.exercise.model.Exercise;
 import app.entity.exercise.repository.ExerciseRepository;
+import app.web.dto.ExerciseDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -24,18 +26,22 @@ public class ExerciseService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<Exercise> getExercisesByCategories(List<Category> categories) {
-        return exerciseRepository.findByCategoryIn(categories);
-    }
-
-    public List<Exercise> getExercisesByIds(List<UUID> exerciseIds) {
-        return exerciseRepository.findAllById(exerciseIds);
+    public List<ExerciseDTO> getExercisesByIds(List<UUID> exerciseIds) {
+        return exerciseRepository.findAllById(exerciseIds).stream()
+                .map(exercise -> new ExerciseDTO(
+                        exercise.getId(),
+                        exercise.getName(),
+                        exercise.getDescription(),
+                        exercise.getGifUrl(),
+                        exercise.getSets(),
+                        exercise.getReps()))
+                .collect(Collectors.toList());
     }
 
     public List<Exercise> getExercisesByCategory(String categoryName) {
         Category category = categoryRepository.findByName(categoryName);
         if (category == null) {
-            return List.of(); // Return empty list if category is not found
+            return List.of();
         }
         return exerciseRepository.findByCategory(category);
     }

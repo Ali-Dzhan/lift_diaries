@@ -4,6 +4,8 @@ import app.entity.category.model.Category;
 import app.entity.category.repository.CategoryRepository;
 import app.entity.exercise.model.Exercise;
 import app.entity.exercise.service.ExerciseService;
+import app.entity.workout.repository.WorkoutRepository;
+import app.entity.workout.service.WorkoutService;
 import app.web.dto.CategoryDTO;
 import app.web.dto.ExerciseDTO;
 import app.web.dto.SelectedExercisesRequest;
@@ -22,11 +24,13 @@ import java.util.stream.Collectors;
 @RequestMapping("/workout")
 public class WorkoutSessionController {
 
+    private final WorkoutService workoutService;
     private final ExerciseService exerciseService;
     private final CategoryRepository categoryRepository;
 
     @Autowired
-    public WorkoutSessionController(ExerciseService exerciseService, CategoryRepository categoryRepository) {
+    public WorkoutSessionController(WorkoutService workoutService, ExerciseService exerciseService, CategoryRepository categoryRepository) {
+        this.workoutService = workoutService;
         this.exerciseService = exerciseService;
         this.categoryRepository = categoryRepository;
     }
@@ -80,19 +84,22 @@ public class WorkoutSessionController {
                 .map(UUID.class::cast)
                 .collect(Collectors.toList());
 
-        if (selectedExerciseIds.isEmpty()) {
-            return new ModelAndView("redirect:/workout");
-        }
+        List<ExerciseDTO> exercises = exerciseService.getExercisesByIds(selectedExerciseIds);
 
-        List<Exercise> selectedExercises = exerciseService.getExercisesByIds(selectedExerciseIds);
         ModelAndView modelAndView = new ModelAndView("startWorkout");
-        modelAndView.addObject("exercises", selectedExercises);
+        modelAndView.addObject("exercises", exercises);
         return modelAndView;
     }
 
-    @PostMapping("/complete")
+    @GetMapping("/complete")
     public ModelAndView completeWorkout() {
         return new ModelAndView("workout/completed");
+    }
+
+    @PostMapping("/updateWorkout")
+    public String updateWorkout(@ModelAttribute("exercises") List<ExerciseDTO> exercises) {
+        workoutService.updateWorkoutExercises(exercises);
+        return "redirect:/workout";
     }
 }
 

@@ -1,10 +1,12 @@
 package app.entity.workout.service;
 
 import app.entity.exercise.model.Exercise;
+import app.entity.exercise.repository.ExerciseRepository;
 import app.entity.user.model.User;
 import app.entity.user.repository.UserRepository;
 import app.entity.workout.model.Workout;
 import app.entity.workout.repository.WorkoutRepository;
+import app.web.dto.ExerciseDTO;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +20,13 @@ import java.util.UUID;
 public class WorkoutService {
 
     private final WorkoutRepository workoutRepository;
+    private final ExerciseRepository exerciseRepository;
     private final UserRepository userRepository;
 
     @Autowired
-    public WorkoutService(WorkoutRepository workoutRepository, UserRepository userRepository) {
+    public WorkoutService(WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, UserRepository userRepository) {
         this.workoutRepository = workoutRepository;
+        this.exerciseRepository = exerciseRepository;
         this.userRepository = userRepository;
     }
 
@@ -35,7 +39,7 @@ public class WorkoutService {
                 .name(name)
                 .user(user)
                 .exercises(exercises)
-                .completed(false) // Default to not completed
+                .completed(false)
                 .build();
 
         return workoutRepository.save(workout);
@@ -68,5 +72,17 @@ public class WorkoutService {
         Workout workout = getWorkoutById(id);
         workout.setCompleted(false);
         workoutRepository.save(workout);
+    }
+
+    @Transactional
+    public void updateWorkoutExercises(List<ExerciseDTO> updatedExercises) {
+        for (ExerciseDTO dto : updatedExercises) {
+            Exercise exercise = exerciseRepository.findById(dto.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Exercise not found"));
+
+            exercise.setSets(dto.getSets());
+            exercise.setReps(dto.getReps());
+            exerciseRepository.save(exercise);
+        }
     }
 }
