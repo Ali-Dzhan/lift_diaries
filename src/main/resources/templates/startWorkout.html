@@ -71,10 +71,7 @@
     document.addEventListener("DOMContentLoaded", function () {
         let exercises = /*[[${exercises}]]*/ [];
 
-        console.log("DEBUG: Loaded exercises from server:", exercises);
-
         if (!Array.isArray(exercises) || exercises.length === 0) {
-            console.error("DEBUG: No exercises loaded.");
             alert("No exercises found. Please select exercises before starting.");
             return;
         }
@@ -83,52 +80,22 @@
         let setsRepsData = new Map();
         let userId = null;
 
-        // Fetch user from session
-        console.log("DEBUG: Fetching current user...");
         fetch('/user/getCurrent')
-            .then(response => {
-                console.log("DEBUG: User fetch response:", response);
-                return response.text(); // Read response as text first
-            })
+            .then(response => response.text())
             .then(text => {
-                try {
-                    let data = JSON.parse(text);
-                    console.log("DEBUG: Received user data:", data);
-
-                    if (!data || !data.id) {
-                        throw new Error("Invalid user data received or user not logged in.");
-                    }
-
-                    userId = data.id;
-                    console.log("DEBUG: User ID set to:", userId);
-
-                    // Check for malformed workouts array
-                    if (data.workouts && !Array.isArray(data.workouts)) {
-                        console.error("DEBUG: Malformed workouts array detected", data.workouts);
-                        alert("Error retrieving workout data. Please try logging out and in again.");
-                    }
-                } catch (jsonError) {
-                    console.error("DEBUG: JSON Parsing Error:", jsonError, "Response Text:", text);
-                    alert("Error retrieving user data. Please try logging in again.");
-                }
+                let data = JSON.parse(text);
+                if (!data || !data.id) throw new Error("Invalid user data.");
+                userId = data.id;
             })
-            .catch(error => {
-                console.error("DEBUG: Error fetching user:", error);
-                alert("You must be logged in to save a workout! Try refreshing the page or logging in again.");
-            });
+            .catch(() => alert("You must be logged in to save a workout! Try refreshing the page or logging in again."));
 
         function updateUI() {
-            console.log(`DEBUG: Updating UI for exercise index: ${currentExerciseIndex}/${exercises.length}`);
-
             if (currentExerciseIndex >= exercises.length) {
-                console.warn("DEBUG: No more exercises! Saving workout...");
                 saveWorkout();
                 return;
             }
 
             let exercise = exercises[currentExerciseIndex];
-            console.log("DEBUG: Displaying Exercise:", exercise);
-
             document.getElementById("exerciseImage").src = exercise.gifUrl;
             document.getElementById("exerciseName").textContent = exercise.name;
             document.getElementById("exerciseDescription").textContent = exercise.description;
@@ -140,36 +107,26 @@
                 let savedData = setsRepsData.get(currentExerciseIndex);
                 setsInput.value = savedData.sets;
                 repsInput.value = savedData.reps;
-                console.log(`DEBUG: Loaded saved sets/reps for index ${currentExerciseIndex}:`, savedData);
             } else {
                 setsInput.value = exercise.sets || 0;
                 repsInput.value = exercise.reps || 0;
-                console.log(`DEBUG: Using default sets/reps for index ${currentExerciseIndex}:`, {
-                    sets: setsInput.value,
-                    reps: repsInput.value
-                });
             }
 
             document.getElementById("prevExercise").disabled = currentExerciseIndex === 0;
-
-            let nextButton = document.getElementById("nextExercise");
-            nextButton.textContent = (currentExerciseIndex === exercises.length - 1) ? "Finish Workout" : "Next Exercise";
-
-            console.log("DEBUG: UI Updated for:", exercise.name);
+            document.getElementById("nextExercise").textContent = (currentExerciseIndex === exercises.length - 1) ? "Finish Workout" : "Next Exercise";
         }
 
         function saveSetsReps() {
             let sets = document.getElementById("setsInput").value;
             let reps = document.getElementById("repsInput").value;
             setsRepsData.set(currentExerciseIndex, { sets, reps });
-            console.log(`DEBUG: Saved Sets/Reps for index ${currentExerciseIndex}:`, sets, reps);
         }
 
         function saveWorkout() {
-            let workoutName = document.getElementById("workoutName").value;
+            let workoutName = document.getElementById("workoutName").value.trim();
             let sessionId = document.getElementById("sessionId").textContent;
 
-            if (!workoutName.trim()) {
+            if (!workoutName) {
                 alert("Please enter a workout name!");
                 return;
             }
@@ -181,22 +138,18 @@
 
             let selectedExercises = exercises.map((exercise, index) => ({
                 id: exercise.id,
-                sets: setsRepsData.has(index) ? setsRepsData.get(index).sets : exercise.sets,
-                reps: setsRepsData.has(index) ? setsRepsData.get(index).reps : exercise.reps
+                sets: setsRepsData.get(index)?.sets || exercise.sets,
+                reps: setsRepsData.get(index)?.reps || exercise.reps
             }));
 
-            let exerciseIds = exercises.map(exercise => exercise.id);
-
             let workoutData = {
-                workoutName: workoutName,
-                userId: userId,
-                sessionId: sessionId,
+                workoutName,
+                userId,
+                sessionId,
                 completed: true,
-                exerciseIds: exerciseIds, // Ensure this field is included!
+                exerciseIds: exercises.map(exercise => exercise.id),
                 exercises: selectedExercises
             };
-
-            console.log("DEBUG: Sending workout data:", workoutData); // Log the data before sending
 
             fetch("/workout/saveWorkout", {
                 method: "POST",
@@ -204,17 +157,16 @@
                 body: JSON.stringify(workoutData)
             })
                 .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Failed to save workout: ${response.status} ${response.statusText}`);
-                    }
+                    if (!response.ok) throw new Error("Failed to save workout.");
                     return response.text();
                 })
-                .then(data => {
+                .then(() => {
                     alert("Workout saved successfully!");
                     window.location.href = "/workout";
                 })
-                .catch(error => console.error("DEBUG: Error saving workout:", error));
+                .catch(() => alert("Error saving workout."));
         }
+
         document.getElementById("prevExercise").addEventListener("click", function () {
             if (currentExerciseIndex > 0) {
                 saveSetsReps();
@@ -233,9 +185,9 @@
             }
         });
 
-        console.log("DEBUG: Initial UI Update Call");
         updateUI();
     });
+
 </script>
 
 

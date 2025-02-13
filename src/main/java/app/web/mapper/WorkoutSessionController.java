@@ -88,10 +88,6 @@ public class WorkoutSessionController {
                 .toList();
 
         List<Exercise> exercises = exerciseService.getExercisesByIds(selectedExerciseIds);
-        if (exercises == null || exercises.isEmpty()) {
-            return new ModelAndView("redirect:/workout");
-        }
-
         UUID sessionId = UUID.randomUUID();
         session.setAttribute("workoutSessionId", sessionId);
 
@@ -104,43 +100,17 @@ public class WorkoutSessionController {
 
     @PostMapping("/saveWorkout")
     public ResponseEntity<String> saveWorkout(@RequestBody WorkoutRequest workoutRequest) {
-        System.out.println("DEBUG: Received workout save request - Name: " + workoutRequest.getWorkoutName());
-
-        if (workoutRequest.getExerciseIds() == null || workoutRequest.getExerciseIds().isEmpty()) {
-            System.out.println("ERROR: No exercise IDs provided!");
-            return ResponseEntity.badRequest().body("No exercise IDs provided.");
-        }
-
-        for (UUID id : workoutRequest.getExerciseIds()) {
-            if (id == null) {
-                System.out.println("ERROR: Found null exercise ID!");
-                return ResponseEntity.badRequest().body("Null exercise ID detected.");
-            }
-        }
 
         User user = userService.getById(workoutRequest.getUserId());
-        if (user == null) {
-            System.out.println("DEBUG: User not found.");
-            return ResponseEntity.badRequest().body("User not found.");
-        }
-
-        System.out.println("DEBUG: Fetching exercises for IDs: " + workoutRequest.getExerciseIds());
-
         List<Exercise> exercises = exerciseService.getExercisesByIds(workoutRequest.getExerciseIds());
-
-        if (exercises.isEmpty()) {
-            System.out.println("DEBUG: No exercises found for provided IDs.");
-            return ResponseEntity.badRequest().body("No exercises found.");
-        }
-
-        System.out.println("DEBUG: Found " + exercises.size() + " exercises, creating workout...");
 
         Workout savedWorkout = workoutService.createWorkout(
                 workoutRequest.getWorkoutName(),
                 user.getId(),
-                exercises);
-
-        savedWorkout.setCompleted(true);
+                exercises,
+                workoutRequest.isCompleted()
+        );
+        workoutService.markWorkoutAsCompleted(savedWorkout.getId());
 
         return ResponseEntity.ok("Workout saved successfully with ID: " + savedWorkout.getId());
     }

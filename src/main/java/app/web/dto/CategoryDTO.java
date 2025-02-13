@@ -2,8 +2,7 @@ package app.web.dto;
 
 import lombok.*;
 
-@Getter
-@Setter
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data

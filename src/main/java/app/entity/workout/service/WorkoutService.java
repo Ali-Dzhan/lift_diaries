@@ -31,16 +31,16 @@ public class WorkoutService {
     }
 
     @Transactional
-    public Workout createWorkout(String name, UUID userId, List<Exercise> exercises) {
+    public Workout createWorkout(String name, UUID userId, List<Exercise> exercises, boolean completed) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         Workout workout = Workout.builder()
-                .id(UUID.randomUUID()) // Ensure ID is generated
+                .id(UUID.randomUUID())
                 .name(name)
                 .user(user)
-                .exercises(exercises) // Now passing List<Exercise>
-                .completed(false)
+                .exercises(exercises)
+                .completed(completed)
                 .build();
 
         return workoutRepository.save(workout);
