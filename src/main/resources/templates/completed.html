@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#efd36c">
+  <title>Lifting Diaries | Workout Completed</title>
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/footer.css">
+  <link rel="stylesheet" href="/css/header.css">
+  <link rel="stylesheet" href="/css/completed.css">
+  <link rel="icon" href="/images/fav_48px.ico">
+  <script src="/css/dropdown.js"></script>
+</head>
+
+<body>
+
+<!-- Confetti Canvas -->
+<canvas id="confetti"></canvas>
+
+<div id="app">
+  <main class="layout">
+    <div class="main-card">
+
+      <th:block th:insert="fragments/header :: header"></th:block>
+
+      <h1>Workout completed!</h1>
+
+      <div class="completion-container">
+        <img src="/images/trophy.webp" alt="Workout Completed" class="completion-image">
+        <p>Congrats, you completed your workout! 🎉</p>
+        <div class="profile-link">
+          <p>Check your <a href="/profile">profile</a> to see your progress and to repeat workouts.</p>
+        </div>
+      </div>
+
+      <th:block th:insert="fragments/footer :: footer"></th:block>
+
+    </div>
+  </main>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const confettiCanvas = document.getElementById("confetti");
+    const ctx = confettiCanvas.getContext("2d");
+
+    // Set canvas to full screen
+    confettiCanvas.width = window.innerWidth;
+    confettiCanvas.height = window.innerHeight;
+
+    const confettis = [];
+    const colors = ["#FF007A", "#7A00FF", "#00FF7A", "#FFD700", "#00D4FF"];
+
+    // Function to create confetti
+    function createConfetti() {
+      const confetti = {
+        x: Math.random() * confettiCanvas.width,
+        y: Math.random() * confettiCanvas.height - confettiCanvas.height,
+        size: Math.random() * 10 + 5,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        speedX: Math.random() * 3 - 1.5,
+        speedY: Math.random() * 5 + 2,
+        rotation: Math.random() * 360
+      };
+      confettis.push(confetti);
+    }
+
+    // Generate confetti once
+    for (let i = 0; i < 200; i++) {
+      createConfetti();
+    }
+
+    // Function to animate confetti
+    function animateConfetti() {
+      ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      confettis.forEach((confetti, index) => {
+        confetti.x += confetti.speedX;
+        confetti.y += confetti.speedY;
+        confetti.rotation += confetti.speedX;
+
+        // Draw confetti
+        ctx.save();
+        ctx.translate(confetti.x, confetti.y);
+        ctx.rotate((confetti.rotation * Math.PI) / 180);
+        ctx.fillStyle = confetti.color;
+        ctx.fillRect(-confetti.size / 2, -confetti.size / 2, confetti.size, confetti.size);
+        ctx.restore();
+
+        // Remove confetti that goes off screen
+        if (confetti.y > confettiCanvas.height) {
+          confettis.splice(index, 1);
+        }
+      });
+
+      if (confettis.length > 0) {
+        requestAnimationFrame(animateConfetti);
+      }
+    }
+
+    // Start animation after 800ms (after page load)
+    setTimeout(() => {
+      animateConfetti();
+    }, 800);
+  });
+</script>
+
+</body>
+</html>

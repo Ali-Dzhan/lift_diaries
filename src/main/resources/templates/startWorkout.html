@@ -161,8 +161,7 @@
                     return response.text();
                 })
                 .then(() => {
-                    alert("Workout saved successfully!");
-                    window.location.href = "/workout";
+                    window.location.href = "/workout/complete";
                 })
                 .catch(() => alert("Error saving workout."));
         }

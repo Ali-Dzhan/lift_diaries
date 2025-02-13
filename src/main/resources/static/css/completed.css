@@ -1,0 +1,44 @@
+#confetti {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1;
+}
+
+
+.completion-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.completion-image {
+    width: 400px;
+    max-width: 100%;
+    margin-bottom: 10px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-top: 40px;
+}
+
+p {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.profile-link a {
+    color: #228be6;
+    font-weight: normal;
+    text-decoration: underline;
+}
+

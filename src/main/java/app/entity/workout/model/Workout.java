@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,4 +39,7 @@ public class Workout {
     private List<Exercise> exercises;
 
     private boolean completed;
+
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdOn;
 }

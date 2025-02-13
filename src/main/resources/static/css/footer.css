@@ -53,7 +53,7 @@
 
 .footer-links a {
     color: #333;
-    text-decoration: none;
+    text-decoration: underline;
     font-size: 14px;
     transition: color 0.3s;
 }

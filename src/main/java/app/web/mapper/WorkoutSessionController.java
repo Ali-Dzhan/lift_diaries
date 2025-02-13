@@ -118,7 +118,7 @@ public class WorkoutSessionController {
 
     @GetMapping("/complete")
     public ModelAndView completeWorkout() {
-        return new ModelAndView("workout/completed");
+        return new ModelAndView("completed");
     }
 
     @PostMapping("/updateWorkout")
