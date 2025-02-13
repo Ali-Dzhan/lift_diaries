@@ -8,6 +8,7 @@ import app.exception.DomainException;
 import app.web.dto.LoginRequest;
 import app.web.dto.RegisterRequest;
 import app.web.dto.UserEditRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class UserService {
         this.userProperties = userProperties;
     }
 
-    public User login(LoginRequest loginRequest) {
+    public User login(LoginRequest loginRequest, HttpSession session) {
 
         Optional<User> optionUser = userRepository.findByUsername(loginRequest.getUsername());
         if (optionUser.isEmpty()) {
@@ -47,6 +48,8 @@ public class UserService {
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             throw new DomainException("*Username or password are incorrect.*");
         }
+
+        session.setAttribute("loggedUserId", user.getId());
 
         return user;
     }

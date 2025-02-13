@@ -2,6 +2,7 @@ package app.entity.user.model;
 
 import app.entity.progress.model.Progress;
 import app.entity.workout.model.Workout;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -48,8 +49,9 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime updatedOn;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Workout> workouts = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Workout> workouts;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Progress> progressLogs = new ArrayList<>();

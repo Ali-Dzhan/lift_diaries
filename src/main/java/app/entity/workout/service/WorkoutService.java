@@ -36,9 +36,10 @@ public class WorkoutService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         Workout workout = Workout.builder()
+                .id(UUID.randomUUID()) // Ensure ID is generated
                 .name(name)
                 .user(user)
-                .exercises(exercises)
+                .exercises(exercises) // Now passing List<Exercise>
                 .completed(false)
                 .build();
 

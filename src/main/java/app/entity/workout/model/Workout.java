@@ -2,6 +2,7 @@ package app.entity.workout.model;
 
 import app.entity.exercise.model.Exercise;
 import app.entity.user.model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,6 +26,7 @@ public class Workout {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
     @ManyToMany

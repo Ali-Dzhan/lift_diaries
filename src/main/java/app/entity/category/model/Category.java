@@ -1,6 +1,7 @@
 package app.entity.category.model;
 
 import app.entity.exercise.model.Exercise;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,5 +26,6 @@ public class Category {
     private String imageUrl; // URL for the category image
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Exercise> exercises; // Related exercises
 }

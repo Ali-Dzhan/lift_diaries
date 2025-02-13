@@ -18,7 +18,7 @@ public class DataInitializer {
                 categoryRepository.saveAll(List.of(
                         Category.builder().name("Chest").build(),
                         Category.builder().name("Back").build(),
-                        Category.builder().name("Legs/Glutes").build(),
+                        Category.builder().name("Legs").build(),
                         Category.builder().name("Shoulders").build(),
                         Category.builder().name("Arms").build(),
                         Category.builder().name("Other").build()

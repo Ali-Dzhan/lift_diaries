@@ -1,6 +1,7 @@
 package app.entity.exercise.model;
 
 import app.entity.category.model.Category;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,10 +26,11 @@ public class Exercise {
     private String description;
 
     @Column
-    private String gifUrl; // Optional GIF URL for the exercise
+    private String gifUrl;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
+    @JsonIgnore
     private Category category;
 
     @Column

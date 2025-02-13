@@ -1,138 +1,92 @@
 /* Main Layout */
 .workout-layout {
     display: flex;
-    gap: 30px;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     width: 100%;
+    padding: 20px;
 }
 
-/* Stepper Section */
-.stepper-container {
-    width: 25%;
-}
-
-/* Stepper List */
-.stepper {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-}
-
-/* Step */
-.step {
-    padding: 10px;
-
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-}
-
-/* Vertical Stepper */
-.v-stepper {
-    position: relative;
-}
-
-/* Step Circle */
-.circle {
-    width: 27px;
-    height: 27px;
-    border-radius: 50%;
-    border: 2px solid gray;
-    background-color: white;
-    position: relative;
-    display: inline-block;
-    z-index: 2;
-}
-
-/* Connecting Line */
-.line {
-
-    background-color: gray;
-    position: absolute;
-    top: 28px;
-    left: 13px;
-    height: 100%;
-    width: 2px;
-}
-
-/* Last Step: Remove Line */
-.step:last-child .line {
-    display: none;
-}
-
-/* Completed Step: Filled Circle */
-.step.completed .circle {
-    background-color: #2980b9;
-    border-color: #2980b9;
-}
-
-/* Active Step: Only Bordered */
-.step.active .circle {
-    border-color: #2980b9;
-    background-color: white;
-}
-
-/* Fix Stepper Appearance */
-.step .content {
+#workoutName {
+    padding: 0.75rem;
     font-size: 16px;
-    font-weight: bold;
-    color: #555;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 1px 1px 7px rgba(0, 0, 0, 0.1);
+}
+
+#workoutName:focus {
+    border-color: #2980b9;
+    box-shadow: 1px 1px 7px rgba(41, 128, 185, 0.4);
 }
 
 /* Exercise Display */
 .exercise-display {
-    width: 500px;
+    flex-grow: 1;
+    max-width: 600px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
 }
 
 /* Exercise Card */
 .exercise-card {
     background-color: #fff;
-    border-radius: 10px;
-    padding: 1rem;
+    border-radius: 12px;
+    padding: 1.8rem;
     width: 100%;
-    text-align: left;
-}
-
-.exercise-image {
-    box-shadow: 2px 2px 2px 2px rgba(0, 0.05, 0.05, 0.05);
-    max-width: 100%;
-    height: auto;
-}
-
-/* Inputs */
-.exercise-inputs {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 10px;
-}
-
-.exercise-inputs input {
-    width: 50px;
-    padding: 5px;
-    font-size: 14px;
-    border: 2px solid #ccc;
-    border-radius: 5px;
     text-align: center;
 }
 
-/* Navigation Buttons */
-.start-workout-container {
+/* Exercise Image */
+.exercise-image {
+    max-width: 80%;
+    height: auto;
+    display: block;
+    margin: 10px auto;
+    border-radius: 8px;
+}
+
+/* Sets and Reps Input Fields */
+.exercise-inputs {
     display: flex;
-    gap: 15px;
     justify-content: center;
-    margin-top: 20px;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.exercise-inputs label {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.exercise-inputs input {
+    width: 60px;
+    padding: 8px;
+    border-radius: 5px;
+    border: 2px solid #ccc;
+    font-size: 16px;
+    text-align: center;
+}
+
+/* Prevent input resizing */
+input {
+    -moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .button-lg {
-    padding: 10px 20px;
+    flex: 1;
+    text-align: center;
+    padding: 12px 20px;
     font-size: 16px;
     background-color: #2980b9;
     color: white;
@@ -149,12 +103,4 @@
 .button-lg:disabled {
     background-color: #ccc;
     cursor: not-allowed;
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-    .workout-layout {
-        flex-direction: column;
-        align-items: center;
-    }
 }

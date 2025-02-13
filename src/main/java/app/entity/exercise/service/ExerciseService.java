@@ -26,16 +26,8 @@ public class ExerciseService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<ExerciseDTO> getExercisesByIds(List<UUID> exerciseIds) {
-        return exerciseRepository.findAllById(exerciseIds).stream()
-                .map(exercise -> new ExerciseDTO(
-                        exercise.getId(),
-                        exercise.getName(),
-                        exercise.getDescription(),
-                        exercise.getGifUrl(),
-                        exercise.getSets(),
-                        exercise.getReps()))
-                .collect(Collectors.toList());
+    public List<Exercise> getExercisesByIds(List<UUID> exerciseIds) {
+        return exerciseRepository.findAllById(exerciseIds);
     }
 
     public List<Exercise> getExercisesByCategory(String categoryName) {

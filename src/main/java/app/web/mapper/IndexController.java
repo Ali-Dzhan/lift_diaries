@@ -48,7 +48,7 @@ public class IndexController {
             return "login";
         }
 
-        User loggedInUser = userService.login(loginRequest);
+        User loggedInUser = userService.login(loginRequest, session);
         session.setAttribute("user_id", loggedInUser.getId());
 
         return "redirect:/home";
