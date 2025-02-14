@@ -100,4 +100,9 @@ public class IndexController {
     public String getPrivacyPolicyPage() {
         return "privacy";
     }
+
+    @GetMapping("/about")
+    public String getAboutPage() {
+        return "about";
+    }
 }

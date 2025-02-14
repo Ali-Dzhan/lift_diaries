@@ -33,7 +33,10 @@ public class WorkoutSessionController {
     private final CategoryRepository categoryRepository;
 
     @Autowired
-    public WorkoutSessionController(UserService userService, WorkoutService workoutService, ExerciseService exerciseService, CategoryRepository categoryRepository) {
+    public WorkoutSessionController(UserService userService,
+                                    WorkoutService workoutService,
+                                    ExerciseService exerciseService,
+                                    CategoryRepository categoryRepository) {
         this.userService = userService;
         this.workoutService = workoutService;
         this.exerciseService = exerciseService;
@@ -114,7 +117,6 @@ public class WorkoutSessionController {
 
         return ResponseEntity.ok("Workout saved successfully with ID: " + savedWorkout.getId());
     }
-
 
     @GetMapping("/complete")
     public ModelAndView completeWorkout() {

@@ -25,7 +25,9 @@ public class WorkoutService {
     private final UserRepository userRepository;
 
     @Autowired
-    public WorkoutService(WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, UserRepository userRepository) {
+    public WorkoutService(WorkoutRepository workoutRepository,
+                          ExerciseRepository exerciseRepository,
+                          UserRepository userRepository) {
         this.workoutRepository = workoutRepository;
         this.exerciseRepository = exerciseRepository;
         this.userRepository = userRepository;
@@ -67,13 +69,6 @@ public class WorkoutService {
     public void markWorkoutAsCompleted(UUID id) {
         Workout workout = getWorkoutById(id);
         workout.setCompleted(true);
-        workoutRepository.save(workout);
-    }
-
-    @Transactional
-    public void markWorkoutAsNotCompleted(UUID id) {
-        Workout workout = getWorkoutById(id);
-        workout.setCompleted(false);
         workoutRepository.save(workout);
     }
 
