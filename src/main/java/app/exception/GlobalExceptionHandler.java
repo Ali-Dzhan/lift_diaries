@@ -10,9 +10,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DomainException.class)
     public ModelAndView handleDomainException(DomainException ex) {
+
         ModelAndView modelAndView = new ModelAndView("login");
         modelAndView.addObject("loginRequest", new LoginRequest());
         modelAndView.addObject("loginError", ex.getMessage());
+
         return modelAndView;
     }
 }
