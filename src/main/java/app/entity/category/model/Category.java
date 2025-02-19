@@ -23,9 +23,9 @@ public class Category {
     private String name;
 
     @Column
-    private String imageUrl; // URL for the category image
+    private String imageUrl;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<Exercise> exercises; // Related exercises
+    private List<Exercise> exercises;
 }

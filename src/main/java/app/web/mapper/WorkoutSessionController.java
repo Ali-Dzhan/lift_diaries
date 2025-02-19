@@ -4,6 +4,7 @@ import app.entity.category.model.Category;
 import app.entity.category.repository.CategoryRepository;
 import app.entity.exercise.model.Exercise;
 import app.entity.exercise.service.ExerciseService;
+import app.entity.progress.service.ProgressService;
 import app.entity.user.model.User;
 import app.entity.user.service.UserService;
 import app.entity.workout.model.Workout;
@@ -31,16 +32,18 @@ public class WorkoutSessionController {
     private final WorkoutService workoutService;
     private final ExerciseService exerciseService;
     private final CategoryRepository categoryRepository;
+    private final ProgressService progressService;
 
     @Autowired
     public WorkoutSessionController(UserService userService,
                                     WorkoutService workoutService,
                                     ExerciseService exerciseService,
-                                    CategoryRepository categoryRepository) {
+                                    CategoryRepository categoryRepository, ProgressService progressService) {
         this.userService = userService;
         this.workoutService = workoutService;
         this.exerciseService = exerciseService;
         this.categoryRepository = categoryRepository;
+        this.progressService = progressService;
     }
 
     @GetMapping
@@ -114,6 +117,12 @@ public class WorkoutSessionController {
                 workoutRequest.isCompleted()
         );
         workoutService.markWorkoutAsCompleted(savedWorkout.getId());
+
+        if (workoutRequest.isCompleted()) {
+            for (UUID exerciseId : workoutRequest.getExerciseIds()) {
+                progressService.saveWorkoutCompletion(user.getId(), savedWorkout.getId(), exerciseId);
+            }
+        }
 
         return ResponseEntity.ok("Workout saved successfully with ID: " + savedWorkout.getId());
     }

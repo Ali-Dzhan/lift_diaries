@@ -1,10 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#efd36c">
+    <title>Lifting Diaries | Progress</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/progress.css">
+    <link rel="icon" href="/images/fav_48px.ico">
+    <script src="/css/dropdown.js" defer></script>
 </head>
-<body>
 
+<body>
+<div id="app">
+    <main class="layout">
+        <div class="main-card">
+            <th:block th:insert="fragments/header :: header"></th:block>
+
+            <div class="app-title">
+                <h1>Your Overall Progress</h1>
+            </div>
+            <div class="progress-section">
+                <h2>🔥 Workout Streak: <span th:text="${streak}"></span> Days</h2>
+            </div>
+            <div class="progress-section">
+                <h2>📅 Completed Workouts</h2>
+                <div class="table-responsive">
+                    <table class="progress-table">
+                        <thead>
+                        <tr>
+                            <th>Workout</th>
+                            <th>Date</th>
+                            <th>Exercise</th>
+                            <th>Sets</th>
+                            <th>Reps</th>
+                            <th>Weight</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="workoutProgress : ${workoutProgressList}">
+                            <!-- Workout Name & Date Merged for All Exercises -->
+                            <td rowspan="${#lists.size(workoutProgress.progressList)}" th:text="${workoutProgress.workout.name}"></td>
+                            <td rowspan="${#lists.size(workoutProgress.progressList)}" th:text="${#temporals.format(workoutProgress.progressList[0].timestamp, 'yyyy-MM-dd HH:mm')}"></td>
+
+                            <!-- First Exercise Row -->
+                            <td th:text="${workoutProgress.progressList[0].exercise.name}"></td>
+                            <td th:text="${workoutProgress.progressList[0].exercise.sets}"></td>
+                            <td th:text="${workoutProgress.progressList[0].exercise.reps}"></td>
+                            <td th:text="${workoutProgress.progressList[0].value + ' ' + workoutProgress.progressList[0].unit}"></td>
+                        </tr>
+
+                        <!-- Additional rows for remaining exercises -->
+                        <tr th:each="progress, iterStat : ${workoutProgress.progressList}" th:if="${iterStat.index > 0}">
+                            <td th:text="${progress.exercise.name}"></td>
+                            <td th:text="${progress.exercise.sets}"></td>
+                            <td th:text="${progress.exercise.reps}"></td>
+                            <td th:text="${progress.value + ' ' + progress.unit}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <th:block th:insert="fragments/footer :: footer"></th:block>
+        </div>
+    </main>
+</div>
 </body>
 </html>

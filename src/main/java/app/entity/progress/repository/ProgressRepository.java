@@ -1,7 +1,10 @@
 package app.entity.progress.repository;
 
 import app.entity.progress.model.Progress;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -13,9 +16,8 @@ public interface ProgressRepository extends JpaRepository<Progress, UUID> {
 
     List<Progress> findByUserId(UUID userId);
 
-    List<Progress> findByExerciseId(UUID exerciseId);
-
-    List<Progress> findByUserIdAndExerciseId(UUID userId, UUID exerciseId);
-
     List<Progress> findByUserIdAndTimestampBetween(UUID userId, LocalDateTime start, LocalDateTime end);
+
+    @Query("SELECT p FROM Progress p WHERE p.user.id = :userId ORDER BY p.timestamp DESC")
+    List<Progress> findRecentProgressByUser(@Param("userId") UUID userId, Pageable pageable);
 }

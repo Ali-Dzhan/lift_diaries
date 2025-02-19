@@ -2,6 +2,7 @@ package app.entity.progress.model;
 
 import app.entity.exercise.model.Exercise;
 import app.entity.user.model.User;
+import app.entity.workout.model.Workout;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,11 +30,15 @@ public class Progress {
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "exercise_id", nullable = false)
     private Exercise exercise;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "workout_id", nullable = false)
+    private Workout workout;
 }

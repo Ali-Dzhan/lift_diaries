@@ -21,7 +21,7 @@ public class DataInitializer {
                         Category.builder().name("Legs").build(),
                         Category.builder().name("Shoulders").build(),
                         Category.builder().name("Arms").build(),
-                        Category.builder().name("Other").build()
+                        Category.builder().name("Abdomen").build()
                 ));
             }
         };

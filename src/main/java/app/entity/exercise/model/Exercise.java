@@ -34,8 +34,8 @@ public class Exercise {
     private Category category;
 
     @Column
-    private int sets; // Recommended sets
+    private int sets;
 
     @Column
-    private int reps; // Recommended reps
+    private int reps;
 }

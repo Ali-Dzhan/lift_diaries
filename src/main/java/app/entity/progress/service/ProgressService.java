@@ -1,14 +1,14 @@
 package app.entity.progress.service;
 
-import app.entity.exercise.model.Exercise;
 import app.entity.exercise.repository.ExerciseRepository;
 import app.entity.progress.model.Progress;
 import app.entity.progress.repository.ProgressRepository;
-import app.entity.user.model.User;
 import app.entity.user.repository.UserRepository;
+import app.entity.workout.repository.WorkoutRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,49 +22,66 @@ public class ProgressService {
     private final ProgressRepository progressRepository;
     private final UserRepository userRepository;
     private final ExerciseRepository exerciseRepository;
+    private final WorkoutRepository workoutRepository;
 
     @Autowired
     public ProgressService(ProgressRepository progressRepository,
                            UserRepository userRepository,
-                           ExerciseRepository exerciseRepository) {
+                           ExerciseRepository exerciseRepository, WorkoutRepository workoutRepository) {
         this.progressRepository = progressRepository;
         this.userRepository = userRepository;
         this.exerciseRepository = exerciseRepository;
+        this.workoutRepository = workoutRepository;
     }
 
     @Transactional
-    public Progress logProgress(UUID userId, UUID exerciseId, double value, String unit, LocalDateTime timestamp) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User with ID " + userId + " not found"));
-
-        Exercise exercise = exerciseRepository.findById(exerciseId)
-                .orElseThrow(() -> new IllegalArgumentException("Exercise with ID " + exerciseId + " not found"));
+    public void saveWorkoutCompletion(UUID userId, UUID workoutId, UUID exerciseId) {
+        if (!workoutRepository.existsById(workoutId)) {
+            throw new RuntimeException("Workout not found for ID: " + workoutId);
+        }
 
         Progress progress = Progress.builder()
-                .user(user)
-                .exercise(exercise)
-                .value(value)
-                .unit(unit)
-                .timestamp(timestamp)
+                .user(userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found")))
+                .workout(workoutRepository.findById(workoutId).orElse(null))
+                .exercise(exerciseId != null ? exerciseRepository.findById(exerciseId).orElse(null) : null)
+                .timestamp(LocalDateTime.now())
+                .value(1)
+                .unit("workout")
                 .build();
 
-        return progressRepository.save(progress);
+        progressRepository.save(progress);
     }
 
-    public List<Progress> getProgressByUser(UUID userId) {
-        return progressRepository.findByUserId(userId);
+    public long calculateWorkoutStreak(UUID userId) {
+        List<Progress> progresses = progressRepository.findRecentProgressByUser(userId, PageRequest.of(0, 30));
+        LocalDateTime today = LocalDateTime.now();
+        long streak = 0;
+
+        for (Progress p : progresses) {
+            if (p.getTimestamp().toLocalDate().isEqual(today.toLocalDate())) {
+                streak++;
+                today = today.minusDays(1);
+            } else {
+                break;
+            }
+        }
+        return streak;
     }
 
-    public List<Progress> getProgressByExercise(UUID exerciseId) {
-        return progressRepository.findByExerciseId(exerciseId);
-    }
+    public List<Progress> getUserProgressSummary(UUID userId) {
+        List<Progress> progressList = progressRepository.findByUserId(userId);
 
-    public List<Progress> getProgressByUserAndExercise(UUID userId, UUID exerciseId) {
-        return progressRepository.findByUserIdAndExerciseId(userId, exerciseId);
-    }
-
-    public List<Progress> getProgressByUserAndDateRange(UUID userId, LocalDateTime start, LocalDateTime end) {
-        return progressRepository.findByUserIdAndTimestampBetween(userId, start, end);
+        for (Progress progress : progressList) {
+            if (progress.getWorkout() != null) {
+                progress.getWorkout().getName();
+            }
+            if (progress.getExercise() != null) {
+                progress.getExercise().getName();
+                progress.getExercise().getSets();
+                progress.getExercise().getReps();
+            }
+        }
+        return progressList;
     }
 
     @Transactional
