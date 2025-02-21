@@ -69,25 +69,6 @@ public class ProgressService {
     }
 
     public List<Progress> getUserProgressSummary(UUID userId) {
-        List<Progress> progressList = progressRepository.findByUserId(userId);
-
-        for (Progress progress : progressList) {
-            if (progress.getWorkout() != null) {
-                progress.getWorkout().getName();
-            }
-            if (progress.getExercise() != null) {
-                progress.getExercise().getName();
-                progress.getExercise().getSets();
-                progress.getExercise().getReps();
-            }
-        }
-        return progressList;
-    }
-
-    @Transactional
-    public void deleteProgress(UUID progressId) {
-        Progress progress = progressRepository.findById(progressId)
-                .orElseThrow(() -> new IllegalArgumentException("Progress with ID " + progressId + " not found"));
-        progressRepository.delete(progress);
+        return progressRepository.findByUserId(userId);
     }
 }

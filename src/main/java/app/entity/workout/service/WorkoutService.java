@@ -2,10 +2,12 @@ package app.entity.workout.service;
 
 import app.entity.exercise.model.Exercise;
 import app.entity.exercise.repository.ExerciseRepository;
+import app.entity.progress.repository.ProgressRepository;
 import app.entity.user.model.User;
 import app.entity.user.repository.UserRepository;
 import app.entity.workout.model.Workout;
 import app.entity.workout.repository.WorkoutRepository;
+import app.exception.DomainException;
 import app.web.dto.ExerciseDTO;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,14 +26,17 @@ public class WorkoutService {
     private final WorkoutRepository workoutRepository;
     private final ExerciseRepository exerciseRepository;
     private final UserRepository userRepository;
+    private final ProgressRepository progressRepository;
 
     @Autowired
     public WorkoutService(WorkoutRepository workoutRepository,
                           ExerciseRepository exerciseRepository,
-                          UserRepository userRepository) {
+                          UserRepository userRepository,
+                          ProgressRepository progressRepository) {
         this.workoutRepository = workoutRepository;
         this.exerciseRepository = exerciseRepository;
         this.userRepository = userRepository;
+        this.progressRepository = progressRepository;
     }
 
     @Transactional
@@ -55,14 +61,43 @@ public class WorkoutService {
                 .orElseThrow(() -> new IllegalArgumentException("Workout not found"));
     }
 
-    public List<Workout> getWorkoutsByUser(UUID userId) {
-        return workoutRepository.findByUserId(userId);
+    @Transactional
+    public Workout repeatWorkout(UUID workoutId, UUID userId) {
+        Workout existingWorkout = workoutRepository.findById(workoutId)
+                .orElseThrow(() -> new DomainException("Workout not found"));
+
+        Workout newWorkout = new Workout();
+        newWorkout.setUser(existingWorkout.getUser());
+        newWorkout.setName(existingWorkout.getName());
+        newWorkout.setCreatedOn(LocalDateTime.now());
+
+        List<Exercise> newExercises = new ArrayList<>();
+        for (Exercise exercise : existingWorkout.getExercises()) {
+            Exercise newExercise = new Exercise();
+            newExercise.setName(exercise.getName());
+            newExercise.setDescription(exercise.getDescription());
+            newExercise.setGifUrl(exercise.getGifUrl());
+            newExercise.setSets(exercise.getSets());
+            newExercise.setReps(exercise.getReps());
+
+            if (exercise.getCategory() != null) {
+                newExercise.setCategory(exercise.getCategory());
+            }
+
+            newExercises.add(newExercise);
+        }
+
+        for (Exercise newExercise : newExercises) {
+            exerciseRepository.save(newExercise);
+        }
+
+        return newWorkout;
     }
 
     @Transactional
-    public void deleteWorkout(UUID id) {
-        Workout workout = getWorkoutById(id);
-        workoutRepository.delete(workout);
+    public void deleteWorkoutAndProgress(UUID workoutId) {
+        progressRepository.deleteByWorkoutId(workoutId);
+        workoutRepository.deleteById(workoutId);
     }
 
     @Transactional

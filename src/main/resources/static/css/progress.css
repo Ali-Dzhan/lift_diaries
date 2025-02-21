@@ -3,6 +3,11 @@ body {
     text-align: center;
 }
 
+
+h2 {
+    color: #2980b9;
+}
+
 .progress-section {
     margin: 20px;
     padding: 15px;
@@ -15,18 +20,80 @@ body {
 .progress-table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed;
-    overflow-x: auto;
-    word-wrap: break-word;
 }
 
-th, td {
-    border: 1px solid black;
-    padding: 8px;
+.progress-table th, .progress-table td {
+    padding: 12px;
     text-align: left;
+    border-bottom: 1px solid #ddd;
+    vertical-align: middle;
+}
+
+.date-column {
+    white-space: nowrap;
+    width: 15%;
+}
+
+.exercises-column {
+    width: 65%;
+}
+
+.exercise-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.exercise-button {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-weight: bold;
+    border: 2px solid;
     white-space: nowrap;
 }
 
-h2 {
-    color: #2980b9;
+.exercise-button:nth-child(odd) {
+    color: #3a6df0;
+    border-color: #3a6df0;
+}
+
+.exercise-button:nth-child(even) {
+    color: #2ca844;
+    border-color: #2ca844;
+}
+
+.actions-column {
+    width: 10%;
+    text-align: center;
+}
+
+.action-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.action-button svg {
+    width: 24px;
+    height: 24px;
+}
+
+.repeat svg {
+    stroke: #3a6df0;
+}
+
+.table-icon-repeat:hover {
+    border: solid 2px #3a6df0;
+    border-radius: 30%;
+}
+
+.delete svg {
+    stroke: #d9534f;
+}
+
+.table-icon-trash:hover {
+    border: solid 2px #d9534f;
+    border-radius: 30%;
 }
