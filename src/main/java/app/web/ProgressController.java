@@ -1,11 +1,14 @@
-package app.web.mapper;
+package app.web;
 
+import app.entity.exercise.model.Exercise;
 import app.entity.progress.model.Progress;
 import app.entity.progress.service.ProgressService;
+import app.entity.workout.model.Workout;
 import app.entity.workout.service.WorkoutService;
+import app.security.AuthenticationMetadata;
 import app.web.dto.WorkoutProgress;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,15 +35,10 @@ public class ProgressController {
     }
 
     @GetMapping
-    public ModelAndView viewProgress(HttpSession session) {
-        UUID userId = (UUID) session.getAttribute("loggedUserId");
-
-        if (userId == null) {
-            return new ModelAndView("redirect:/login");
-        }
+    public ModelAndView viewProgress(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+        UUID userId = authenticationMetadata.getUserId();
 
         List<Progress> progressList = progressService.getUserProgressSummary(userId);
-
         List<WorkoutProgress> workoutProgressList = progressList.stream()
                 .collect(Collectors.groupingBy(Progress::getWorkout))
                 .entrySet().stream()
@@ -63,13 +61,12 @@ public class ProgressController {
     }
 
     @PostMapping("/repeat/{workoutId}")
-    public String repeatWorkout(@PathVariable UUID workoutId, HttpSession session) {
-        UUID userId = (UUID) session.getAttribute("loggedUserId");
-        if (userId == null) {
-            throw new IllegalStateException("User ID not found in session");
-        }
+    public String repeatWorkout(@PathVariable UUID workoutId,
+                                @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
-        workoutService.repeatWorkout(workoutId, userId);
-        return "redirect:/workout/startWorkout";
+        Workout newWorkout = workoutService.repeatWorkout(workoutId, authenticationMetadata);
+        UUID newWorkoutId = newWorkout.getId();
+
+        return "redirect:/workout/startWorkout?workoutId=" + newWorkoutId;
     }
 }

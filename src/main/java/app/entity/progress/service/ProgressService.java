@@ -45,8 +45,6 @@ public class ProgressService {
                 .workout(workoutRepository.findById(workoutId).orElse(null))
                 .exercise(exerciseId != null ? exerciseRepository.findById(exerciseId).orElse(null) : null)
                 .timestamp(LocalDateTime.now())
-                .value(1)
-                .unit("workout")
                 .build();
 
         progressRepository.save(progress);

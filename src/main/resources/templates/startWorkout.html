@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#efd36c">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
     <title>Lifting Diaries | Workout Session</title>
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/footer.css">
@@ -36,7 +37,8 @@
                     <div class="exercise-card">
                         <!-- Exercise Image -->
                         <img id="exerciseImage" class="exercise-image"
-                             th:src="@{${exercises[0].gifUrl}}" th:alt="${exercises[0].name}">
+                             th:if="${not #lists.isEmpty(exercises)}"
+                             th:src="@{${exercises[0].gifUrl}}" th:alt="${exercises[0].gifUrl}">
 
                         <div class="exercise-details">
                             <h2 id="exerciseName" class="exercise-name" th:text="${exercises[0].name}"></h2>
@@ -71,23 +73,27 @@
     document.addEventListener("DOMContentLoaded", function () {
         let exercises = /*[[${exercises}]]*/ [];
 
-        if (!Array.isArray(exercises) || exercises.length === 0) {
-            alert("No exercises found. Please select exercises before starting.");
-            return;
-        }
-
         let currentExerciseIndex = 0;
         let setsRepsData = new Map();
         let userId = null;
+        let csrfToken = document.querySelector('meta[name="_csrf"]').content;
 
         fetch('/user/getCurrent')
-            .then(response => response.text())
-            .then(text => {
-                let data = JSON.parse(text);
-                if (!data || !data.id) throw new Error("Invalid user data.");
+            .then(response => {
+                if (!response.ok) throw new Error("Failed to fetch user data.");
+                return response.json();
+            })
+            .then(data => {
+                console.log("User fetch response:", data);
+                if (!data.authenticated || !data.id) {
+                    throw new Error("Invalid user data.");
+                }
                 userId = data.id;
             })
-            .catch(() => alert("You must be logged in to save a workout! Try refreshing the page or logging in again."));
+            .catch(() => {
+                alert("You must be logged in to start a workout!");
+                window.location.href = "/login";
+            });
 
         function updateUI() {
             if (currentExerciseIndex >= exercises.length) {
@@ -144,7 +150,6 @@
 
             let workoutData = {
                 workoutName,
-                userId,
                 sessionId,
                 completed: true,
                 exerciseIds: exercises.map(exercise => exercise.id),
@@ -153,7 +158,11 @@
 
             fetch("/workout/saveWorkout", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="_csrf"]')?.content || ""
+                },
                 body: JSON.stringify(workoutData)
             })
                 .then(response => {
@@ -186,9 +195,7 @@
 
         updateUI();
     });
-
 </script>
-
 
 </body>
 </html>

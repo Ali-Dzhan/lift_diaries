@@ -2,16 +2,19 @@ package app.entity.user.service;
 
 import app.entity.user.model.User;
 import app.entity.user.model.UserRole;
-import app.entity.user.property.UserProperties;
 import app.entity.user.repository.UserRepository;
 import app.exception.DomainException;
-import app.web.dto.LoginRequest;
+import app.security.AuthenticationMetadata;
 import app.web.dto.RegisterRequest;
 import app.web.dto.UserEditRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,38 +25,19 @@ import java.util.UUID;
 
 @Service
 @Slf4j
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-    private final UserProperties userProperties;
 
     @Autowired
     public UserService(PasswordEncoder passwordEncoder,
-                       UserRepository userRepository,
-                       UserProperties userProperties) {
+                       UserRepository userRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
-        this.userProperties = userProperties;
     }
 
-    public User login(LoginRequest loginRequest, HttpSession session) {
-
-        Optional<User> optionUser = userRepository.findByUsername(loginRequest.getUsername());
-        if (optionUser.isEmpty()) {
-            throw new DomainException("*Username doesn't exist.*");
-        }
-
-        User user = optionUser.get();
-        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw new DomainException("*Username or password are incorrect.*");
-        }
-
-        session.setAttribute("loggedUserId", user.getId());
-
-        return user;
-    }
-
+    @CacheEvict(value = "users", allEntries = true)
     @Transactional
     public User register(RegisterRequest registerRequest) {
 
@@ -70,6 +54,7 @@ public class UserService {
         return user;
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     public void editUserDetails(UUID userId, UserEditRequest userEditRequest) {
 
         User user = getById(userId);
@@ -95,6 +80,7 @@ public class UserService {
                 .build();
     }
 
+    @Cacheable("users")
     public List<User> getAllUsers() {
 
         return userRepository.findAll();
@@ -106,6 +92,7 @@ public class UserService {
                 -> new DomainException("User with id [%s] does not exist.".formatted(id)));
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     public void switchStatus(UUID userId) {
 
         User user = getById(userId);
@@ -114,10 +101,25 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     public void switchRole(UUID userId) {
 
         User user = getById(userId);
-        user.setActive(!user.isActive());
+
+        if (user.getRole() == UserRole.USER) {
+            user.setRole(UserRole.ADMIN);
+        } else {
+            user.setRole(UserRole.USER);
+        }
+
         userRepository.save(user);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new DomainException("User with this username does not exist."));
+
+        return new AuthenticationMetadata(user.getId(), username, user.getPassword(), user.getRole(), user.isActive());
     }
 }

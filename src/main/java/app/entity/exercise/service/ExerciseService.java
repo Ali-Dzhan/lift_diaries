@@ -4,14 +4,12 @@ import app.entity.category.model.Category;
 import app.entity.category.repository.CategoryRepository;
 import app.entity.exercise.model.Exercise;
 import app.entity.exercise.repository.ExerciseRepository;
-import app.web.dto.ExerciseDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Service
@@ -19,6 +17,8 @@ public class ExerciseService {
 
     private final ExerciseRepository exerciseRepository;
     private final CategoryRepository categoryRepository;
+    private final Map<UUID, List<UUID>> selectedExercisesMap = new ConcurrentHashMap<>();
+    private final Map<UUID, UUID> workoutSessionMap = new ConcurrentHashMap<>();
 
     @Autowired
     public ExerciseService(ExerciseRepository exerciseRepository, CategoryRepository categoryRepository) {
@@ -38,4 +38,23 @@ public class ExerciseService {
         return exerciseRepository.findByCategory(category);
     }
 
+    public void storeUserSelectedExercises(UUID userId, List<UUID> exerciseIds) {
+        selectedExercisesMap.put(userId, new ArrayList<>(exerciseIds));
+    }
+
+    public List<UUID> getUserSelectedExercises(UUID userId) {
+        return selectedExercisesMap.getOrDefault(userId, Collections.emptyList());
+    }
+
+    public void clearUserSelectedExercises(UUID userId) {
+        selectedExercisesMap.remove(userId);
+    }
+
+    public void storeWorkoutSessionId(UUID userId, UUID sessionId) {
+        workoutSessionMap.put(userId, sessionId);
+    }
+
+    public UUID getWorkoutSessionId(UUID userId) {
+        return workoutSessionMap.get(userId);
+    }
 }

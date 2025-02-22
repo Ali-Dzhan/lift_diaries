@@ -30,12 +30,7 @@ public class Workout {
     @JsonIgnore
     private User user;
 
-    @ManyToMany
-    @JoinTable(
-            name = "workout_exercise",
-            joinColumns = @JoinColumn(name = "workout_id"),
-            inverseJoinColumns = @JoinColumn(name = "exercise_id")
-    )
+    @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Exercise> exercises;
 
     private boolean completed;

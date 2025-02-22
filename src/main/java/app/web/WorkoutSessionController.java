@@ -1,4 +1,4 @@
-package app.web.mapper;
+package app.web;
 
 import app.entity.category.model.Category;
 import app.entity.category.repository.CategoryRepository;
@@ -9,13 +9,15 @@ import app.entity.user.model.User;
 import app.entity.user.service.UserService;
 import app.entity.workout.model.Workout;
 import app.entity.workout.service.WorkoutService;
+import app.security.AuthenticationMetadata;
 import app.web.dto.CategoryDTO;
 import app.web.dto.ExerciseDTO;
 import app.web.dto.SelectedExercisesRequest;
 import app.web.dto.WorkoutRequest;
-import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,6 +28,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/workout")
+@Slf4j
 public class WorkoutSessionController {
 
     private final UserService userService;
@@ -74,28 +77,37 @@ public class WorkoutSessionController {
     }
 
     @PostMapping("/selectExercises")
-    public ResponseEntity<String> selectExercises(@RequestBody SelectedExercisesRequest request, HttpSession session) {
+    public ResponseEntity<String> selectExercises(@RequestBody SelectedExercisesRequest request,
+                                                  @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
         if (request.getSelectedExercises() == null || request.getSelectedExercises().isEmpty()) {
             return ResponseEntity.badRequest().body("No exercises selected.");
         }
-        session.setAttribute("selectedExercises", request.getSelectedExercises());
+
+        UUID userId = authenticationMetadata.getUserId();
+        exerciseService.storeUserSelectedExercises(userId, request.getSelectedExercises());
+
         return ResponseEntity.ok("Exercises saved successfully.");
     }
 
     @GetMapping("/startWorkout")
-    public ModelAndView startWorkout(HttpSession session) {
-        Object attribute = session.getAttribute("selectedExercises");
-        if (!(attribute instanceof List<?> rawList)) {
+    public ModelAndView startWorkout(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+        if (authenticationMetadata == null) {
+            log.error("User not authenticated when starting workout!");
+            return new ModelAndView("redirect:/login");
+        }
+
+        UUID userId = authenticationMetadata.getUserId();
+        log.info("Starting workout for user ID: {}", userId);
+
+        List<UUID> selectedExerciseIds = exerciseService.getUserSelectedExercises(userId);
+        if (selectedExerciseIds.isEmpty()) {
+            log.warn("No exercises found for user ID: {}", userId);
             return new ModelAndView("redirect:/workout");
         }
-        List<UUID> selectedExerciseIds = rawList.stream()
-                .filter(item -> item instanceof UUID)
-                .map(UUID.class::cast)
-                .toList();
 
         List<Exercise> exercises = exerciseService.getExercisesByIds(selectedExerciseIds);
         UUID sessionId = UUID.randomUUID();
-        session.setAttribute("workoutSessionId", sessionId);
+        exerciseService.storeWorkoutSessionId(userId, sessionId);
 
         ModelAndView modelAndView = new ModelAndView("startWorkout");
         modelAndView.addObject("sessionId", sessionId);
@@ -105,14 +117,16 @@ public class WorkoutSessionController {
     }
 
     @PostMapping("/saveWorkout")
-    public ResponseEntity<String> saveWorkout(@RequestBody WorkoutRequest workoutRequest) {
+    public ResponseEntity<String> saveWorkout(@RequestBody WorkoutRequest workoutRequest,
+                                              @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+        UUID userId = authenticationMetadata.getUserId();
 
-        User user = userService.getById(workoutRequest.getUserId());
+        User user = userService.getById(userId);
         List<Exercise> exercises = exerciseService.getExercisesByIds(workoutRequest.getExerciseIds());
 
         Workout savedWorkout = workoutService.createWorkout(
                 workoutRequest.getWorkoutName(),
-                user.getId(),
+                authenticationMetadata,
                 exercises,
                 workoutRequest.isCompleted()
         );

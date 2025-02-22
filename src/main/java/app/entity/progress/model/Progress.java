@@ -22,20 +22,14 @@ public class Progress {
     private UUID id;
 
     @Column(nullable = false)
-    private double value;
-
-    @Column(nullable = false)
-    private String unit;
-
-    @Column(nullable = false)
     private LocalDateTime timestamp;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "exercise_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "exercise_id")
     private Exercise exercise;
 
     @ManyToOne(optional = false)

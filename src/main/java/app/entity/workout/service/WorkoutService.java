@@ -8,8 +8,10 @@ import app.entity.user.repository.UserRepository;
 import app.entity.workout.model.Workout;
 import app.entity.workout.repository.WorkoutRepository;
 import app.exception.DomainException;
+import app.security.AuthenticationMetadata;
 import app.web.dto.ExerciseDTO;
 import jakarta.transaction.Transactional;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,19 +41,20 @@ public class WorkoutService {
         this.progressRepository = progressRepository;
     }
 
-    @Transactional
-    public Workout createWorkout(String name, UUID userId, List<Exercise> exercises, boolean completed) {
+    public Workout createWorkout(String workoutName, AuthenticationMetadata authenticationMetadata,
+                                 List<Exercise> exercises, boolean isCompleted) {
+        UUID userId = authenticationMetadata.getUserId();
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new DomainException("User not found"));
 
-        Workout workout = Workout.builder()
-                .id(UUID.randomUUID())
-                .name(name)
-                .user(user)
-                .exercises(exercises)
-                .completed(completed)
-                .createdOn(LocalDateTime.now())
-                .build();
+        Workout workout = new Workout();
+        workout.setUser(user);
+        workout.setName(workoutName);
+        workout.setExercises(exercises);
+        workout.setCompleted(isCompleted);
+        workout.setCreatedOn(LocalDateTime.now());
+
+        exercises.forEach(exercise -> exercise.setWorkout(workout));
 
         return workoutRepository.save(workout);
     }
@@ -62,36 +65,35 @@ public class WorkoutService {
     }
 
     @Transactional
-    public Workout repeatWorkout(UUID workoutId, UUID userId) {
+    public Workout repeatWorkout(UUID workoutId, AuthenticationMetadata authenticationMetadata) {
         Workout existingWorkout = workoutRepository.findById(workoutId)
-                .orElseThrow(() -> new DomainException("Workout not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Workout not found"));
+
+        List<Exercise> existingExercises = exerciseRepository.findAllByWorkoutId(workoutId);
+        if (existingExercises.isEmpty()) {
+            throw new IllegalStateException("No exercises found for the repeated workout.");
+        }
 
         Workout newWorkout = new Workout();
         newWorkout.setUser(existingWorkout.getUser());
-        newWorkout.setName(existingWorkout.getName());
+        newWorkout.setName(existingWorkout.getName() + " (Repeated)");
         newWorkout.setCreatedOn(LocalDateTime.now());
 
         List<Exercise> newExercises = new ArrayList<>();
-        for (Exercise exercise : existingWorkout.getExercises()) {
+        for (Exercise exercise : existingExercises) {
             Exercise newExercise = new Exercise();
             newExercise.setName(exercise.getName());
             newExercise.setDescription(exercise.getDescription());
             newExercise.setGifUrl(exercise.getGifUrl());
             newExercise.setSets(exercise.getSets());
             newExercise.setReps(exercise.getReps());
-
-            if (exercise.getCategory() != null) {
-                newExercise.setCategory(exercise.getCategory());
-            }
-
+            newExercise.setCategory(exercise.getCategory());
+            newExercise.setWorkout(newWorkout);
             newExercises.add(newExercise);
         }
 
-        for (Exercise newExercise : newExercises) {
-            exerciseRepository.save(newExercise);
-        }
-
-        return newWorkout;
+        newWorkout.setExercises(newExercises);
+        return workoutRepository.save(newWorkout);
     }
 
     @Transactional
