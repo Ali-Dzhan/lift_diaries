@@ -11,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -51,17 +54,22 @@ public class ProgressService {
     }
 
     public long calculateWorkoutStreak(UUID userId) {
-        List<Progress> progresses = progressRepository.findRecentProgressByUser(userId, PageRequest.of(0, 30));
-        LocalDateTime today = LocalDateTime.now();
-        long streak = 0;
+        List<Progress> progresses = progressRepository
+                .findRecentProgressByUser(userId, PageRequest.of(0, 30));
+        if (progresses.isEmpty()) {
+            return 0;
+        }
+        Set<LocalDate> uniqueWorkoutDays = new HashSet<>();
 
         for (Progress p : progresses) {
-            if (p.getTimestamp().toLocalDate().isEqual(today.toLocalDate())) {
-                streak++;
-                today = today.minusDays(1);
-            } else {
-                break;
-            }
+            uniqueWorkoutDays.add(p.getTimestamp().toLocalDate());
+        }
+        LocalDate today = LocalDate.now();
+        long streak = 0;
+
+        while (uniqueWorkoutDays.contains(today)) {
+            streak++;
+            today = today.minusDays(1);
         }
         return streak;
     }

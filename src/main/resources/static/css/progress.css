@@ -3,9 +3,22 @@ body {
     text-align: center;
 }
 
-
 h2 {
-    color: #2980b9;
+    color: #393535;
+}
+
+.workout-icon {
+    display: inline-block;
+    background-color: #28a745;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    width: 18px;
+    height: 18px;
+    text-align: center;
+    line-height: 18px;
+    border-radius: 3px;
+    margin-right: 5px;
 }
 
 .progress-section {
@@ -44,7 +57,7 @@ h2 {
     gap: 8px;
 }
 
-.exercise-button {
+.exercise-badge {
     display: inline-block;
     padding: 6px 12px;
     border-radius: 15px;
@@ -53,14 +66,29 @@ h2 {
     white-space: nowrap;
 }
 
-.exercise-button:nth-child(odd) {
-    color: #3a6df0;
-    border-color: #3a6df0;
+.chest {
+    color: crimson;
+    border-color: crimson;
 }
-
-.exercise-button:nth-child(even) {
-    color: #2ca844;
-    border-color: #2ca844;
+.back {
+    color: salmon;
+    border-color: salmon;
+}
+.legs {
+    color: limegreen;
+    border-color: limegreen;
+}
+.shoulders {
+    color: orange;
+    border-color: orange;
+}
+.arms {
+    color: hotpink;
+    border-color: hotpink;
+}
+.abdomen {
+    color: deepskyblue;
+    border-color: deepskyblue;
 }
 
 .actions-column {

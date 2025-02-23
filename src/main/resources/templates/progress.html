@@ -27,7 +27,7 @@
                 <h2>🔥 Workout Streak: <span th:text="${streak}"></span> Days</h2>
             </div>
             <div class="progress-section">
-                <h2>📅 Completed Workouts</h2>
+                <h2>📅 Completed Workouts [<span th:text="${totalWorkouts}"></span>]</h2>
                 <div class="table-responsive">
                     <table class="progress-table">
                         <thead>
@@ -40,13 +40,13 @@
                         <tbody>
                         <tr th:each="workoutProgress : ${workoutProgressList}">
                             <td class="date-column">
+                                <span class="workout-icon">✔</span>
                                 <strong th:text="${#temporals.format(workoutProgress.progressList[0].timestamp, 'yyyy-MM-dd')}"></strong>
                             </td>
                             <td class="exercises-column">
                                 <div class="exercise-container">
                     <span th:each="progress : ${workoutProgress.progressList}"
-                          th:text="${progress.exercise.name}"
-                          class="exercise-button">
+                          th:text="${progress.exercise.name}" th:class="'exercise-badge ' + ${progress.exercise.getCategory().name.toLowerCase()}">
                     </span>
                                 </div>
                             </td>

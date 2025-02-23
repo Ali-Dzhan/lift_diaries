@@ -1,6 +1,7 @@
 package app.web;
 
 import app.entity.exercise.model.Exercise;
+import app.entity.exercise.service.ExerciseService;
 import app.entity.progress.model.Progress;
 import app.entity.progress.service.ProgressService;
 import app.entity.workout.model.Workout;
@@ -26,30 +27,35 @@ public class ProgressController {
 
     private final ProgressService progressService;
     private final WorkoutService workoutService;
+    private final ExerciseService exerciseService;
 
     @Autowired
     public ProgressController(ProgressService progressService,
-                              WorkoutService workoutService) {
+                              WorkoutService workoutService, ExerciseService exerciseService) {
         this.progressService = progressService;
         this.workoutService = workoutService;
+        this.exerciseService = exerciseService;
     }
 
     @GetMapping
     public ModelAndView viewProgress(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
         UUID userId = authenticationMetadata.getUserId();
-
         List<Progress> progressList = progressService.getUserProgressSummary(userId);
+
         List<WorkoutProgress> workoutProgressList = progressList.stream()
                 .collect(Collectors.groupingBy(Progress::getWorkout))
                 .entrySet().stream()
                 .map(entry -> new WorkoutProgress(entry.getKey(), entry.getValue()))
+                .sorted((w1, w2) -> w2.getLatestTimestamp().compareTo(w1.getLatestTimestamp()))
                 .toList();
 
         long streak = progressService.calculateWorkoutStreak(userId);
+        int totalWorkouts = workoutProgressList.size();
 
         ModelAndView modelAndView = new ModelAndView("progress");
         modelAndView.addObject("workoutProgressList", workoutProgressList);
         modelAndView.addObject("streak", streak);
+        modelAndView.addObject("totalWorkouts", totalWorkouts);
 
         return modelAndView;
     }
@@ -66,6 +72,12 @@ public class ProgressController {
 
         Workout newWorkout = workoutService.repeatWorkout(workoutId, authenticationMetadata);
         UUID newWorkoutId = newWorkout.getId();
+
+        List<UUID> selectedExerciseIds = newWorkout.getExercises()
+                .stream()
+                .map(Exercise::getId)
+                .toList();
+        exerciseService.storeUserSelectedExercises(authenticationMetadata.getUserId(), selectedExerciseIds);
 
         return "redirect:/workout/startWorkout?workoutId=" + newWorkoutId;
     }
