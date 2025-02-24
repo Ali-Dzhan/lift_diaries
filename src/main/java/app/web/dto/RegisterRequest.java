@@ -19,7 +19,7 @@ public class RegisterRequest {
     private String email;
 
     @NotNull
-    @Size(min = 8, message = "Username must be at least 8 symbols")
+    @Size(min = 4, message = "Username must be at least 4 symbols")
     private String username;
 
     @NotNull

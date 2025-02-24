@@ -63,6 +63,7 @@ public class UserService implements UserDetailsService {
         user.setLastName(userEditRequest.getLastName());
         user.setEmail(userEditRequest.getEmail());
         user.setProfilePicture(userEditRequest.getProfilePicture());
+        user.setUpdatedOn(LocalDateTime.now());
 
         userRepository.save(user);
     }

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#efd36c">
+    <title>Lifting Diaries | Profile</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/profile.css">
+    <link rel="icon" href="/images/fav_48px.ico">
+    <script src="/css/dropdown.js" defer></script>
+</head>
+
+<body>
+<div id="app">
+    <main class="layout">
+        <div class="main-card">
+            <th:block th:insert="fragments/header :: header"></th:block>
+
+            <div class="profile-section">
+                <div class="profile-header">
+                    <img th:src="${#strings.isEmpty(user.profilePicture) ? 'https://icons.veryicon.com/png/o/miscellaneous/user-avatar/user-avatar-male-5.png' : user.profilePicture}"
+                         alt="Profile Picture" class="profile-avatar">
+                    <h2 th:text="${user.username}" class="profile-name"></h2>
+                </div>
+
+                <div class="details-section">
+                    <h2>📋 Account Details</h2>
+                    <div class="details-section-container">
+                        <strong>User ID: </strong>
+                        <p th:text="${user.id}"></p>
+                    </div>
+                    <div class="details-section-container">
+                        <strong>Last Profile Update: </strong>
+                        <p th:text="${#temporals.format(user.updatedOn, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                    </div>
+                </div>
+
+                <div class="profile-edit-section">
+                    <h2>✏ Edit Profile</h2>
+                    <form class="form" th:action="@{'/user/' + ${user.id} + '/profile'}" th:method="PUT" th:object="${userEditRequest}">
+
+                        <div class="input-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" placeholder="First Name" th:field="*{firstName}">
+                            <p class="alert-warning" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></p>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" placeholder="Last Name" th:field="*{lastName}">
+                            <p class="alert-warning" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></p>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="email">Email</label>
+                            <input type="text" id="email" placeholder="Email Address" th:field="*{email}">
+                            <p class="alert-warning" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="profilePicture">Profile Picture URL</label>
+                            <input type="text" id="profilePicture" placeholder="Image Link" th:field="*{profilePicture}">
+                            <p class="alert-warning" th:if="${#fields.hasErrors('profilePicture')}" th:errors="*{profilePicture}"></p>
+                        </div>
+
+                        <button class="profile-actions-button">
+                            <p>Save</p>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <th:block th:insert="fragments/footer :: footer"></th:block>
+        </div>
+    </main>
+</div>
+</body>
+</html>

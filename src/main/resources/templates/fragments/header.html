@@ -6,7 +6,6 @@
 <div th:fragment="header">
     <header class="header">
         <div class="header-wrap">
-            <!-- Logo Section -->
             <div class="header-left">
                 <a href="/" class="logo-link">
                     <div class="logo-wrap">
@@ -16,8 +15,6 @@
                     </div>
                 </a>
             </div>
-
-            <!-- Utility Buttons -->
             <div class="header-utils">
                 <nav class="header-nav">
                     <ul class="nav-list">
@@ -29,13 +26,13 @@
                         </li>
                     </ul>
                 </nav>
-
-                <!-- Profile Dropdown -->
                 <div class="avatar">
                     <img src="https://www.svgrepo.com/show/9429/male-silhouette-variant-showing-muscles.svg"
                          alt="User Avatar" class="avatar-icon">
                     <div class="dropdown">
-                        <a href="/profile" class="dropdown-item">Profile</a>
+
+                        <a class="dropdown-item" th:if="${user != null}" th:href="@{'/user/' + ${user.id} + '/profile'}">Profile</a>
+
                         <a href="/logout" class="dropdown-item">Logout
                             <img src="https://www.svgrepo.com/show/509151/logout.svg"
                                  alt="Logout Icon" class="dropdown-icon" width="16.5" height="16.5">

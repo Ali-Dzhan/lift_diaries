@@ -49,7 +49,6 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("users");
         modelAndView.addObject("users", users);
-
         return modelAndView;
     }
 
@@ -62,25 +61,27 @@ public class UserController {
         modelAndView.setViewName("profile");
         modelAndView.addObject("user", user);
         modelAndView.addObject("userEditRequest", DtoMapper.mapUserToUserEditRequest(user));
-
         return modelAndView;
     }
 
     @PutMapping("/{id}/profile")
-    public ModelAndView updateUserProfile(@PathVariable UUID id, @Valid UserEditRequest userEditRequest, BindingResult bindingResult) {
+    public ModelAndView updateUserProfile(@PathVariable UUID id,
+                                          @Valid UserEditRequest userEditRequest,
+                                          BindingResult bindingResult) {
+        User user = userService.getById(id);
+        ModelAndView modelAndView = new ModelAndView("profile");
+        modelAndView.addObject("user", user);
+        modelAndView.addObject("userEditRequest", userEditRequest);
 
         if (bindingResult.hasErrors()) {
-            User user = userService.getById(id);
-            ModelAndView modelAndView = new ModelAndView();
-            modelAndView.setViewName("profile");
-            modelAndView.addObject("user", user);
-            modelAndView.addObject("userEditRequest", userEditRequest);
             return modelAndView;
         }
 
         userService.editUserDetails(id, userEditRequest);
+        modelAndView.addObject("user", userService.getById(id));
+        modelAndView.addObject("successMessage", "Profile updated successfully!");
 
-        return new ModelAndView("redirect:/home");
+        return modelAndView;
     }
 
     @PutMapping("/{id}/status")
