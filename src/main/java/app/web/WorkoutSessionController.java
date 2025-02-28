@@ -142,8 +142,13 @@ public class WorkoutSessionController {
     }
 
     @GetMapping("/complete")
-    public ModelAndView completeWorkout() {
-        return new ModelAndView("completed");
+    public ModelAndView completeWorkout(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+        UUID userId = authenticationMetadata.getUserId();
+        User user = userService.getById(userId);
+
+        ModelAndView modelAndView = new ModelAndView("completed");
+        modelAndView.addObject("user", user);
+        return modelAndView;
     }
 
     @PostMapping("/updateWorkout")

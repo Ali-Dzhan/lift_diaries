@@ -23,7 +23,7 @@
 
       <form class="form" th:action="@{/login}" th:method="POST" th:object="${loginRequest}">
 
-        <p class="alert-danger" th:if="${loginError}" th:text="${loginError}"></p>
+        <p class="alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></p>
 
         <label for="username">Username</label>
         <input type="text" placeholder="Username" id="username" th:field="*{username}" required>
