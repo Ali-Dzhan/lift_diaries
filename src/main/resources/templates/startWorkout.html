@@ -32,10 +32,8 @@
             </div>
 
             <div class="workout-layout">
-                <!-- Exercise Display Section -->
                 <div class="exercise-display">
                     <div class="exercise-card">
-                        <!-- Exercise Image -->
                         <img id="exerciseImage" class="exercise-image"
                              th:if="${not #lists.isEmpty(exercises)}"
                              th:src="@{${exercises[0].gifUrl}}" th:alt="${exercises[0].gifUrl}">
@@ -44,8 +42,6 @@
                             <h2 id="exerciseName" class="exercise-name" th:text="${exercises[0].name}"></h2>
                             <p><strong>Description:</strong> <span id="exerciseDescription"
                                                                    th:text="${exercises[0].description}"></span></p>
-
-                            <!-- Sets and Reps Input Fields -->
                             <div class="exercise-inputs">
                                 <label for="setsInput"><strong>Sets:</strong></label>
                                 <input type="number" id="setsInput" min="1" required>
@@ -55,8 +51,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Navigation Buttons -->
                     <div class="start-workout-container">
                         <button id="prevExercise" class="button-lg" disabled>Prev Exercise</button>
                         <button id="nextExercise" class="button-lg">Next Exercise</button>
@@ -76,7 +70,7 @@
         let currentExerciseIndex = 0;
         let setsRepsData = new Map();
         let userId = null;
-        let csrfToken = document.querySelector('meta[name="_csrf"]').content;
+        //let csrfToken = document.querySelector('meta[name="_csrf"]').content;
 
         fetch('/user/getCurrent')
             .then(response => {

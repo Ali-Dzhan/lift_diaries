@@ -1,184 +1,72 @@
+/* General styling for home page */
+.home-section {
+    text-align: center;
+    padding: 40px 20px;
+}
 
-/* Stepper */
-.stepper-equipment {
-    box-sizing: border-box;
-    display: block;
-    padding: 1rem 1.25rem;
+.home-intro {
+    max-width: 800px;
     margin: 0 auto;
-}
-
-.stepper-steps {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-}
-
-.step-button {
-    background: none;
-    border: none;
-    font-size: 1rem;
-    color: #000;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-.step-icon {
-    height: 2.5rem;
-    width: 2.5rem;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgb(241, 243, 245);
-    border: 2px solid rgb(34, 139, 230);
-    font-weight: 700;
-    color: rgb(73, 80, 87);
-    font-size: 1rem;
-}
-
-.stepper-body {
-    display: flex;
-    flex-direction: column;
-    margin-left: 0.75rem;
-    text-align: center;
-}
-
-.step-label {
-    font-weight: 500;
-    font-size: 1rem;
-    text-align: center;
-}
-
-.stepper-description {
-    color: rgb(134, 142, 150);
-    font-size: 0.875rem;
-    text-align: center;
-}
-
-.stepper-separator {
-    flex-grow: 1;
-    height: 2px;
-    background-color: rgb(200, 200, 200);
-    margin: 0 10px;
-}
-
-
-/* Equipment Selection */
-.equipment-selection {
-    text-size-adjust: 100%;
-    color-scheme: light;
-    line-height: 1.55;
-    font-size: 1rem;
-    -webkit-font-smoothing: antialiased;
-    -webkit-tap-highlight-color: transparent;
-    color: rgb(0, 0, 0);
-    box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-    padding-top: 1rem;
-}
-
-.equipment-selection-text {
-    text-size-adjust: 100%;
-    color-scheme: light;
-    -webkit-font-smoothing: antialiased;
-    box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-    -webkit-tap-highlight-color: transparent;
-    color: inherit;
-    font-size: inherit;
-    line-height: 1.55;
-    text-decoration: none;
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
-    text-align: center;
-    font-style: italic;
-}
-
-.equipment-grid {
-    text-size-adjust: 100%;
-    color-scheme: light;
-    line-height: 1.55;
-    font-size: 1rem;
-    -webkit-font-smoothing: antialiased;
-    -webkit-tap-highlight-color: transparent;
-    color: rgb(0, 0, 0);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-    box-sizing: border-box;
-    display: flex;
-    gap: 0.75rem;
-    -webkit-box-pack: center;
-    justify-content: center;
-    flex-flow: wrap;
-}
-
-.equipment-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    padding: 10px;
-}
-
-.equipment-image img {
-    width: 100px; /* Adjust as needed */
-    height: 80px; /* Adjust as needed */
-    object-fit: contain;
-}
-
-.equipment-label {
-    margin-top: 5px;
-    font-size: 14px;
-    color: #333;
-}
-
-
-.equipment-item {
-    background: #f9f9f9;
-    padding: 10px;
+    padding: 20px;
+    background-color: #f8f8f8;
     border-radius: 8px;
-    text-align: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.equipment-item:hover {
-    transform: translateY(-5px);
-}
-
-.equipment-item img {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 10px;
-}
-
-.equipment-item p {
-    font-size: 14px;
+.home-intro h2 {
     color: #333;
+    font-size: 28px;
 }
 
-.button-group {
-    margin-top: 2em;
+.home-intro p {
+    font-size: 16px;
+    color: #666;
+}
+
+.home-features {
     display: flex;
     justify-content: center;
-    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 40px;
 }
 
-.continue-btn {
-    background: #228be6;
+.feature-box {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    width: 250px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.feature-box h3 {
+    font-size: 22px;
+    color: #444;
+}
+
+.feature-box p {
+    font-size: 14px;
+    color: #666;
+}
+
+.cta-section {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.cta-button {
+    display: inline-block;
+    background-color: #06C167;
     color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 12px 24px;
+    text-decoration: none;
     font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+    margin: 10px;
 }
 
-.continue-btn:hover {
-    background: #1a6fb3;
+.cta-button:hover {
+    background-color: #048C4F;
 }

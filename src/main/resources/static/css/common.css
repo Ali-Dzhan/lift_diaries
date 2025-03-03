@@ -82,3 +82,14 @@ body {
     border: 0.0625rem solid rgb(222, 226, 230);
 }
 
+.app-title h1 {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    color: #202020;
+    text-transform: uppercase;
+    word-spacing: 1px;
+    letter-spacing: 2px;
+    margin-bottom: 20px; /* Added margin for better spacing */
+    margin-top: 20px;
+}

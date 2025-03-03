@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.UUID;
+
 @Controller
 public class IndexController {
 
@@ -80,12 +82,24 @@ public class IndexController {
     }
 
     @GetMapping("/privacy")
-    public String getPrivacyPolicyPage() {
-        return "privacy";
+    public ModelAndView getPrivacyPolicyPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+        UUID userId = authenticationMetadata.getUserId();
+        User user = userService.getById(userId);
+
+        ModelAndView modelAndView = new ModelAndView("privacy");
+        modelAndView.addObject("user", user);
+
+        return modelAndView;
     }
 
     @GetMapping("/about")
-    public String getAboutPage() {
-        return "about";
+    public ModelAndView getAboutPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+        UUID userId = authenticationMetadata.getUserId();
+        User user = userService.getById(userId);
+
+        ModelAndView modelAndView = new ModelAndView("about");
+        modelAndView.addObject("user", user);
+
+        return modelAndView;
     }
 }

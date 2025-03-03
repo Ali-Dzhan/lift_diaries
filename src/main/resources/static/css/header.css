@@ -22,9 +22,14 @@
 .logo-title {
     margin-left: 0.5rem;
     font-size: 1.2rem;
-    font-weight: bold;
-    color: #333;
-    text-decoration: none; /* Remove underline */
+    text-align: center;
+    font-weight: 700;
+    color: #202020;
+    text-transform: uppercase;
+    word-spacing: 1px;
+    letter-spacing: 2px;
+    margin-bottom: 20px; /* Added margin for better spacing */
+    margin-top: 20px; /* Remove underline */
 }
 
 a {
@@ -44,10 +49,6 @@ a {
     font-size: 1rem;
     color: #333;
     transition: color 0.3s;
-}
-
-.nav-link:hover {
-    color: #228be6;
 }
 
 .header-utils {
@@ -70,14 +71,10 @@ a {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid black;
+    /*border: 2px solid black;*/
     border-radius: 50%;
     cursor: pointer;
-    position: relative; /* Ensure dropdown stays aligned */
-}
-
-.avatar:hover {
-   border-color: #228be6;
+    position: relative;
 }
 
 .avatar-icon {

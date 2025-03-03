@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -11,71 +12,51 @@
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/home.css">
     <link rel="icon" href="/images/fav_48px.ico">
-    <script src="/css/dropdown.js"></script>
+    <script src="/css/dropdown.js" defer></script>
 </head>
 
 <body>
 <div id="app">
     <main class="layout">
         <div class="main-card">
-            <!-- Header -->
             <th:block th:insert="fragments/header :: header"></th:block>
 
-            <!-- Welcome Banner -->
-            <section class="welcome-banner">
+            <div class="app-title">
                 <h1>Welcome to Lifting Diaries</h1>
-                <p>Track your workouts, monitor your progress, and achieve your fitness goals.</p>
-                <button class="cta-button">Start Your Journey</button>
-            </section>
+            </div>
 
-            <!-- Highlights Section -->
-            <section class="highlights">
-                <div class="highlight-card">
-                    <h2>Last Workout</h2>
-                    <p>Full Body Strength</p>
-                    <small>Thursday, Feb 6th</small>
-                    <a href="/diary" class="button-link">View Full Diary</a>
+            <div class="home-section">
+                <div class="home-intro">
+                    <h2>Track Your Workouts Effortlessly</h2>
+                    <p>Stay on top of your fitness journey with Lifting Diaries. Log your workouts, monitor progress, and stay motivated every step of the way.</p>
                 </div>
-                <div class="highlight-card">
-                    <h2>This Week</h2>
-                    <p>3 Workouts, 150kg Lifted</p>
-                    <progress value="75" max="100"></progress>
+
+                <div class="home-features">
+                    <div class="feature-box">
+                        <h3>📈 Track Progress</h3>
+                        <p>Monitor your workout history and improvements over time.</p>
+                    </div>
+
+                    <div class="feature-box">
+                        <h3>🏋️ Exercise Logging</h3>
+                        <p>Easily log exercises and categorize them for better insights.</p>
+                    </div>
+
+                    <div class="feature-box">
+                        <h3>🔥 Workout Streaks</h3>
+                        <p>Keep the momentum going and stay consistent with your training.</p>
+                    </div>
                 </div>
-            </section>
+            </div>
 
-            <!-- Quick Actions -->
-            <section class="quick-actions">
-                <button class="action-card">Log Workout</button>
-                <button class="action-card">Set a Goal</button>
-                <button class="action-card">Track Progress</button>
-                <button class="action-card">Browse Plans</button>
-            </section>
+            <div class="cta-section">
+                <a th:href="@{/progress}" class="cta-button">View Progress</a>
+                <a th:href="@{workout}" class="cta-button">Start a Workout</a>
+            </div>
 
-            <!-- Motivational Section -->
-            <section class="motivation">
-                <blockquote>"The only bad workout is the one that didn’t happen."</blockquote>
-                <a href="/workouts" class="button-link">Try a New Workout Plan</a>
-            </section>
-
-            <!-- Goals and Achievements -->
-            <section class="goals-achievements">
-                <h2>Your Goals</h2>
-                <div class="goal-card">
-                    <p>Squat 100kg</p>
-                    <progress value="85" max="100"></progress>
-                    <small>85% Complete</small>
-                </div>
-                <h2>Your Achievements</h2>
-                <div class="achievement-card">
-                    <p>10kg Deadlift PR!</p>
-                </div>
-            </section>
-
-            <!-- Footer -->
             <th:block th:insert="fragments/footer :: footer"></th:block>
         </div>
     </main>
 </div>
 </body>
-
 </html>

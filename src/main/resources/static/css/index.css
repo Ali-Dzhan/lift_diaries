@@ -77,17 +77,6 @@
     object-fit: cover;
 }
 
-.app-title h1 {
-    text-align: center;
-    font-size: 22px;
-    font-weight: 700;
-    color: #202020;
-    text-transform: uppercase;
-    word-spacing: 1px;
-    letter-spacing: 2px;
-    margin-bottom: 20px; /* Added margin for better spacing */
-}
-
 .app-title h1 span {
     display: block; /* Ensures the span is on its own line */
     margin-top: 25px; /* Consistent spacing above the span */

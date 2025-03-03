@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/workout")
 @Slf4j
-public class WorkoutSessionController {
+public class WorkoutController {
 
     private final UserService userService;
     private final WorkoutService workoutService;
@@ -38,10 +38,10 @@ public class WorkoutSessionController {
     private final ProgressService progressService;
 
     @Autowired
-    public WorkoutSessionController(UserService userService,
-                                    WorkoutService workoutService,
-                                    ExerciseService exerciseService,
-                                    CategoryRepository categoryRepository, ProgressService progressService) {
+    public WorkoutController(UserService userService,
+                             WorkoutService workoutService,
+                             ExerciseService exerciseService,
+                             CategoryRepository categoryRepository, ProgressService progressService) {
         this.userService = userService;
         this.workoutService = workoutService;
         this.exerciseService = exerciseService;
@@ -50,7 +50,10 @@ public class WorkoutSessionController {
     }
 
     @GetMapping
-    public ModelAndView selectCategories() {
+    public ModelAndView selectCategories( @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+        UUID userId = authenticationMetadata.getUserId();
+        User user = userService.getById(userId);
+
         List<Category> categories = categoryRepository.findAll();
         List<CategoryDTO> categoryDTOs = categories.stream()
                 .map(category -> new CategoryDTO(category.getName(), category.getImageUrl()))
@@ -58,6 +61,8 @@ public class WorkoutSessionController {
 
         ModelAndView modelAndView = new ModelAndView("workout");
         modelAndView.addObject("categories", categoryDTOs);
+        modelAndView.addObject("user", user);
+
         return modelAndView;
     }
 
@@ -91,13 +96,8 @@ public class WorkoutSessionController {
 
     @GetMapping("/startWorkout")
     public ModelAndView startWorkout(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
-        if (authenticationMetadata == null) {
-            log.error("User not authenticated when starting workout!");
-            return new ModelAndView("redirect:/login");
-        }
-
         UUID userId = authenticationMetadata.getUserId();
-        log.info("Starting workout for user ID: {}", userId);
+        User user = userService.getById(userId);
 
         List<UUID> selectedExerciseIds = exerciseService.getUserSelectedExercises(userId);
         if (selectedExerciseIds.isEmpty()) {
@@ -112,6 +112,7 @@ public class WorkoutSessionController {
         ModelAndView modelAndView = new ModelAndView("startWorkout");
         modelAndView.addObject("sessionId", sessionId);
         modelAndView.addObject("exercises", exercises);
+        modelAndView.addObject("user", user);
 
         return modelAndView;
     }
@@ -120,10 +121,9 @@ public class WorkoutSessionController {
     public ResponseEntity<String> saveWorkout(@RequestBody WorkoutRequest workoutRequest,
                                               @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
         UUID userId = authenticationMetadata.getUserId();
-
         User user = userService.getById(userId);
-        List<Exercise> exercises = exerciseService.getExercisesByIds(workoutRequest.getExerciseIds());
 
+        List<Exercise> exercises = exerciseService.getExercisesByIds(workoutRequest.getExerciseIds());
         Workout savedWorkout = workoutService.createWorkout(
                 workoutRequest.getWorkoutName(),
                 authenticationMetadata,

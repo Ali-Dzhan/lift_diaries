@@ -4,6 +4,8 @@ import app.entity.exercise.model.Exercise;
 import app.entity.exercise.service.ExerciseService;
 import app.entity.progress.model.Progress;
 import app.entity.progress.service.ProgressService;
+import app.entity.user.model.User;
+import app.entity.user.service.UserService;
 import app.entity.workout.model.Workout;
 import app.entity.workout.service.WorkoutService;
 import app.security.AuthenticationMetadata;
@@ -28,18 +30,21 @@ public class ProgressController {
     private final ProgressService progressService;
     private final WorkoutService workoutService;
     private final ExerciseService exerciseService;
+    private final UserService userService;
 
     @Autowired
     public ProgressController(ProgressService progressService,
-                              WorkoutService workoutService, ExerciseService exerciseService) {
+                              WorkoutService workoutService, ExerciseService exerciseService, UserService userService) {
         this.progressService = progressService;
         this.workoutService = workoutService;
         this.exerciseService = exerciseService;
+        this.userService = userService;
     }
 
     @GetMapping
     public ModelAndView viewProgress(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
         UUID userId = authenticationMetadata.getUserId();
+        User user = userService.getById(userId);
         List<Progress> progressList = progressService.getUserProgressSummary(userId);
 
         List<WorkoutProgress> workoutProgressList = progressList.stream()
@@ -56,6 +61,7 @@ public class ProgressController {
         modelAndView.addObject("workoutProgressList", workoutProgressList);
         modelAndView.addObject("streak", streak);
         modelAndView.addObject("totalWorkouts", totalWorkouts);
+        modelAndView.addObject("user", user);
 
         return modelAndView;
     }
