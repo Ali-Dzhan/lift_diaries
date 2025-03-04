@@ -25,7 +25,7 @@
                 <div class="profile-header">
                     <img th:src="${#strings.isEmpty(user.profilePicture) ? 'https://www.svgrepo.com/show/166487/strongman.svg' : user.profilePicture}"
                          alt="Profile Picture" class="profile-avatar">
-                    <h2 th:text="${user.username}" class="profile-name"></h2>
+                    <h2 th:text="${#strings.defaultString(user.firstName, user.username)}" class="profile-name"></h2>
                 </div>
 
                 <div class="details-section">

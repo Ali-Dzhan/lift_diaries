@@ -1,4 +1,4 @@
-/* Main Layout */
+
 .workout-layout {
     display: flex;
     justify-content: center;
@@ -22,7 +22,6 @@
     box-shadow: 1px 1px 7px rgba(41, 128, 185, 0.4);
 }
 
-/* Exercise Display */
 .exercise-display {
     flex-grow: 1;
     max-width: 600px;
@@ -32,7 +31,6 @@
     text-align: center;
 }
 
-/* Exercise Card */
 .exercise-card {
     background-color: #fff;
     border-radius: 12px;
@@ -41,7 +39,6 @@
     text-align: center;
 }
 
-/* Exercise Image */
 .exercise-image {
     max-width: 80%;
     height: auto;
@@ -50,7 +47,6 @@
     border-radius: 8px;
 }
 
-/* Sets and Reps Input Fields */
 .exercise-inputs {
     display: flex;
     justify-content: center;
@@ -72,7 +68,6 @@
     text-align: center;
 }
 
-/* Prevent input resizing */
 input {
     -moz-appearance: textfield;
 }

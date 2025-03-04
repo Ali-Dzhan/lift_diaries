@@ -1,5 +1,6 @@
 package app.web;
 
+import app.entity.progress.service.ProgressService;
 import app.entity.user.model.User;
 import app.entity.user.service.UserService;
 import app.security.AuthenticationMetadata;
@@ -15,16 +16,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.UUID;
 
 @Controller
 public class IndexController {
 
     private final UserService userService;
+    private final ProgressService progressService;
 
     @Autowired
-    public IndexController(UserService userService) {
+    public IndexController(UserService userService, ProgressService progressService) {
         this.userService = userService;
+        this.progressService = progressService;
     }
 
     @GetMapping("/")
@@ -71,12 +75,24 @@ public class IndexController {
 
     @GetMapping("/home")
     public ModelAndView getHomePage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+        UUID userId = authenticationMetadata.getUserId();
+        User user = userService.getById(userId);
 
-        User user = userService.getById(authenticationMetadata.getUserId());
+        long streak = progressService.calculateWorkoutStreak(userId);
+        int totalWorkouts = progressService.getTotalWorkouts(userId);
+        String lastMuscleGroup = progressService.getLastWorkoutMuscleGroup(userId);
+        String lastWorkoutDate = progressService.getLastWorkoutDate(userId);
+        List<String> lastWorkoutExercises = progressService.getLastWorkoutExercises(userId);
+        int monthlyWorkouts = progressService.getMonthlyWorkoutCount(userId);
 
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("home");
+        ModelAndView modelAndView = new ModelAndView("home");
         modelAndView.addObject("user", user);
+        modelAndView.addObject("streak", streak);
+        modelAndView.addObject("totalWorkouts", totalWorkouts);
+        modelAndView.addObject("lastMuscleGroup", lastMuscleGroup);
+        modelAndView.addObject("lastWorkoutDate", lastWorkoutDate);
+        modelAndView.addObject("lastWorkoutExercises", lastWorkoutExercises);
+        modelAndView.addObject("monthlyWorkouts", monthlyWorkouts);
 
         return modelAndView;
     }

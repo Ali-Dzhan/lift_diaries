@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -22,36 +21,32 @@
             <th:block th:insert="fragments/header :: header"></th:block>
 
             <div class="app-title">
-                <h1>Welcome to Lifting Diaries</h1>
+                <h1>Welcome back, <span th:text="${#strings.defaultString(user.firstName, user.username)}"></span></h1>
             </div>
 
-            <div class="home-section">
-                <div class="home-intro">
-                    <h2>Track Your Workouts Effortlessly</h2>
-                    <p>Stay on top of your fitness journey with Lifting Diaries. Log your workouts, monitor progress, and stay motivated every step of the way.</p>
-                </div>
-
-                <div class="home-features">
-                    <div class="feature-box">
-                        <h3>📈 Track Progress</h3>
-                        <p>Monitor your workout history and improvements over time.</p>
-                    </div>
-
-                    <div class="feature-box">
-                        <h3>🏋️ Exercise Logging</h3>
-                        <p>Easily log exercises and categorize them for better insights.</p>
-                    </div>
-
-                    <div class="feature-box">
-                        <h3>🔥 Workout Streaks</h3>
-                        <p>Keep the momentum going and stay consistent with your training.</p>
-                    </div>
-                </div>
+            <div class="quick-stats">
+                <h2>🔥 Workout Streak: <span th:text="${streak}"></span> Days</h2>
+                <h2>📅 Completed Workouts: [<span th:text="${totalWorkouts}"></span>]</h2>
+                <p>🏋️ Next Workout Suggestion: "Your last workout focused on
+                    <span th:text="${lastMuscleGroup}"></span>. Want to continue or try something new?"</p>
             </div>
 
             <div class="cta-section">
+                <a th:href="@{/workout}" class="cta-button">Workout Now</a>
                 <a th:href="@{/progress}" class="cta-button">View Progress</a>
-                <a th:href="@{workout}" class="cta-button">Start a Workout</a>
+                <a th:href="@{'/user/' + ${user.id} + '/profile'}" class="cta-button">Edit Profile</a>
+            </div>
+
+            <div class="recent-activity">
+                <h2>📌 Last Completed Workout</h2>
+                <p>Date: <span th:text="${lastWorkoutDate}"></span></p>
+                <p>Exercises: <span th:each="exercise : ${lastWorkoutExercises}" th:text="${exercise} + ' | '" ></span></p>
+            </div>
+
+            <div class="motivational-section">
+                <h2>💪 Quote of the Day</h2>
+                <p>"Strength doesn’t come from what you can do, it comes from overcoming the things you once thought you couldn’t."</p>
+                <p>🏆 Milestone: "You’ve completed [<span th:text="${monthlyWorkouts}"></span>] workouts this month! Keep pushing!"</p>
             </div>
 
             <th:block th:insert="fragments/footer :: footer"></th:block>

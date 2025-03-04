@@ -13,10 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -76,5 +74,51 @@ public class ProgressService {
 
     public List<Progress> getUserProgressSummary(UUID userId) {
         return progressRepository.findByUserId(userId);
+    }
+
+    public int getTotalWorkouts(UUID userId) {
+        return (int) progressRepository.findByUserId(userId).stream()
+                .map(Progress::getWorkout)
+                .distinct()
+                .count();
+    }
+
+    public String getLastWorkoutMuscleGroup(UUID userId) {
+        List<Progress> progresses = progressRepository.findByUserId(userId);
+        if (progresses.isEmpty()) return "N/A";
+
+        return progresses.get(progresses.size() - 1).getExercise().getCategory().getName();
+    }
+
+    public String getLastWorkoutDate(UUID userId) {
+        Optional<Progress> lastProgress = progressRepository.findByUserId(userId)
+                .stream()
+                .max(Comparator.comparing(Progress::getTimestamp));
+
+        return lastProgress.map(progress -> progress.getTimestamp().toLocalDate().toString()).orElse("N/A");
+    }
+
+    public List<String> getLastWorkoutExercises(UUID userId) {
+        List<Progress> progresses = progressRepository.findByUserId(userId);
+        if (progresses.isEmpty()) return List.of("No recent workouts");
+
+        progresses.sort(Comparator.comparing(Progress::getTimestamp).reversed());
+        UUID lastWorkoutId = progresses.get(0).getWorkout().getId();
+
+        return progresses.stream()
+                .filter(p -> p.getWorkout().getId().equals(lastWorkoutId))
+                .map(p -> p.getExercise().getName())
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
+    public int getMonthlyWorkoutCount(UUID userId) {
+        LocalDateTime startOfMonth = LocalDate.now().withDayOfMonth(1).atStartOfDay();
+
+        return (int) progressRepository.findByUserId(userId).stream()
+                .filter(progress -> progress.getTimestamp().isAfter(startOfMonth))
+                .map(Progress::getWorkout)
+                .distinct()
+                .count();
     }
 }
