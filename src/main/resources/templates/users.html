@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#efd36c">
+    <title>User Management</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/users.css">
+    <link rel="icon" href="/images/fav_48px.ico">
+    <script src="/css/dropdown.js" defer></script>
+</head>
+<body>
+<div id="app">
+    <main class="layout">
+        <div class="main-card">
+            <th:block th:insert="~{fragments/header :: header}"></th:block>
+
+            <div class="app-title">
+                <h1>👤 User Management</h1>
+            </div>
+
+            <div class="table-responsive">
+                <table class="user-table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.id}"></td>
+                        <td th:text="${user.username}"></td>
+                        <td th:text="${user.email}"></td>
+                        <td th:text="${user.role}"></td>
+                        <td>
+                               <span th:class="${user.active} ? 'status-active' : 'status-inactive'">
+                                    <span th:text="${user.active ? 'Active' : 'Inactive'}"></span>
+                               </span>
+                        </td>
+
+                        <td>
+                            <form th:action="@{/users/{id}/role(id=${user.id})}" method="post">
+                                <input type="hidden" name="_method" value="PUT"/>
+                                <button type="submit" class="action-button switch-role">Switch Role</button>
+                            </form>
+                            <form th:action="@{/users/{id}/status(id=${user.id})}" method="post">
+                                <input type="hidden" name="_method" value="PUT"/>
+                                <button type="submit" class="action-button deactivate"
+                                        th:classappend="${user.active} ? 'status-active-btn' : 'status-inactive-btn'">
+                                    <span th:text="${user.active ? 'Deactivate' : 'Activate'}"></span>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <th:block th:insert="~{fragments/footer :: footer}"></th:block>
+        </div>
+    </main>
+</div>
+</body>
+</html>

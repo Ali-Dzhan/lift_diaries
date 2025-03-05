@@ -1,0 +1,126 @@
+
+.main-card {
+    max-width: 1200px;
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.user-table th, .user-table td {
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+.user-table th {
+    background-color: #f8f9fa;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.user-table td:first-child {
+    max-width: 250px;
+    word-break: break-word;
+}
+
+.actions-column {
+    width: 12%;
+    text-align: center;
+}
+
+.action-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.switch-role {
+    color: #3a6df0;
+    padding: 6px 10px;
+    border: 2px solid transparent;
+    border-radius: 6px;
+}
+
+.switch-role:hover {
+    background: rgba(58, 109, 240, 0.1);
+    border: 2px solid #3a6df0;
+    border-radius: 6px;
+    transform: scale(1.05);
+}
+
+.deactivate {
+    padding: 6px 10px;
+    border: 2px solid transparent;
+    border-radius: 6px;
+}
+
+.status-active-btn {
+    color: #d9534f;
+    padding: 6px 10px;
+    border: 2px solid transparent;
+    border-radius: 6px;
+}
+
+.status-active-btn:hover {
+    background: rgba(58, 109, 240, 0.1);
+    border: 2px solid #d9534f;
+    border-radius: 6px;
+    transform: scale(1.05);
+}
+
+.status-inactive-btn {
+    color: #28a745;
+    padding: 6px 10px;
+    border: 2px solid transparent;
+    border-radius: 6px;
+}
+
+.status-inactive-btn:hover {
+    background: rgba(40, 167, 69, 0.1);
+    border: 2px solid #28a745;
+    border-radius: 6px;
+    transform: scale(1.05);
+}
+
+
+.action-button svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2;
+    transition: stroke 0.3s ease-in-out;
+}
+
+.status-active {
+    color: #28a745;
+    font-weight: bold;
+    background: rgba(40, 167, 69, 0.1);
+    padding: 6px 12px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.status-inactive {
+    color: #d9534f;
+    font-weight: bold;
+    background: rgba(217, 83, 79, 0.1);
+    padding: 6px 12px;
+    border-radius: 5px;
+    display: inline-block;
+}

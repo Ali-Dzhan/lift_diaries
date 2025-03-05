@@ -20,7 +20,7 @@
     <main class="layout">
         <div class="main-card">
 
-            <th:block th:insert="fragments/header :: header"></th:block>
+            <th:block th:insert="~{fragments/header :: header}"></th:block>
 
             <div class="app-title">
                 <h1>About Lifting Diaries</h1>
@@ -74,7 +74,7 @@
                 <p>Whether you’re training for <strong>strength, endurance, or aesthetics</strong>, having a structured log can <strong>make a huge difference</strong> in achieving long-term success! 🏆📈</p>
             </div>
 
-            <th:block th:insert="fragments/footer :: footer"></th:block>
+            <th:block th:insert="~{fragments/footer :: footer}"></th:block>
 
         </div>
     </main>

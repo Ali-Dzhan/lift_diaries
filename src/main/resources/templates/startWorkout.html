@@ -20,7 +20,7 @@
 <div id="app">
     <main class="layout">
         <div class="main-card">
-            <header th:replace="fragments/header :: header"></header>
+            <th:block th:insert="~{fragments/header :: header}"></th:block>
 
             <div class="app-title">
                 <h1 style="display: inline-block; margin-right: 10px;">Workout Name:</h1>
@@ -58,7 +58,7 @@
                 </div>
             </div>
 
-            <footer th:replace="fragments/footer :: footer"></footer>
+            <th:block th:insert="~{fragments/footer :: footer}"></th:block>
         </div>
     </main>
 </div>

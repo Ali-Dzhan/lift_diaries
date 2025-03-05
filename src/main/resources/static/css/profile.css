@@ -134,5 +134,42 @@ form.form input:focus {
     padding: 20px;
     background: white;
     border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+.admin-func-block {
+    background-color: #f8f9fa;
+    width: 80%;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 30px auto;
+    text-align: center;
+    color: #444;
+}
+
+.admin-func-block span {
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.admin-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    background: white;
+    padding: 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #444;
+    margin: 5px 0;
+}
+
+.admin-link:hover {
+    border: 1px solid #2980b9;
+    border-radius: 6px;
+    transform: scale(1.02);
+}
+

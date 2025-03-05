@@ -18,7 +18,7 @@
 <div id="app">
     <main class="layout">
         <div class="main-card">
-            <th:block th:insert="fragments/header :: header"></th:block>
+            <th:block th:insert="~{fragments/header :: header}"></th:block>
 
             <div class="app-title">
                 <h1>Welcome back, <span th:text="${#strings.defaultString(user.firstName, user.username)}"></span></h1>
@@ -49,7 +49,7 @@
                 <p>🏆 Milestone: "You’ve completed [<span th:text="${monthlyWorkouts}"></span>] workouts this month! Keep pushing!"</p>
             </div>
 
-            <th:block th:insert="fragments/footer :: footer"></th:block>
+            <th:block th:insert="~{fragments/footer :: footer}"></th:block>
         </div>
     </main>
 </div>

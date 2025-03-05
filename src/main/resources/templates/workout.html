@@ -21,9 +21,7 @@
 
     <main class="layout">
         <div class="main-card">
-
-            <!-- Header Fragment -->
-            <header th:replace="fragments/header :: header"></header>
+            <th:block th:insert="~{fragments/header :: header}"></th:block>
 
             <div class="app-title">
                 <h1>Choose the muscle group you want to train.</h1>
@@ -44,7 +42,7 @@
             </div>
 
             <!-- Footer Fragment -->
-            <footer th:replace="fragments/footer :: footer"></footer>
+            <th:block th:insert="~{fragments/footer :: footer}"></th:block>
 
         </div>
 

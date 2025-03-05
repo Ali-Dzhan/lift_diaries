@@ -33,8 +33,8 @@
                 <a th:href="@{/login}" class="button-lg">Login</a>
                 <a th:href="@{/register}" class="button-lg">Register</a>
             </div>
-            <!-- Footer as a Thymeleaf fragment -->
-            <th:block th:insert="fragments/footer :: footer"></th:block>
+
+            <th:block th:insert="~{fragments/footer :: footer}"></th:block>
         </div>
     </main>
 </div>

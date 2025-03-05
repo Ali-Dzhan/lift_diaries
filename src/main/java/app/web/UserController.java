@@ -91,7 +91,6 @@ public class UserController {
     public String switchUserStatus(@PathVariable UUID id) {
 
         userService.switchStatus(id);
-
         return "redirect:/users";
     }
 
@@ -99,7 +98,6 @@ public class UserController {
     public String switchUserRole(@PathVariable UUID id) {
 
         userService.switchRole(id);
-
         return "redirect:/users";
     }
 

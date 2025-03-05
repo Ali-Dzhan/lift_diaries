@@ -127,8 +127,9 @@ public class ProgressService {
     public int getSetsDoneThisWeek(UUID userId) {
         LocalDateTime oneWeekAgo = LocalDateTime.now().minusDays(7);
 
-        return (int) progressRepository.findByUserId(userId).stream()
+        return progressRepository.findByUserId(userId).stream()
                 .filter(progress -> progress.getTimestamp().isAfter(oneWeekAgo))
-                .count();
+                .mapToInt(progress -> progress.getWorkout().getExercises().size())
+                .sum();
     }
 }

@@ -23,7 +23,7 @@
   <main class="layout">
     <div class="main-card">
 
-      <th:block th:insert="fragments/header :: header"></th:block>
+      <th:block th:insert="~{fragments/header :: header}"></th:block>
 
       <h1>Workout completed!</h1>
 
@@ -35,7 +35,7 @@
         </div>
       </div>
 
-      <th:block th:insert="fragments/footer :: footer"></th:block>
+      <th:block th:insert="~{fragments/footer :: footer}"></th:block>
 
     </div>
   </main>
@@ -46,7 +46,6 @@
     const confettiCanvas = document.getElementById("confetti");
     const ctx = confettiCanvas.getContext("2d");
 
-    // Set canvas to full screen
     confettiCanvas.width = window.innerWidth;
     confettiCanvas.height = window.innerHeight;
 

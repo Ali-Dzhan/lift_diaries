@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         y: {
                             beginAtZero: true,
                             ticks: {
-                                stepSize: 1
+                                stepSize: 2
                             }
                         }
                     }

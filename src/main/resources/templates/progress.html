@@ -18,7 +18,7 @@
 <div id="app">
     <main class="layout">
         <div class="main-card">
-            <th:block th:insert="fragments/header :: header"></th:block>
+            <th:block th:insert="~{fragments/header :: header}"></th:block>
 
             <div class="app-title">
                 <h1>Your Overall Progress</h1>
@@ -77,7 +77,7 @@
                 </div>
             </div>
 
-            <th:block th:insert="fragments/footer :: footer"></th:block>
+            <th:block th:insert="~{fragments/footer :: footer}"></th:block>
         </div>
     </main>
 </div>
