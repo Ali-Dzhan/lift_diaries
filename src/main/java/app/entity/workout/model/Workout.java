@@ -30,7 +30,7 @@ public class Workout {
     @JsonIgnore
     private User user;
 
-    @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "workout", fetch = FetchType.EAGER)
     private List<Exercise> exercises;
 
     private boolean completed;

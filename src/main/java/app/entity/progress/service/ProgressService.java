@@ -4,6 +4,7 @@ import app.entity.exercise.repository.ExerciseRepository;
 import app.entity.progress.model.Progress;
 import app.entity.progress.repository.ProgressRepository;
 import app.entity.user.repository.UserRepository;
+import app.entity.workout.model.Workout;
 import app.entity.workout.repository.WorkoutRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -37,13 +38,14 @@ public class ProgressService {
 
     @Transactional
     public void saveWorkoutCompletion(UUID userId, UUID workoutId, UUID exerciseId) {
-        if (!workoutRepository.existsById(workoutId)) {
-            throw new RuntimeException("Workout not found for ID: " + workoutId);
-        }
+        Workout workout = workoutRepository.findById(workoutId)
+                .orElseThrow(() -> new IllegalArgumentException("Workout not found for ID: " + workoutId));
+
+        workout = workoutRepository.save(workout);
 
         Progress progress = Progress.builder()
                 .user(userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found")))
-                .workout(workoutRepository.findById(workoutId).orElse(null))
+                .workout(workout)
                 .exercise(exerciseId != null ? exerciseRepository.findById(exerciseId).orElse(null) : null)
                 .timestamp(LocalDateTime.now())
                 .build();
@@ -119,6 +121,14 @@ public class ProgressService {
                 .filter(progress -> progress.getTimestamp().isAfter(startOfMonth))
                 .map(Progress::getWorkout)
                 .distinct()
+                .count();
+    }
+
+    public int getSetsDoneThisWeek(UUID userId) {
+        LocalDateTime oneWeekAgo = LocalDateTime.now().minusDays(7);
+
+        return (int) progressRepository.findByUserId(userId).stream()
+                .filter(progress -> progress.getTimestamp().isAfter(oneWeekAgo))
                 .count();
     }
 }

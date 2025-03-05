@@ -98,8 +98,19 @@ public class WorkoutService {
 
     @Transactional
     public void deleteWorkoutAndProgress(UUID workoutId) {
+        Workout workout = workoutRepository.findById(workoutId)
+                .orElseThrow(() -> new IllegalArgumentException("Workout not found"));
+
+        workout = workoutRepository.save(workout);
+
+        for (Exercise e : workout.getExercises()) {
+            e.setWorkout(null);
+            exerciseRepository.save(e);
+        }
+
+        workoutRepository.save(workout);
         progressRepository.deleteByWorkoutId(workoutId);
-        workoutRepository.deleteById(workoutId);
+        workoutRepository.delete(workout);
     }
 
     @Transactional

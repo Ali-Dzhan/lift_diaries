@@ -12,7 +12,10 @@
     <link rel="stylesheet" href="/css/form.css">
     <link rel="stylesheet" href="/css/profile.css">
     <link rel="icon" href="/images/fav_48px.ico">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/css/dropdown.js" defer></script>
+    <script src="/css/chart.js" defer></script>
 </head>
 
 <body>
@@ -40,9 +43,13 @@
                     </div>
                 </div>
 
+                <div class="chart-container">
+                    <canvas id="statsChart" th:data-user-id="${user.id}"></canvas>
+                </div>
+
                 <div class="profile-edit-section">
                     <h2>✏ Edit Profile</h2>
-                    <form class="form" th:action="@{'/user/' + ${user.id} + '/profile'}" th:method="PUT" th:object="${userEditRequest}">
+                    <form class="form" th:action="@{'/users/' + ${user.id} + '/profile'}" th:method="PUT" th:object="${userEditRequest}">
 
                         <div class="input-group">
                             <label for="firstName">First Name</label>
@@ -76,6 +83,7 @@
                         </button>
                     </form>
                 </div>
+
             </div>
 
             <th:block th:insert="fragments/footer :: footer"></th:block>

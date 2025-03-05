@@ -70,9 +70,8 @@
         let currentExerciseIndex = 0;
         let setsRepsData = new Map();
         let userId = null;
-        //let csrfToken = document.querySelector('meta[name="_csrf"]').content;
 
-        fetch('/user/getCurrent')
+        fetch('/users/getCurrent')
             .then(response => {
                 if (!response.ok) throw new Error("Failed to fetch user data.");
                 return response.json();

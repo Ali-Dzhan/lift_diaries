@@ -6,6 +6,7 @@
 
 h2 {
     margin-bottom: 30px;
+    color: #444;
 }
 
 .profile-section {
@@ -123,4 +124,15 @@ form.form input {
 form.form input:focus {
     outline: none;
     border-color: #2980b9;
+}
+
+.chart-container {
+    width: 85%;
+    height: auto;
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }

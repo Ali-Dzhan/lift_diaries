@@ -32,7 +32,7 @@ public class Progress {
     @JoinColumn(name = "exercise_id")
     private Exercise exercise;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "workout_id", nullable = false)
     private Workout workout;
 }

@@ -7,8 +7,10 @@ import app.web.dto.UserEditRequest;
 import app.web.mapper.DtoMapper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,8 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@RestController
-@RequestMapping("/user")
+@Controller
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -29,15 +31,16 @@ public class UserController {
     }
 
     @GetMapping("/getCurrent")
-    public Map<String, Object> getCurrentUser(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> getCurrentUser(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
         if (authenticationMetadata == null) {
-            return Map.of("authenticated", false);
+            return ResponseEntity.ok(Map.of("authenticated", false));
         }
 
-        return Map.of(
+        return ResponseEntity.ok(Map.of(
                 "authenticated", true,
                 "id", authenticationMetadata.getUserId()
-        );
+        ));
     }
 
     @GetMapping

@@ -19,9 +19,9 @@
                 <nav class="header-nav">
                     <ul class="nav-list">
                         <li>
-                            <a th:href="@{/home}" class="nav-link">
-                                <img src="https://www.svgrepo.com/show/22031/home-icon-silhouette.svg"
-                                     alt="Home" class="nav-icon" width="35px" height="35px">
+                            <a th:href="@{/workout}" class="nav-link">
+                                <img src="https://www.svgrepo.com/show/263976/dumbbell-gym.svg"
+                                     alt="Workout" class="nav-icon" width="35px" height="35px">
                             </a>
                         </li>
                         <li>
@@ -37,7 +37,7 @@
                          alt="User Avatar" class="avatar-icon">
                     <div class="dropdown">
 
-                        <a class="dropdown-item" th:if="${user != null}" th:href="@{'/user/' + ${user.id} + '/profile'}">Profile</a>
+                        <a class="dropdown-item" th:if="${user != null}" th:href="@{'/users/' + ${user.id} + '/profile'}">Profile</a>
 
                         <a href="/logout" class="dropdown-item">Logout
                             <img src="https://www.svgrepo.com/show/509151/logout.svg"
