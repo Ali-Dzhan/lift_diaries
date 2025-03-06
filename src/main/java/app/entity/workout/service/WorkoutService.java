@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -130,5 +131,11 @@ public class WorkoutService {
             exercise.setReps(dto.getReps());
             exerciseRepository.save(exercise);
         }
+    }
+
+    public int deleteWorkoutsBefore(LocalDate oneMonthAgo) {
+        int deletedCount = workoutRepository.deleteByCreatedOnBefore(oneMonthAgo.atStartOfDay());
+        System.out.println("✅ " + deletedCount + " old workouts deleted.");
+        return deletedCount;
     }
 }
