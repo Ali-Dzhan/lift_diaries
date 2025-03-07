@@ -46,12 +46,15 @@ public class UserController {
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView getAllUsers(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+        UUID userId = authenticationMetadata.getUserId();
+        User user = userService.getById(userId);
 
         List<User> users = userService.getAllUsers();
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("users");
         modelAndView.addObject("users", users);
+        modelAndView.addObject("user", user);
         return modelAndView;
     }
 

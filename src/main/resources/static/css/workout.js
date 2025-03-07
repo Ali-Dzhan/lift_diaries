@@ -1,5 +1,5 @@
 let selectedExercises = [];
-const modal = document.getElementById('exerciseModal'); // Ensure modal is accessible
+const modal = document.getElementById('exerciseModal');
 
 document.addEventListener('DOMContentLoaded', () => {
     const categoryLinks = document.querySelectorAll('.category-link');

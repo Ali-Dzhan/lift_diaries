@@ -1,0 +1,67 @@
+
+.main-card {
+    max-width: 600px;
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.not-found-container, .error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 50px;
+}
+
+.not-found-container h1, .error-container h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #444444;
+    margin-bottom: 10px;
+}
+
+.not-found-container p, .error-container p {
+    font-size: 1.2rem;
+    color: rgb(57, 53, 53);
+    margin-bottom: 20px;
+}
+
+.not-found-image {
+    width: 250px;
+    max-width: 100%;
+    margin-bottom: 20px;
+}
+
+.profile-actions-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    background-color: #2982b9;
+    color: #444444;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: 0.3s ease-in-out;
+    border: none;
+    cursor: pointer;
+}
+
+.profile-actions-button:hover {
+    background-color: rgba(3, 119, 205, 0.78);
+}
+
+.profile-actions-button svg {
+    width: 24px;
+    height: 24px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
