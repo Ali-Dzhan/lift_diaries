@@ -55,8 +55,15 @@ public class WorkoutService {
         workout.setCompleted(isCompleted);
         workout.setCreatedOn(LocalDateTime.now());
 
-        exercises.forEach(exercise -> exercise.setWorkout(workout));
+        workout = workoutRepository.save(workout);
 
+        List<Exercise> savedExercises = new ArrayList<>();
+        for (Exercise exercise : exercises) {
+            exercise.setWorkout(workout);
+            savedExercises.add(exerciseRepository.save(exercise));
+        }
+
+        workout.setExercises(savedExercises);
         return workoutRepository.save(workout);
     }
 
@@ -77,7 +84,7 @@ public class WorkoutService {
 
         Workout newWorkout = new Workout();
         newWorkout.setUser(existingWorkout.getUser());
-        newWorkout.setName(existingWorkout.getName() + " (Repeated)");
+        newWorkout.setName(existingWorkout.getName());
         newWorkout.setCreatedOn(LocalDateTime.now());
 
         List<Exercise> newExercises = new ArrayList<>();
@@ -90,7 +97,7 @@ public class WorkoutService {
             newExercise.setReps(exercise.getReps());
             newExercise.setCategory(exercise.getCategory());
             newExercise.setWorkout(newWorkout);
-            newExercises.add(newExercise);
+            newExercises.add(exerciseRepository.save(newExercise));
         }
 
         newWorkout.setExercises(newExercises);
@@ -133,9 +140,16 @@ public class WorkoutService {
         }
     }
 
+    @Transactional
     public int deleteWorkoutsBefore(LocalDate oneMonthAgo) {
-        int deletedCount = workoutRepository.deleteByCreatedOnBefore(oneMonthAgo.atStartOfDay());
-        System.out.println("✅ " + deletedCount + " old workouts deleted.");
-        return deletedCount;
+        List<Workout> oldWorkouts = workoutRepository.findByCreatedOnBefore(oneMonthAgo.atStartOfDay());
+
+        for (Workout workout : oldWorkouts) {
+            progressRepository.deleteByWorkoutId(workout.getId());
+            workout.getExercises().forEach(exercise -> exercise.setWorkout(null));
+        }
+
+        workoutRepository.deleteAll(oldWorkouts);
+        return oldWorkouts.size();
     }
 }

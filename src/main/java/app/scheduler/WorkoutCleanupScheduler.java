@@ -17,10 +17,11 @@ public class WorkoutCleanupScheduler {
         this.workoutService = workoutService;
     }
 
-    @Scheduled(cron = "0 0 1 1 * ?")
+    @Scheduled(cron = "0 0 0 1 * ?")
     public void deleteOldWorkouts() {
         LocalDate oneMonthAgo = LocalDate.now().minusMonths(1);
+
         int deleted = workoutService.deleteWorkoutsBefore(oneMonthAgo);
-        System.out.println("Deleted " + deleted + " old workouts from the database.");
+        System.out.println("🗑 Deleted " + deleted + " old workouts.");
     }
 }

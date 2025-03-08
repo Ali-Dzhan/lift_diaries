@@ -50,7 +50,7 @@ public class WorkoutController {
     }
 
     @GetMapping
-    public ModelAndView selectCategories( @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+    public ModelAndView selectCategories(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
         UUID userId = authenticationMetadata.getUserId();
         User user = userService.getById(userId);
 
