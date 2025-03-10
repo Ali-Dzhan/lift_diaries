@@ -1,13 +1,13 @@
 package app.web;
 
-import app.entity.exercise.model.Exercise;
-import app.entity.exercise.service.ExerciseService;
-import app.entity.progress.model.Progress;
-import app.entity.progress.service.ProgressService;
-import app.entity.user.model.User;
-import app.entity.user.service.UserService;
-import app.entity.workout.model.Workout;
-import app.entity.workout.service.WorkoutService;
+import app.exercise.model.Exercise;
+import app.exercise.service.ExerciseService;
+import app.progress.model.Progress;
+import app.progress.service.ProgressService;
+import app.user.model.User;
+import app.user.service.UserService;
+import app.workout.model.Workout;
+import app.workout.service.WorkoutService;
 import app.security.AuthenticationMetadata;
 import app.web.dto.WorkoutProgress;
 import org.springframework.beans.factory.annotation.Autowired;

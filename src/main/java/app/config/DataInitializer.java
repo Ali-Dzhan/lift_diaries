@@ -1,7 +1,7 @@
 package app.config;
 
-import app.entity.category.model.Category;
-import app.entity.category.repository.CategoryRepository;
+import app.category.model.Category;
+import app.category.repository.CategoryRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

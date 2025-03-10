@@ -1,6 +1,6 @@
 package app.web.mapper;
 
-import app.entity.user.model.User;
+import app.user.model.User;
 import app.web.dto.UserEditRequest;
 import lombok.experimental.UtilityClass;
 

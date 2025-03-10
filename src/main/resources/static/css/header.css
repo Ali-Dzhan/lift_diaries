@@ -28,8 +28,8 @@
     text-transform: uppercase;
     word-spacing: 1px;
     letter-spacing: 2px;
-    margin-bottom: 20px; /* Added margin for better spacing */
-    margin-top: 20px; /* Remove underline */
+    margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 a {
@@ -42,13 +42,15 @@ a {
     gap: 1rem;
     margin: 0;
     padding: 0;
+    align-items: center;
 }
 
 .nav-link {
-    text-decoration: none; /* Remove underline */
+    text-decoration: none;
     font-size: 1rem;
     color: #333;
     transition: color 0.3s;
+    align-items: center;
 }
 
 .header-utils {
@@ -129,11 +131,10 @@ a {
     background: #e9ecef;
 }
 
-/* Ensure the icon matches the text color dynamically */
 .dropdown-icon {
     width: 18px;
     height: 18px;
-    fill: currentColor; /* Icon matches text color */
+    fill: currentColor;
     transition: fill 0.2s ease;
 }
 

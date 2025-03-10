@@ -1,8 +1,8 @@
 package app.web;
 
-import app.entity.progress.service.ProgressService;
-import app.entity.user.model.User;
-import app.entity.user.service.UserService;
+import app.progress.service.ProgressService;
+import app.user.model.User;
+import app.user.service.UserService;
 import app.security.AuthenticationMetadata;
 import app.web.dto.LoginRequest;
 import app.web.dto.RegisterRequest;

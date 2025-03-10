@@ -1,7 +1,7 @@
 package app.web;
 
-import app.entity.user.model.User;
-import app.entity.user.service.UserService;
+import app.user.model.User;
+import app.user.service.UserService;
 import app.security.AuthenticationMetadata;
 import app.web.dto.UserEditRequest;
 import app.web.mapper.DtoMapper;

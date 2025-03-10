@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="theme-color" content="#efd36c">
+    <title>Lifting Diaries | Notifications</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/notifications.css">
+    <link rel="icon" href="/images/fav_48px.ico">
+    <script src="/css/dropdown.js" defer></script>
+</head>
+<body>
+<div id="app">
+    <main class="layout">
+        <div class="main-card">
+            <th:block th:insert="~{fragments/header :: header}"></th:block>
+
+            <div class="app-title">
+                <h1>🔔 Notifications</h1>
+            </div>
+
+            <div class="notification-settings">
+                <form th:action="@{/notifications/user-preference}" method="POST">
+                    <input type="hidden" name="_method" value="PUT"/>
+                    <span class="switch-label">Change state:</span>
+                    <input type="hidden" name="_method" value="PUT"/>
+                    <label class="switch-container">
+                        <input type="checkbox"
+                               id="enableNotifications"
+                               th:checked="${notificationPreference.enabled}"
+                               onchange="document.getElementById('enabledHidden').value = this.checked ? 'true' : 'false'">
+                        <span class="switch-track"></span>
+                    </label>
+                    <input type="hidden" id="enabledHidden" name="enabled" th:value="${notificationPreference.enabled ? 'true' : 'false'}"/>
+                    <button type="submit" class="save-btn">Save</button>
+                </form>
+            </div>
+
+            <div class="notification-email-info">
+                <p th:text="${#strings.isEmpty(notificationPreference.contactInfo)
+                    ? 'Edit profile and add email'
+                    : 'Source: ' + notificationPreference.contactInfo}">
+                </p>
+            </div>
+
+            <div class="streak-notification" th:if="${notificationHistory != null}">
+                <p class="highlight-notification" th:text="${notificationHistory.get(0).getBody()}"></p>
+            </div>
+
+            <div class="table-responsive">
+                <table class="notification-table">
+                    <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Body</th>
+                        <th>Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="notification : ${notificationHistory}">
+                        <td th:text="${notification.subject}">Subject</td>
+                        <td th:text="${notification.body}">Body</td>
+                        <td th:text="${#temporals.format(notification.createdOn, 'yyyy-MM-dd HH:mm')}">Date</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <th:block th:insert="~{fragments/footer :: footer}"></th:block>
+        </div>
+    </main>
+</div>
+</body>
+</html>

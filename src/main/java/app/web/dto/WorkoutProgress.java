@@ -1,7 +1,7 @@
 package app.web.dto;
 
-import app.entity.progress.model.Progress;
-import app.entity.workout.model.Workout;
+import app.progress.model.Progress;
+import app.workout.model.Workout;
 import lombok.*;
 
 import java.time.LocalDateTime;

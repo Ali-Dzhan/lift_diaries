@@ -1,14 +1,14 @@
 package app.web;
 
-import app.entity.category.model.Category;
-import app.entity.category.repository.CategoryRepository;
-import app.entity.exercise.model.Exercise;
-import app.entity.exercise.service.ExerciseService;
-import app.entity.progress.service.ProgressService;
-import app.entity.user.model.User;
-import app.entity.user.service.UserService;
-import app.entity.workout.model.Workout;
-import app.entity.workout.service.WorkoutService;
+import app.category.model.Category;
+import app.category.repository.CategoryRepository;
+import app.exercise.model.Exercise;
+import app.exercise.service.ExerciseService;
+import app.progress.service.ProgressService;
+import app.user.model.User;
+import app.user.service.UserService;
+import app.workout.model.Workout;
+import app.workout.service.WorkoutService;
 import app.security.AuthenticationMetadata;
 import app.web.dto.CategoryDTO;
 import app.web.dto.ExerciseDTO;

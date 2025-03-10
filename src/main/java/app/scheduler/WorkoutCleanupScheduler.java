@@ -1,6 +1,6 @@
 package app.scheduler;
 
-import app.entity.workout.service.WorkoutService;
+import app.workout.service.WorkoutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

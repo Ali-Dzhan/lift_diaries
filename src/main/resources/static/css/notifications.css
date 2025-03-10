@@ -1,0 +1,134 @@
+.main-card {
+    max-width: 950px;
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.notification-settings {
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+}
+
+.notification-settings form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+#enableNotifications {
+    transform: scale(1.2);
+}
+
+.save-btn {
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.save-btn:hover {
+    background-color: #1d5980;
+}
+
+.streak-notification {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 18px;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.notification-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
+}
+
+.notification-table th,
+.notification-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.notification-table th {
+    background-color: #2980b9;
+    color: white;
+}
+
+.notification-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.notification-table tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+.switch-container {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 18px;
+    margin-right: 10px;
+}
+
+.switch-container input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    display: none;
+}
+
+.switch-track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 18px;
+    background-color: #ddd;
+    border-radius: 9px;
+    cursor: pointer;
+    transition: background-color 0.5s;
+}
+
+.switch-track::before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    background-color: #fff;
+    border-radius: 50%;
+    transition: transform 0.5s;
+}
+
+.switch-container input[type="checkbox"]:checked ~ .switch-track {
+    background-color: #092c3e;
+}
+
+.switch-container input[type="checkbox"]:checked ~ .switch-track::before {
+    transform: translateX(20px);
+}
+
+.switch-label {
+    font-size: 14px;
+    color: #333;
+    margin-right: 10px;
+}

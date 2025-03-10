@@ -1,7 +1,7 @@
 
 package app.security;
 
-import app.entity.user.model.UserRole;
+import app.user.model.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
