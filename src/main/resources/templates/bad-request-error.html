@@ -1,18 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#efd36c">
-    <title>Lifting Diaries | Error</title>
+    <title>Error 400 - Bad Request</title>
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/footer.css">
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/error-page.css">
     <link rel="icon" href="/images/fav_48px.ico">
 </head>
-
 <body>
 <div id="app">
     <main class="layout">
@@ -20,16 +17,12 @@
             <th:block th:insert="~{fragments/header :: header}"></th:block>
 
             <div class="error-container">
-                <h1 th:text="'Error ' + ${errorCode}">Something Went Wrong</h1>
-                <p th:text="${errorMessage}">An unexpected error occurred. Please try again later.</p>
-                <img th:src="@{https://www.svgrepo.com/show/429282/server-error.svg}"
-                     alt="Error Image" class="not-found-image">
+                <h1>Error 400</h1>
+                <p>Bad Request. Please check your input and try again.</p>
+                <img th:src="@{https://www.svgrepo.com/show/521279/error-16.svg}"
+                     alt="Bad Request" class="error-image">
                 <a th:href="@{/home}" class="profile-actions-button">
                     <p>Go to Homepage</p>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4 12h16m-6-6l6 6-6 6" stroke="currentColor" stroke-width="2"
-                              stroke-linecap="round" stroke-linejoin="round"></path>
-                    </svg>
                 </a>
             </div>
 

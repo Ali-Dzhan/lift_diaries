@@ -46,7 +46,7 @@
                 </p>
             </div>
 
-            <div class="streak-notification" th:if="${notificationHistory != null}">
+            <div class="streak-notification" th:if="${notificationHistory != null and !#lists.isEmpty(notificationHistory)}">
                 <p class="highlight-notification" th:text="${notificationHistory.get(0).getBody()}"></p>
             </div>
 

@@ -7,7 +7,7 @@ import app.user.model.User;
 import app.user.repository.UserRepository;
 import app.workout.model.Workout;
 import app.workout.repository.WorkoutRepository;
-import app.exception.DomainException;
+import app.exception.UsernameAlreadyExistException;
 import app.security.AuthenticationMetadata;
 import app.web.dto.ExerciseDTO;
 import jakarta.transaction.Transactional;
@@ -46,7 +46,7 @@ public class WorkoutService {
                                  List<Exercise> exercises, boolean isCompleted) {
         UUID userId = authenticationMetadata.getUserId();
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new DomainException("User not found"));
+                .orElseThrow(() -> new UsernameAlreadyExistException("User not found"));
 
         Workout workout = new Workout();
         workout.setUser(user);

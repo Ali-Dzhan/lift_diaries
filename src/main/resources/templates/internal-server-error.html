@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#efd36c">
-    <title>Lifting Diaries | Not Found</title>
+    <title>Lifting Diaries | Error</title>
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/footer.css">
     <link rel="stylesheet" href="/css/header.css">
@@ -19,14 +19,16 @@
         <div class="main-card">
             <th:block th:insert="~{fragments/header :: header}"></th:block>
 
-            <div class="not-found-container">
-                <h1>Error 404</h1>
-                <p>The page you're looking for doesn't exist.</p>
-                <img th:src="@{https://www.svgrepo.com/show/103113/error-404-on-screen.svg}" alt="404 Not Found" class="not-found-image">
+            <div class="error-container">
+                <h1>Something Went Wrong</h1>
+                <p>An unexpected error occurred. Please try again later.</p>
+                <img th:src="@{https://www.svgrepo.com/show/441689/page-not-found.svg}"
+                     alt="Error Image" class="not-found-image">
                 <a th:href="@{/home}" class="profile-actions-button">
                     <p>Go to Homepage</p>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4 12h16m-6-6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M4 12h16m-6-6l6 6-6 6" stroke="currentColor" stroke-width="2"
+                              stroke-linecap="round" stroke-linejoin="round"></path>
                     </svg>
                 </a>
             </div>

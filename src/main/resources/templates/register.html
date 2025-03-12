@@ -29,6 +29,7 @@
                 <label for="username">Username</label>
                 <input type="text" placeholder="Choose a username" id="username" th:field="*{username}" required>
                 <p class="alert-warning" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+                <p class="alert-warning" th:text="${usernameAlreadyExistMessage}"></p>
 
                 <label for="password">Password</label>
                 <input type="password" placeholder="Create a password" id="password" th:field="*{password}" required>

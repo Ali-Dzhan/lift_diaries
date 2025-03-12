@@ -4,7 +4,7 @@ import app.notification.service.NotificationService;
 import app.user.model.User;
 import app.user.model.UserRole;
 import app.user.repository.UserRepository;
-import app.exception.DomainException;
+import app.exception.UsernameAlreadyExistException;
 import app.security.AuthenticationMetadata;
 import app.web.dto.RegisterRequest;
 import app.web.dto.UserEditRequest;
@@ -46,7 +46,7 @@ public class UserService implements UserDetailsService {
     public User register(RegisterRequest registerRequest) {
         Optional<User> optionUser = userRepository.findByUsername(registerRequest.getUsername());
         if (optionUser.isPresent()) {
-            throw new DomainException("*Username [%s] already exist.*".formatted(registerRequest.getUsername()));
+            throw new UsernameAlreadyExistException("*Username [%s] already exist.*".formatted(registerRequest.getUsername()));
         }
 
         User user = userRepository.save(initializeUser(registerRequest));
@@ -98,7 +98,7 @@ public class UserService implements UserDetailsService {
     public User getById(UUID id) {
 
         return userRepository.findById(id).orElseThrow(()
-                -> new DomainException("User with id [%s] does not exist.".formatted(id)));
+                -> new UsernameAlreadyExistException("User with id [%s] does not exist.".formatted(id)));
     }
 
     @CacheEvict(value = "users", allEntries = true)
@@ -127,7 +127,7 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new DomainException("User with this username does not exist."));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameAlreadyExistException("User with this username does not exist."));
 
         return new AuthenticationMetadata(user.getId(), username, user.getPassword(), user.getRole(), user.isActive());
     }
