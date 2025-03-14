@@ -32,7 +32,7 @@
                     <table class="progress-table">
                         <thead>
                         <tr>
-                            <th>Date</th>
+                            <th>Date & name</th>
                             <th>Exercises</th>
                             <th>Actions</th>
                         </tr>
@@ -40,8 +40,12 @@
                         <tbody>
                         <tr th:each="workoutProgress : ${workoutProgressList}">
                             <td class="date-column">
+                                <strong th:text="${workoutProgress.progressList[0].workout.name}"></strong>
+                                <br><br>
+                                <span class="date-wrap">
                                 <span class="workout-icon">✔</span>
-                                <strong th:text="${#temporals.format(workoutProgress.progressList[0].timestamp, 'yyyy-MM-dd')}"></strong>
+                                    <strong th:text="${#temporals.format(workoutProgress.progressList[0].timestamp, 'yyyy-MM-dd')}"></strong>
+                                </span>
                             </td>
                             <td class="exercises-column">
                                 <div class="exercise-container">

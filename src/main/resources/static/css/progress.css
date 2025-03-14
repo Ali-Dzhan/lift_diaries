@@ -1,3 +1,10 @@
+.main-card {
+    max-width: 950px;
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
 body {
     font-family: Arial, sans-serif;
     text-align: center;
@@ -124,4 +131,8 @@ h2 {
 .table-icon-trash:hover {
     border: solid 2px #d9534f;
     border-radius: 30%;
+}
+
+.date-wrap {
+    white-space: nowrap;
 }

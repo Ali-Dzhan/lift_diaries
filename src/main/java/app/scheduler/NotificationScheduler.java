@@ -27,7 +27,6 @@ public class NotificationScheduler {
 
         List<User> allUsers = userService.getAllUsers();
         for (User user : allUsers) {
-
             notificationService.checkAndSendWorkoutNotification(user.getId());
         }
     }
