@@ -58,7 +58,9 @@
                 </div>
 
                 <div class="profile-edit-section">
-                    <h2>✏ Edit Profile</h2>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa60dw4Lt7ZWggNI0X_skqJxXASme0GVLAFg&s"
+                         alt="Notifications" class="nav-icon" width="40px" height="40px">
+                    <h2>Edit Profile</h2>
                     <form class="form" th:action="@{'/users/' + ${user.id} + '/profile'}" th:method="PUT" th:object="${userEditRequest}">
 
                         <div class="input-group">

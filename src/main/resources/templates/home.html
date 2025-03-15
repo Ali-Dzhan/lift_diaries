@@ -24,17 +24,31 @@
                 <h1>Welcome back, <span th:text="${#strings.defaultString(user.firstName, user.username)}"></span></h1>
             </div>
 
+            <hr class="hr-1">
+
             <div class="quick-stats">
                 <h2>🔥 Workout Streak: <span th:text="${streak}"></span> Days</h2>
                 <h2>📅 Completed Workouts: [<span th:text="${totalWorkouts}"></span>]</h2>
-                <p>🏋️ Next Workout Suggestion: "Your last workout focused on
-                    <span th:text="${lastMuscleGroup}"></span>. Want to continue or try something new?"</p>
+                <p>🏋️ “Your last workout focused on <span th:text="${lastMuscleGroup}"></span>.
+                    Want to continue or try something new?” </p>
             </div>
 
             <div class="cta-section">
-                <a th:href="@{/workout}" class="cta-button">Workout Now</a>
-                <a th:href="@{/progress}" class="cta-button">View Progress</a>
-                <a th:href="@{'/users/' + ${user.id} + '/profile'}" class="cta-button">Edit Profile</a>
+                <a th:href="@{/progress}" class="cta-button">
+                    <div class="overlay"></div>
+                    <img th:src="@{/images/measure.jpg}" alt="Progress background" />
+                    <span>View Progress</span>
+                </a>
+                <a th:href="@{/workout}" class="cta-button">
+                    <div class="overlay"></div>
+                    <img th:src="@{/images/workout.jpg}" alt="Workout background" />
+                    <span>Workout Now</span>
+                </a>
+                <a th:href="@{'/users/' + ${user.id} + '/profile'}" class="cta-button">
+                    <div class="overlay"></div>
+                    <img th:src="@{/images/arnold-front-double.webp}" alt="Edit Profile background" />
+                    <span>View Profile</span>
+                </a>
             </div>
 
             <div class="recent-activity">
@@ -46,7 +60,10 @@
             <div class="motivational-section">
                 <h2>💪 Quote of the Day</h2>
                 <p>"Strength doesn’t come from what you can do, it comes from overcoming the things you once thought you couldn’t."</p>
-                <p>🏆 Milestone: "You’ve completed [<span th:text="${monthlyWorkouts}"></span>] workouts this month! Keep pushing!"</p>
+                <p>🏆 Milestone:
+                    “You’ve completed [<span th:text="${monthlyWorkouts}"></span>] workouts this month!
+                    Keep pushing!”
+                </p>
             </div>
 
             <th:block th:insert="~{fragments/footer :: footer}"></th:block>
