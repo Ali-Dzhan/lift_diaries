@@ -47,16 +47,16 @@ body {
     align-items: center;
     padding: 2rem;
     min-height: 100vh;
-    background-image: radial-gradient(circle at 82% 60%,rgba(59,59,59,.06) 0,rgba(59,59,59,.06) 69%,
-    transparent 0,transparent 100%),radial-gradient(circle at 36% 0,hsla(0,0%,73%,.06) 0,hsla(0,0%,73%,.06) 59%,
-    transparent 0,transparent 100%),radial-gradient(circle at 58% 82%,hsla(0,0%,72%,.06) 0,hsla(0,0%,72%,.06) 17%,
-    transparent 0,transparent 100%),radial-gradient(circle at 71% 32%,hsla(0,0%,7%,.06) 0,hsla(0,0%,7%,.06) 40%,
-    transparent 0,transparent 100%),radial-gradient(circle at 77% 5%,rgba(31,31,31,.06) 0,rgba(31,31,31,.06) 52%,
-    transparent 0,transparent 100%),radial-gradient(circle at 96% 80%,hsla(0,0%,4%,.06) 0,hsla(0,0%,4%,.06) 73%,
-    transparent 0,transparent 100%),radial-gradient(circle at 91% 59%,hsla(0,0%,99%,.06) 0,hsla(0,0%,99%,.06) 44%,
-    transparent 0,transparent 100%),radial-gradient(circle at 52% 82%,hsla(0,0%,87%,.06) 0,hsla(0,0%,87%,.06) 87%,
-    transparent 0,transparent 100%),radial-gradient(circle at 84% 89%,hsla(0,0%,63%,.06) 0,hsla(0,0%,63%,.06) 57%,
-    transparent 0,transparent 100%),linear-gradient(90deg, #e0f7fa, #b3e5fc);
+    background-image: radial-gradient(circle at 82% 60%, rgba(228, 244, 255, 0.18) 0, rgba(161, 237, 255, 0.73) 69%,
+    transparent 0,transparent 100%),radial-gradient(circle at 36% 0, hsla(0, 0%, 73%, 0.03) 0, hsla(198, 97%, 73%, 0.16) 59%,
+    transparent 0,transparent 100%),radial-gradient(circle at 58% 82%,hsla(0,0%,72%,.06) 0, hsla(203, 100%, 94%, 0.47) 67%,
+    transparent 0,transparent 100%),radial-gradient(circle at 71% 32%, hsla(206, 100%, 88%, 0.29) 0, hsla(206, 100%, 89%, 0.29) 40%,
+    transparent 0,transparent 100%),radial-gradient(circle at 77% 5%, rgba(147, 216, 255, 0.18) 0, rgba(255, 255, 255, 0.42) 52%,
+    transparent 0,transparent 100%),radial-gradient(circle at 96% 80%, hsla(206, 74%, 79%, 0.31) 0, hsla(202, 100%, 79%, 0.12) 73%,
+    transparent 0,transparent 100%),radial-gradient(circle at 91% 59%,hsla(0,0%,99%,.06) 0, hsla(198, 94%, 75%, 0.39) 44%,
+    transparent 0,transparent 100%),radial-gradient(circle at 52% 82%,hsla(0,0%,87%,.06) 0, hsla(202, 85%, 71%, 0.18) 87%,
+    transparent 0,transparent 100%),radial-gradient(circle at 84% 89%, hsla(0, 0%, 100%, 0.16) 0, hsla(206, 88%, 77%, 0.17) 57%,
+    transparent 0,transparent 100%),linear-gradient(90deg, rgb(167, 236, 255), rgba(219, 241, 253, 0.68));
 }
 
 .main-card {
@@ -66,14 +66,14 @@ body {
     line-height: 1.55;
     font-size: 1rem;
     -webkit-font-smoothing: antialiased;
-    outline: 0px;
+    outline: 0;
     -webkit-tap-highlight-color: transparent;
     display: block;
     text-decoration: none;
     color: rgb(0, 0, 0);
     box-sizing: border-box;
     border-radius: 0.5rem;
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 0.0625rem 0.1875rem, rgba(0, 0, 0, 0.05) 0px 0.625rem 0.9375rem -0.3125rem, rgba(0, 0, 0, 0.04) 0px 0.4375rem 0.4375rem -0.3125rem;
+    box-shadow: rgba(0, 0, 0, 0.05) 0 0.0625rem 0.1875rem, rgba(0, 0, 0, 0.05) 0 0.625rem 0.9375rem -0.3125rem, rgba(0, 0, 0, 0.04) 0 0.4375rem 0.4375rem -0.3125rem;
     position: relative;
     overflow: hidden;
     background-color: rgb(255, 255, 255);

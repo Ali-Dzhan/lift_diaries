@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -40,8 +41,7 @@ public class Exercise {
     @JsonIgnore
     private Category category;
 
-    @ManyToOne
-    @JoinColumn(name = "workout_id")
+    @ManyToMany(mappedBy = "exercises")
     @JsonIgnore
-    private Workout workout;
+    private List<Workout> workout;
 }

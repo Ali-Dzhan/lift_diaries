@@ -7,6 +7,7 @@ import app.exercise.repository.ExerciseRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
 public class DataInitializer {
 
     @Bean
+    @Order(1)
     CommandLineRunner initCategories(CategoryRepository categoryRepository) {
         return args -> {
             if (categoryRepository.count() == 0) {
@@ -30,6 +32,7 @@ public class DataInitializer {
     }
 
     @Bean
+    @Order(2)
     CommandLineRunner initExercises(ExerciseRepository exerciseRepository, CategoryRepository categoryRepository) {
         return args -> {
             if (exerciseRepository.count() == 0) {

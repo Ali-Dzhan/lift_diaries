@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,8 +31,13 @@ public class Workout {
     @JsonIgnore
     private User user;
 
-    @OneToMany(mappedBy = "workout", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    private List<Exercise> exercises;
+    @ManyToMany
+    @JoinTable(
+            name = "workout_exercises",
+            joinColumns = @JoinColumn(name = "workout_id"),
+            inverseJoinColumns = @JoinColumn(name = "exercise_id")
+    )
+    private List<Exercise> exercises = new ArrayList<>();
 
     private boolean completed;
 

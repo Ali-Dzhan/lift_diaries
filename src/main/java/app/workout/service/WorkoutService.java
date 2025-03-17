@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,6 +43,7 @@ public class WorkoutService {
 
     public Workout createWorkout(String workoutName, AuthenticationMetadata authenticationMetadata,
                                  List<Exercise> exercises, boolean isCompleted) {
+
         UUID userId = authenticationMetadata.getUserId();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameAlreadyExistException("User not found"));
@@ -51,20 +51,16 @@ public class WorkoutService {
         Workout workout = new Workout();
         workout.setUser(user);
         workout.setName(workoutName);
-        workout.setExercises(exercises);
         workout.setCompleted(isCompleted);
         workout.setCreatedOn(LocalDateTime.now());
 
         workout = workoutRepository.save(workout);
 
-        List<Exercise> savedExercises = new ArrayList<>();
-        for (Exercise exercise : exercises) {
-            exercise.setWorkout(workout);
-            savedExercises.add(exerciseRepository.save(exercise));
-        }
+        workout.getExercises().addAll(exercises);
 
-        workout.setExercises(savedExercises);
-        return workoutRepository.save(workout);
+        workout = workoutRepository.save(workout);
+
+        return workout;
     }
 
     public Workout getWorkoutById(UUID id) {
@@ -74,10 +70,9 @@ public class WorkoutService {
 
     @Transactional
     public Workout repeatWorkout(UUID workoutId, AuthenticationMetadata authenticationMetadata) {
-        Workout existingWorkout = workoutRepository.findById(workoutId)
-                .orElseThrow(() -> new IllegalArgumentException("Workout not found"));
 
-        List<Exercise> existingExercises = exerciseRepository.findAllByWorkoutId(workoutId);
+        Workout existingWorkout = getWorkoutById(workoutId);
+        List<Exercise> existingExercises = existingWorkout.getExercises();
         if (existingExercises.isEmpty()) {
             throw new IllegalStateException("No exercises found for the repeated workout.");
         }
@@ -85,40 +80,21 @@ public class WorkoutService {
         Workout newWorkout = new Workout();
         newWorkout.setUser(existingWorkout.getUser());
         newWorkout.setName(existingWorkout.getName());
+        newWorkout.setCompleted(false);
         newWorkout.setCreatedOn(LocalDateTime.now());
 
-        List<Exercise> newExercises = new ArrayList<>();
-        for (Exercise exercise : existingExercises) {
-            Exercise newExercise = new Exercise();
-            newExercise.setName(exercise.getName());
-            newExercise.setDescription(exercise.getDescription());
-            newExercise.setGifUrl(exercise.getGifUrl());
-            newExercise.setSets(exercise.getSets());
-            newExercise.setReps(exercise.getReps());
-            newExercise.setCategory(exercise.getCategory());
-            newExercise.setWorkout(newWorkout);
-            newExercises.add(exerciseRepository.save(newExercise));
-        }
+        newWorkout = workoutRepository.save(newWorkout);
 
-        newWorkout.setExercises(newExercises);
+        newWorkout.getExercises().addAll(existingExercises);
+
         return workoutRepository.save(newWorkout);
     }
 
+
     @Transactional
     public void deleteWorkoutAndProgress(UUID workoutId) {
-        Workout workout = workoutRepository.findById(workoutId)
-                .orElseThrow(() -> new IllegalArgumentException("Workout not found"));
-
-        workout = workoutRepository.save(workout);
-
-        for (Exercise e : workout.getExercises()) {
-            e.setWorkout(null);
-            exerciseRepository.save(e);
-        }
-
-        workoutRepository.save(workout);
         progressRepository.deleteByWorkoutId(workoutId);
-        workoutRepository.delete(workout);
+        workoutRepository.deleteById(workoutId);
     }
 
     @Transactional
