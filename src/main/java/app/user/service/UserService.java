@@ -50,7 +50,7 @@ public class UserService implements UserDetailsService {
         }
 
         User user = userRepository.save(initializeUser(registerRequest));
-        notificationService.saveNotificationPreference(user.getId(), false, null);
+        notificationService.saveNotificationPreference(user.getId(), false, user.getEmail());
 
         log.info("Successfully create new user account for username [%s] and id [%s]"
                 .formatted(user.getUsername(), user.getId()));
@@ -71,6 +71,8 @@ public class UserService implements UserDetailsService {
 
         if (!userEditRequest.getEmail().isBlank()) {
             notificationService.saveNotificationPreference(userId, true, userEditRequest.getEmail());
+        } else {
+            notificationService.saveNotificationPreference(userId, false, null);
         }
 
         userRepository.save(user);

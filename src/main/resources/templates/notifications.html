@@ -22,6 +22,11 @@
                 <h1>🔔 Notifications</h1>
             </div>
 
+            <div class="feign-error-message"
+                 th:if="${feignCallErrorMessage != null}">
+                <p th:text="${feignCallErrorMessage}" class="error-text"></p>
+            </div>
+
             <div class="notification-settings">
                 <form th:action="@{/notifications/user-preference}" method="POST">
                     <input type="hidden" name="_method" value="PUT"/>

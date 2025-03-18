@@ -1,6 +1,8 @@
 package app.web;
 
+import app.exception.NotificationServiceFeignCallException;
 import app.exception.UsernameAlreadyExistException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MissingRequestValueException;
@@ -16,7 +18,7 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 public class ExceptionAdvice {
 
     @ExceptionHandler(UsernameAlreadyExistException.class)
-    public String handleUsernameAlreadyExist(RedirectAttributes redirectAttributes, UsernameAlreadyExistException exception) {
+    public String handleUsernameAlreadyExist(HttpServletRequest request, RedirectAttributes redirectAttributes, UsernameAlreadyExistException exception) {
         String message = exception.getMessage();
 
         redirectAttributes.addFlashAttribute("usernameAlreadyExistMessage", message);
@@ -30,7 +32,7 @@ public class ExceptionAdvice {
             MethodArgumentTypeMismatchException.class,
             MissingRequestValueException.class
     })
-    public ModelAndView handleNotFoundExceptions() {
+    public ModelAndView handleNotFoundExceptions(Exception exception) {
 
         return new ModelAndView("not-found");
     }
@@ -56,5 +58,15 @@ public class ExceptionAdvice {
         modelAndView.addObject("errorCode", HttpStatus.BAD_REQUEST.value());
 
         return modelAndView;
+    }
+
+    @ExceptionHandler(NotificationServiceFeignCallException.class)
+    public String handleNotificationFeignCallException(
+            RedirectAttributes redirectAttributes,
+            NotificationServiceFeignCallException exception) {
+
+        String message = exception.getMessage();
+        redirectAttributes.addFlashAttribute("feignCallErrorMessage", message);
+        return "redirect:/notifications";
     }
 }

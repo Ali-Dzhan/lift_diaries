@@ -1,11 +1,13 @@
 package app.notification.service;
 
+import app.exception.NotificationServiceFeignCallException;
 import app.notification.client.NotificationClient;
 import app.notification.client.dto.Notification;
 import app.notification.client.dto.NotificationPreference;
 import app.notification.client.dto.NotificationRequest;
 import app.notification.client.dto.UpsertNotificationPreference;
 import app.progress.service.ProgressService;
+import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,9 @@ public class NotificationService {
 
     private final NotificationClient notificationClient;
     private final ProgressService progressService;
+
+    @Value("${notifications.failure-message}")
+    private String failureMessage;
 
     @Autowired
     public NotificationService(NotificationClient notificationClient, ProgressService progressService) {
@@ -50,6 +55,7 @@ public class NotificationService {
             }
         } catch (Exception e) {
             log.warn("Error sending in-app notification to user [{}]: {}", userId, e.getMessage());
+            throw new NotificationServiceFeignCallException(failureMessage);
         }
     }
 
@@ -61,14 +67,14 @@ public class NotificationService {
                 .build();
 
         try {
-            ResponseEntity<Void> response = notificationClient.upsertNotificationPreference(pref);
-            if (!response.getStatusCode().is2xxSuccessful()) {
-                log.error("Failed to save notification preference for user [{}]", userId);
-            } else {
-                log.info("Saved notification preference for user [{}]", userId);
+            ResponseEntity<Void> httpResponse = notificationClient.upsertNotificationPreference(pref);
+            if (httpResponse == null || !httpResponse.getStatusCode().is2xxSuccessful()) {
+                log.error("[Feign call to notifications failed] Can't save user preference for user with id = [{}]", userId);
+                throw new NotificationServiceFeignCallException("Failed to upsert user preference for userId=" + userId);
             }
         } catch (Exception e) {
-            log.error("Error saving notification preference for user [{}]: {}", userId, e.getMessage());
+            log.error("Unable to call notifications. Cause: {}", e.getMessage());
+            throw new NotificationServiceFeignCallException("Error calling notification service for userId=" + userId);
         }
     }
 
@@ -76,18 +82,23 @@ public class NotificationService {
         ResponseEntity<NotificationPreference> response = notificationClient.getUserPreference(userId);
         if (response == null || !response.getStatusCode().is2xxSuccessful()) {
             log.error("Failed to retrieve preference for user [{}]", userId);
-            return null;
+            throw new NotificationServiceFeignCallException("Unable to get preference for userId=" + userId);
         }
         return response.getBody();
     }
 
     public List<Notification> getNotificationHistory(UUID userId) {
-        ResponseEntity<List<Notification>> response = notificationClient.getNotificationHistory(userId);
-        if (response == null || !response.getStatusCode().is2xxSuccessful()) {
-            log.error("Failed to retrieve notification history for user [{}]", userId);
-            return List.of();
+        try {
+            ResponseEntity<List<Notification>> response = notificationClient.getNotificationHistory(userId);
+            if (response == null || !response.getStatusCode().is2xxSuccessful()) {
+                log.error("Failed to retrieve notification history for user [{}]", userId);
+                throw new NotificationServiceFeignCallException(failureMessage);
+            }
+            return response.getBody();
+        } catch (Exception e) {
+            log.error("Unable to get notification history. Cause: {}", e.getMessage());
+            throw new NotificationServiceFeignCallException(failureMessage);
         }
-        return response.getBody();
     }
 
     public void updateNotificationPreference(UUID userId, boolean enabled) {
@@ -95,7 +106,8 @@ public class NotificationService {
         try {
             notificationClient.updateNotificationPreference(userId, enabled);
         } catch (Exception e) {
-            log.warn("Can't update notification preferences for user with id = [%s].".formatted(userId));
+            log.warn("Can't update notification preferences for user with id = [{}].", userId);
+            throw new NotificationServiceFeignCallException(failureMessage);
         }
     }
 }
