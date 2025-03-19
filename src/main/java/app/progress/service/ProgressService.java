@@ -104,10 +104,11 @@ public class ProgressService {
         List<Progress> progresses = progressRepository.findByUserId(userId);
         if (progresses.isEmpty()) return List.of("No recent workouts");
 
-        progresses.sort(Comparator.comparing(Progress::getTimestamp).reversed());
-        UUID lastWorkoutId = progresses.get(0).getWorkout().getId();
+        List<Progress> sortedProgresses = new ArrayList<>(progresses);
+        sortedProgresses.sort(Comparator.comparing(Progress::getTimestamp).reversed());
+        UUID lastWorkoutId = sortedProgresses.get(0).getWorkout().getId();
 
-        return progresses.stream()
+        return sortedProgresses.stream()
                 .filter(p -> p.getWorkout().getId().equals(lastWorkoutId))
                 .map(p -> p.getExercise().getName())
                 .distinct()

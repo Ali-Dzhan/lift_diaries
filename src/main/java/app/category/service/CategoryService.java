@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.*;
 
-
 @Service
 @Slf4j
 public class CategoryService {
@@ -43,7 +42,8 @@ public class CategoryService {
         }
 
         return allCategories.stream()
-                .min(Comparator.comparing(category -> lastTrainedMap.getOrDefault(category.getName(), LocalDateTime.MIN)))
+                .min(Comparator.comparing(category ->
+                        lastTrainedMap.getOrDefault(category.getName(), LocalDateTime.MIN)))
                 .orElse(allCategories.get(0));
     }
 }
