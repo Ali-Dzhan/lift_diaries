@@ -1,5 +1,8 @@
 package app.web;
 
+import app.category.model.Category;
+import app.category.service.CategoryService;
+import app.exercise.model.Exercise;
 import app.progress.service.ProgressService;
 import app.user.model.User;
 import app.user.service.UserService;
@@ -24,11 +27,15 @@ public class IndexController {
 
     private final UserService userService;
     private final ProgressService progressService;
+    private final CategoryService categoryService;
 
     @Autowired
-    public IndexController(UserService userService, ProgressService progressService) {
+    public IndexController(UserService userService,
+                           ProgressService progressService,
+                           CategoryService categoryService) {
         this.userService = userService;
         this.progressService = progressService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/")
@@ -84,6 +91,8 @@ public class IndexController {
         String lastWorkoutDate = progressService.getLastWorkoutDate(userId);
         List<String> lastWorkoutExercises = progressService.getLastWorkoutExercises(userId);
         int monthlyWorkouts = progressService.getMonthlyWorkoutCount(userId);
+        Category nextMuscleGroup = categoryService.getNextMuscleGroup(userId);
+        List<Exercise> suggestedExercises = nextMuscleGroup.getExercises().stream().limit(3).toList();
 
         ModelAndView modelAndView = new ModelAndView("home");
         modelAndView.addObject("user", user);
@@ -93,6 +102,8 @@ public class IndexController {
         modelAndView.addObject("lastWorkoutDate", lastWorkoutDate);
         modelAndView.addObject("lastWorkoutExercises", lastWorkoutExercises);
         modelAndView.addObject("monthlyWorkouts", monthlyWorkouts);
+        modelAndView.addObject("nextMuscleGroup", nextMuscleGroup);
+        modelAndView.addObject("suggestedExercises", suggestedExercises);
 
         return modelAndView;
     }

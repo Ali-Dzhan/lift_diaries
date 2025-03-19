@@ -20,12 +20,12 @@ public class DataInitializer {
         return args -> {
             if (categoryRepository.count() == 0) {
                 categoryRepository.saveAll(List.of(
-                        Category.builder().name("Chest").build(),
-                        Category.builder().name("Back").build(),
-                        Category.builder().name("Legs").build(),
-                        Category.builder().name("Shoulders").build(),
-                        Category.builder().name("Arms").build(),
-                        Category.builder().name("Abdomen").build()
+                        Category.builder().imageUrl("/images/chest.jpg").name("Chest").build(),
+                        Category.builder().imageUrl("/images/back.jpg").name("Back").build(),
+                        Category.builder().imageUrl("/images/legs.jpg").name("Legs").build(),
+                        Category.builder().imageUrl("/images/shoulders.jpg").name("Shoulders").build(),
+                        Category.builder().imageUrl("/images/arms.jpg").name("Arms").build(),
+                        Category.builder().imageUrl("/images/abdomen.jpg").name("Abdomen").build()
                 ));
             }
         };

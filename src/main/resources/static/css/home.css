@@ -43,7 +43,8 @@ hr.hr-1 {
 
 .quick-stats,
 .recent-activity,
-.motivational-section {
+.motivational-section,
+.muscle-focus {
     background: linear-gradient(135deg, #e2f3ff 0%, rgba(116, 196, 255, 0.78) 100%);
     padding: 24px;
     margin: 24px 0;
@@ -57,7 +58,8 @@ hr.hr-1 {
 
 .quick-stats h2,
 .recent-activity h2,
-.motivational-section h2 {
+.motivational-section h2,
+.muscle-focus h2 {
     font-size: 26px;
     font-weight: 700;
     color: #333;
@@ -72,12 +74,42 @@ hr.hr-1 {
 
 .quick-stats p,
 .recent-activity p,
-.motivational-section p {
+.motivational-section p,
+.muscle-focus p {
     font-size: 18px;
     font-weight: bold;
     color: #222;
     margin: 8px 0;
     line-height: 1.5;
+}
+
+.exercise-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.exercise-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    text-align: center;
+    width: 180px;
+}
+
+.exercise-card img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.exercise-card span {
+    display: block;
+    font-weight: bold;
+    margin-top: 8px;
+    color: #333;
 }
 
 .cta-section {

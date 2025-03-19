@@ -22,9 +22,13 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/", "/login", "/register", "/users/getCurrent").permitAll()
                         .requestMatchers("/workout/**").authenticated()
+                        .requestMatchers("/categories/**").authenticated()
                         .anyRequest().authenticated()
                 )
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/workout/selectExercises"))
+                .csrf(csrf -> csrf.ignoringRequestMatchers(
+                        "/workout/selectExercises",
+                        "/categories/**"
+                ))
                 .formLogin(form -> form
                         .loginPage("/login")
                         .usernameParameter("username")

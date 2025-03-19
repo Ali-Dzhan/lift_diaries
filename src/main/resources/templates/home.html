@@ -29,8 +29,7 @@
             <div class="quick-stats">
                 <h2>🔥 Workout Streak: <span th:text="${streak}"></span> Days</h2>
                 <h2>📅 Completed Workouts: [<span th:text="${totalWorkouts}"></span>]</h2>
-                <p>🏋️ “Your last workout focused on <span th:text="${lastMuscleGroup}"></span>.
-                    Want to continue or try something new?” </p>
+                <p>🏋️ “Your last workout focused on <span th:text="${lastMuscleGroup}"></span>.” </p>
             </div>
 
             <div class="cta-section">
@@ -55,6 +54,18 @@
                 <h2>📌 Last Completed Workout</h2>
                 <p>Date: <span th:text="${lastWorkoutDate}"></span></p>
                 <p>Exercises: <span th:each="exercise : ${lastWorkoutExercises}" th:text="${exercise} + ' | '" ></span></p>
+            </div>
+
+            <div class="muscle-focus">
+                <h2>💡 Focus on <span th:text="${nextMuscleGroup.name}"></span> Today</h2>
+                <p>You haven't trained this muscle group in a while! Here are some suggested exercises.</p>
+
+                <div class="exercise-row">
+                    <div class="exercise-card" th:each="exercise : ${suggestedExercises}">
+                        <img th:src="${exercise.gifUrl}" alt="Exercise">
+                        <span th:text="${exercise.name}"></span>
+                    </div>
+                </div>
             </div>
 
             <div class="motivational-section">

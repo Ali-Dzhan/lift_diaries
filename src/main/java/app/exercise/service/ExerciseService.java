@@ -38,6 +38,10 @@ public class ExerciseService {
         return exerciseRepository.findByCategory(category);
     }
 
+    public List<Exercise> getAllExercises() {
+        return exerciseRepository.findAll();
+    }
+
     public void storeUserSelectedExercises(UUID userId, List<UUID> exerciseIds) {
         selectedExercisesMap.put(userId, new ArrayList<>(exerciseIds));
     }
