@@ -79,12 +79,20 @@ public class NotificationService {
     }
 
     public NotificationPreference getNotificationPreference(UUID userId) {
-        ResponseEntity<NotificationPreference> response = notificationClient.getUserPreference(userId);
-        if (response == null || !response.getStatusCode().is2xxSuccessful()) {
-            log.error("Failed to retrieve preference for user [{}]", userId);
-            throw new NotificationServiceFeignCallException("Unable to get preference for userId=" + userId);
+        try {
+            ResponseEntity<NotificationPreference> response = notificationClient.getUserPreference(userId);
+
+            if (response == null || !response.getStatusCode().is2xxSuccessful()) {
+                log.error("Failed to retrieve preference for user [{}]", userId);
+                throw new NotificationServiceFeignCallException("Unable to get preference for userId=" + userId);
+            }
+
+            return response.getBody();
+
+        } catch (Exception e) {
+            log.error("Error retrieving preference for user [{}]: {}", userId, e.getMessage());
+            throw new NotificationServiceFeignCallException("Notification service is temporarily unavailable. Please try again later.");
         }
-        return response.getBody();
     }
 
     public List<Notification> getNotificationHistory(UUID userId) {

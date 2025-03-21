@@ -22,7 +22,9 @@
                 <h1>🔔 Notifications</h1>
             </div>
 
-            <p class="alert-warning" th:text="${feignCallErrorMessage}"></p>
+            <div th:if="${feignCallErrorMessage}" class="error-message">
+                <p th:text="${feignCallErrorMessage}"></p>
+            </div>
 
             <div class="notification-settings">
                 <form th:action="@{/notifications/user-preference}" method="POST">

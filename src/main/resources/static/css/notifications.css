@@ -132,3 +132,12 @@
     color: #333;
     margin-right: 10px;
 }
+
+
+.error-message{
+    text-align: center;
+}
+.error-message p {
+    color: red;
+    font-size: 18px;
+}

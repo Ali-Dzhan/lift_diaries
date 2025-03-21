@@ -2,6 +2,7 @@ package app.web;
 
 import app.exception.NotificationServiceFeignCallException;
 import app.exception.UsernameAlreadyExistException;
+import app.notification.client.dto.NotificationPreference;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -13,6 +14,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
+
+import java.util.List;
 
 @ControllerAdvice
 public class ExceptionAdvice {
@@ -60,13 +63,22 @@ public class ExceptionAdvice {
         return modelAndView;
     }
 
-    @ExceptionHandler(NotificationServiceFeignCallException.class)
-    public String handleNotificationFeignCallException(
-            RedirectAttributes redirectAttributes,
-            NotificationServiceFeignCallException exception) {
+//    @ExceptionHandler(NotificationServiceFeignCallException.class)
+//    public String handleNotificationFeignCallException(
+//            RedirectAttributes redirectAttributes,
+//            NotificationServiceFeignCallException exception) {
+//
+//        redirectAttributes.addFlashAttribute("feignCallErrorMessage", exception.getMessage());
+//        return "redirect:/notifications";
+//    }
 
-        String message = exception.getMessage();
-        redirectAttributes.addFlashAttribute("feignCallErrorMessage", message);
-        return "redirect:/notifications";
+    @ExceptionHandler(NotificationServiceFeignCallException.class)
+    public ModelAndView handleNotificationFeignCallException(NotificationServiceFeignCallException exception) {
+        ModelAndView modelAndView = new ModelAndView("notifications");
+        modelAndView.addObject("feignCallErrorMessage", exception.getMessage());
+        modelAndView.addObject("notificationPreference", new NotificationPreference());
+        modelAndView.addObject("notificationHistory", List.of());
+        return modelAndView;
     }
+
 }
