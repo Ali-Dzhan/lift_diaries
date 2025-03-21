@@ -1,5 +1,6 @@
 package app.user.service;
 
+import app.exception.DomainException;
 import app.notification.service.NotificationService;
 import app.user.model.User;
 import app.user.model.UserRole;
@@ -99,8 +100,9 @@ public class UserService implements UserDetailsService {
 
     public User getById(UUID id) {
 
-        return userRepository.findById(id).orElseThrow(()
-                -> new UsernameAlreadyExistException("User with id [%s] does not exist.".formatted(id)));
+        Optional<User> user = userRepository.findById(id);
+        user.orElseThrow(() -> new DomainException("User with id [%s] does not exist.".formatted(id)));
+        return user.get();
     }
 
     @CacheEvict(value = "users", allEntries = true)
@@ -129,7 +131,8 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameAlreadyExistException("User with this username does not exist."));
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new DomainException("User with this username does not exist."));
 
         return new AuthenticationMetadata(user.getId(), username, user.getPassword(), user.getRole(), user.isActive());
     }

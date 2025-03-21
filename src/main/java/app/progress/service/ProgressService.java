@@ -89,7 +89,10 @@ public class ProgressService {
         List<Progress> progresses = progressRepository.findByUserId(userId);
         if (progresses.isEmpty()) return "N/A";
 
-        return progresses.get(progresses.size() - 1).getExercise().getCategory().getName();
+        return progresses.stream()
+                .max(Comparator.comparing(Progress::getTimestamp))
+                .map(p -> p.getExercise().getCategory().getName())
+                .orElse("N/A");
     }
 
     public String getLastWorkoutDate(UUID userId) {
