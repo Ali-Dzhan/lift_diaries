@@ -1,5 +1,6 @@
 package app.user;
 
+import app.exception.DomainException;
 import app.exception.UsernameAlreadyExistException;
 import app.notification.service.NotificationService;
 import app.user.model.User;
@@ -149,7 +150,7 @@ class UserServiceUTest {
         UserEditRequest dto = UserEditRequest.builder().build();
 
         // When & Then
-        assertThrows(UsernameAlreadyExistException.class, () -> userService.editUserDetails(userId, dto));
+        assertThrows(DomainException.class, () -> userService.editUserDetails(userId, dto));
         verify(userRepository, never()).save(any(User.class));
         verify(notificationService, never()).saveNotificationPreference(any(), anyBoolean(), anyString());
     }
@@ -237,7 +238,7 @@ class UserServiceUTest {
         UUID userId = UUID.randomUUID();
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-        assertThrows(UsernameAlreadyExistException.class, () -> userService.getById(userId));
+        assertThrows(DomainException.class, () -> userService.getById(userId));
     }
 
     @Test
@@ -263,6 +264,6 @@ class UserServiceUTest {
     void loadUserByUsername_ShouldThrowException_IfUserDoesNotExist() {
         when(userRepository.findByUsername("unknownUser")).thenReturn(Optional.empty());
 
-        assertThrows(UsernameAlreadyExistException.class, () -> userService.loadUserByUsername("unknownUser"));
+        assertThrows(DomainException.class, () -> userService.loadUserByUsername("unknownUser"));
     }
 }
