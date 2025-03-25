@@ -132,6 +132,7 @@ public class IndexControllerApiTest {
         UUID userId = UUID.randomUUID();
         AuthenticationMetadata principal = new AuthenticationMetadata
                 (userId, "user", "pass", UserRole.USER, true);
+
         when(userService.getById(userId)).thenReturn(User.builder().id(userId).username("user").build());
 
         mockMvc.perform(get("/privacy").with(user(principal)))
@@ -145,6 +146,7 @@ public class IndexControllerApiTest {
         UUID userId = UUID.randomUUID();
         AuthenticationMetadata principal = new AuthenticationMetadata
                 (userId, "user", "pass", UserRole.USER, true);
+
         when(userService.getById(userId)).thenReturn(User.builder().id(userId).username("user").build());
 
         mockMvc.perform(get("/about").with(user(principal)))

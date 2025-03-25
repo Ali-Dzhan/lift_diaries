@@ -67,16 +67,6 @@ public class NotificationServiceUTest {
     }
 
     @Test
-    void saveNotificationPreference_ShouldThrowException_WhenFailed() {
-        when(notificationClient.upsertNotificationPreference(any()))
-                .thenThrow(new RuntimeException("Error"));
-
-        assertThatThrownBy(() ->
-                notificationService.saveNotificationPreference(userId, true, "user@mail.com")
-        ).isInstanceOf(NotificationServiceFeignCallException.class);
-    }
-
-    @Test
     void getNotificationPreference_ShouldReturnPreference_WhenAvailable() {
         NotificationPreference pref = new NotificationPreference();
 
@@ -88,15 +78,6 @@ public class NotificationServiceUTest {
     }
 
     @Test
-    void getNotificationPreference_ShouldThrowException_WhenClientFails() {
-        when(notificationClient.getUserPreference(userId))
-                .thenThrow(new RuntimeException("Timeout"));
-
-        assertThatThrownBy(() -> notificationService.getNotificationPreference(userId))
-                .isInstanceOf(NotificationServiceFeignCallException.class);
-    }
-
-    @Test
     void getNotificationHistory_ShouldReturnList_WhenSuccessful() {
         List<Notification> notifications = List.of(new Notification());
         when(notificationClient.getNotificationHistory(userId))
@@ -104,15 +85,6 @@ public class NotificationServiceUTest {
 
         List<Notification> result = notificationService.getNotificationHistory(userId);
         assertThat(result).isEqualTo(notifications);
-    }
-
-    @Test
-    void getNotificationHistory_ShouldThrowException_OnError() {
-        when(notificationClient.getNotificationHistory(userId))
-                .thenThrow(new RuntimeException("API Down"));
-
-        assertThatThrownBy(() -> notificationService.getNotificationHistory(userId))
-                .isInstanceOf(NotificationServiceFeignCallException.class);
     }
 
     @Test
@@ -133,5 +105,32 @@ public class NotificationServiceUTest {
         assertThatThrownBy(() ->
                 notificationService.updateNotificationPreference(userId, true)
         ).isInstanceOf(NotificationServiceFeignCallException.class);
+    }
+
+    @Test
+    void saveNotificationPreference_shouldNotThrowException_whenClientFails() {
+        doThrow(new RuntimeException("Service Down"))
+                .when(notificationClient).upsertNotificationPreference(any());
+
+        notificationService.saveNotificationPreference(userId, true, "test@mail.com");
+        verify(notificationClient).upsertNotificationPreference(any());
+    }
+
+    @Test
+    void getNotificationPreference_shouldThrowException_whenResponseInvalid() {
+        when(notificationClient.getUserPreference(userId)).thenReturn(ResponseEntity.internalServerError().build());
+
+        assertThatThrownBy(() -> notificationService.getNotificationPreference(userId))
+                .isInstanceOf(NotificationServiceFeignCallException.class)
+                .hasMessageContaining("Unable to get preference");
+    }
+
+    @Test
+    void getNotificationHistory_shouldThrowException_whenResponseInvalid() {
+        when(notificationClient.getNotificationHistory(userId)).thenReturn(ResponseEntity.status(503).build());
+
+        assertThatThrownBy(() -> notificationService.getNotificationHistory(userId))
+                .isInstanceOf(NotificationServiceFeignCallException.class)
+                .hasMessageContaining("Unable to get notification history");
     }
 }

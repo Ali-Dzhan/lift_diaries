@@ -38,27 +38,18 @@ public class NotificationControllerApiTest {
 
     @Test
     void getNotificationPage_shouldReturnNotificationsViewWithModel() throws Exception {
-        // 1. Setup
         UUID userId = UUID.randomUUID();
         AuthenticationMetadata principal = new AuthenticationMetadata
                 (userId, "user", "pass", UserRole.USER, true);
 
-        User user = User.builder().id(userId).username("user").build();
+        NotificationPreference preference = new NotificationPreference();
+        Notification notification = new Notification();
 
-        NotificationPreference pref = new NotificationPreference();
-        Notification n1 = new Notification();
-        Notification n2 = new Notification();
+        when(userService.getById(userId)).thenReturn(User.builder().id(userId).build());
+        when(notificationService.getNotificationPreference(userId)).thenReturn(preference);
+        when(notificationService.getNotificationHistory(userId)).thenReturn(List.of(notification));
 
-        when(userService.getById(userId)).thenReturn(user);
-        when(notificationService.getNotificationPreference(userId)).thenReturn(pref);
-        when(notificationService.getNotificationHistory(userId)).thenReturn(List.of(n1, n2));
-
-        // 2. Build Request
-        MockHttpServletRequestBuilder request = get("/notifications")
-                .with(user(principal));
-
-        // 3. Send Request
-        mockMvc.perform(request)
+        mockMvc.perform(get("/notifications").with(user(principal)))
                 .andExpect(status().isOk())
                 .andExpect(view().name("notifications"))
                 .andExpect(model().attributeExists("user", "notificationPreference", "notificationHistory"));

@@ -32,7 +32,8 @@ public class UserController {
 
     @GetMapping("/getCurrent")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> getCurrentUser(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+    public ResponseEntity<Map<String, Object>> getCurrentUser
+            (@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
         if (authenticationMetadata == null) {
             return ResponseEntity.ok(Map.of("authenticated", false));
         }

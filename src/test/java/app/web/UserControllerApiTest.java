@@ -1,6 +1,7 @@
 package app.web;
 
 import app.security.AuthenticationMetadata;
+import app.user.model.User;
 import app.user.model.UserRole;
 import app.user.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.Mockito.*;
@@ -53,9 +55,62 @@ public class UserControllerApiTest {
     }
 
     @Test
+    void getAllUsers_asAdmin_shouldReturnUsersViewWithModel() throws Exception {
+        UUID userId = UUID.randomUUID();
+        AuthenticationMetadata principal = new AuthenticationMetadata
+                (userId, "admin", "12345678", UserRole.ADMIN, true);
+
+        User user = User.builder().id(userId).username("admin").build();
+        when(userService.getById(userId)).thenReturn(user);
+        when(userService.getAllUsers()).thenReturn(List.of(user));
+
+        mockMvc.perform(get("/users").with(user(principal)))
+                .andExpect(status().isOk())
+                .andExpect(view().name("users"))
+                .andExpect(model().attributeExists("users", "user"));
+    }
+
+    @Test
+    void getUserProfile_shouldReturnProfileView() throws Exception {
+        UUID userId = UUID.randomUUID();
+        User user = User.builder().id(userId).username("testUser").role(UserRole.USER).build();
+
+        when(userService.getById(userId)).thenReturn(user);
+
+        mockMvc.perform(get("/users/{id}/profile", userId)
+                        .with(user(new AuthenticationMetadata(
+                                userId, "testUser", "12345678", UserRole.USER, true))))
+                .andExpect(status().isOk())
+                .andExpect(view().name("profile"))
+                .andExpect(model().attributeExists("user", "userEditRequest"));
+    }
+
+    @Test
+    void putUpdateUserProfile_withValidData_shouldUpdateAndReturnSuccessMessage() throws Exception {
+        UUID userId = UUID.randomUUID();
+        User user = User.builder().id(userId).username("testUser").role(UserRole.USER).build();
+
+        when(userService.getById(userId)).thenReturn(user);
+
+        mockMvc.perform(put("/users/{id}/profile", userId)
+                        .param("firstName", "John")
+                        .param("lastName", "Doe")
+                        .param("email", "john.doe@mail.com")
+                        .param("profilePicture", "https://example.com/avatar.jpg")
+                        .with(csrf())
+                        .with(user(new AuthenticationMetadata(
+                                userId, "testUser", "12345678", UserRole.USER, true))))
+                .andExpect(status().isOk())
+                .andExpect(view().name("profile"))
+                .andExpect(model().attributeExists("user", "userEditRequest", "successMessage"));
+
+        verify(userService).editUserDetails(eq(userId), any());
+    }
+
+    @Test
     void putUnauthorizedRequestToSwitchStatus_shouldReturn404AndNotFoundView() throws Exception {
         AuthenticationMetadata principal = new AuthenticationMetadata
-                (UUID.randomUUID(), "User123", "pass", UserRole.USER, true);
+                (UUID.randomUUID(), "User123", "12345678", UserRole.USER, true);
         MockHttpServletRequestBuilder request = put("/users/{id}/status", UUID.randomUUID())
                 .with(user(principal))
                 .with(csrf());
