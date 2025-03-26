@@ -42,21 +42,6 @@ public class AuthenticationMetadata implements UserDetails {
     }
 
     @Override
-    public boolean isAccountNonExpired() {
-        return isActive;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return isActive;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return isActive;
-    }
-
-    @Override
     public boolean isEnabled() {
         return isActive;
     }
