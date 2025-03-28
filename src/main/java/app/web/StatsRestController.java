@@ -25,7 +25,7 @@ public class StatsRestController {
     @GetMapping("/{userId}")
     public ResponseEntity<Map<String, Integer>> getStats(@PathVariable UUID userId) {
         int totalWorkouts = progressService.getTotalWorkouts(userId);
-        long longestStreak = progressService.calculateWorkoutStreak(userId);
+        long longestStreak = progressService.calculateLongestStreak(userId);
         int setsThisWeek = progressService.getSetsDoneThisWeek(userId);
 
         return ResponseEntity.ok(Map.of(

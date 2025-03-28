@@ -74,6 +74,35 @@ public class ProgressService {
         return streak;
     }
 
+    public long calculateLongestStreak(UUID userId) {
+        List<Progress> progresses = progressRepository.findByUserId(userId);
+
+        List<LocalDate> uniqueDates = progresses.stream()
+                .map(progress -> progress.getTimestamp().toLocalDate())
+                .distinct()
+                .sorted()
+                .toList();
+        if (uniqueDates.isEmpty()) {
+            return 0;
+        }
+        long longestStreak = 1;
+        long currentStreak = 1;
+        LocalDate previousDate = uniqueDates.get(0);
+
+        for (int i = 1; i < uniqueDates.size(); i++) {
+            LocalDate currentDate = uniqueDates.get(i);
+            if (currentDate.minusDays(1).equals(previousDate)) {
+                currentStreak++;
+            } else {
+                currentStreak = 1;
+            }
+            longestStreak = Math.max(longestStreak, currentStreak);
+            previousDate = currentDate;
+        }
+
+        return longestStreak;
+    }
+
     public List<Progress> getUserProgressSummary(UUID userId) {
         return progressRepository.findByUserId(userId);
     }

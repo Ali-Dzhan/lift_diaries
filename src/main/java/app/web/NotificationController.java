@@ -31,6 +31,11 @@ public class NotificationController {
         this.notificationService = notificationService;
     }
 
+    @ModelAttribute("user")
+    public User addLoggedUserToModel(@AuthenticationPrincipal AuthenticationMetadata auth) {
+        return userService.getById(auth.getUserId());
+    }
+
     @GetMapping
     public ModelAndView getNotificationPage(@AuthenticationPrincipal AuthenticationMetadata auth) {
         UUID userId = auth.getUserId();

@@ -2,10 +2,16 @@ package app.web;
 
 import app.exception.NotificationServiceFeignCallException;
 import app.exception.UsernameAlreadyExistException;
+import app.notification.client.dto.Notification;
 import app.notification.client.dto.NotificationPreference;
+import app.security.AuthenticationMetadata;
+import app.user.model.User;
+import app.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.MissingRequestValueException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,6 +25,13 @@ import java.util.List;
 
 @ControllerAdvice
 public class ExceptionAdvice {
+
+    private final UserService userService;
+
+    @Autowired
+    public ExceptionAdvice(UserService userService) {
+        this.userService = userService;
+    }
 
     @ExceptionHandler(UsernameAlreadyExistException.class)
     public String handleUsernameAlreadyExist(HttpServletRequest request, RedirectAttributes redirectAttributes, UsernameAlreadyExistException exception) {
@@ -72,13 +85,30 @@ public class ExceptionAdvice {
 //        return "redirect:/notifications";
 //    }
 
-    @ExceptionHandler(NotificationServiceFeignCallException.class)
-    public ModelAndView handleNotificationFeignCallException(NotificationServiceFeignCallException exception) {
-        ModelAndView modelAndView = new ModelAndView("notifications");
-        modelAndView.addObject("feignCallErrorMessage", exception.getMessage());
-        modelAndView.addObject("notificationPreference", new NotificationPreference());
-        modelAndView.addObject("notificationHistory", List.of());
-        return modelAndView;
-    }
+//    @ExceptionHandler(NotificationServiceFeignCallException.class)
+//    public ModelAndView handleNotificationFeignCallException(NotificationServiceFeignCallException exception) {
+//        ModelAndView modelAndView = new ModelAndView("notifications");
+//        modelAndView.addObject("feignCallErrorMessage", exception.getMessage());
+//        modelAndView.addObject("notificationPreference", new NotificationPreference());
+//        modelAndView.addObject("notificationHistory", List.of());
+//        return modelAndView;
+//    }
 
+    @ExceptionHandler(NotificationServiceFeignCallException.class)
+    public ModelAndView handleNotificationFeignCallException(
+            NotificationServiceFeignCallException exception,
+            @AuthenticationPrincipal AuthenticationMetadata auth
+    ) {
+        NotificationPreference emptyPreference = new NotificationPreference();
+        List<Notification> emptyHistory = List.of();
+
+        User user = userService.getById(auth.getUserId());
+
+        ModelAndView model = new ModelAndView("notifications");
+        model.addObject("user", user);
+        model.addObject("notificationPreference", emptyPreference);
+        model.addObject("notificationHistory", emptyHistory);
+        model.addObject("feignCallErrorMessage", exception.getMessage());
+        return model;
+    }
 }

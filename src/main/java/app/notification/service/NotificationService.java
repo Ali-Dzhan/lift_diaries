@@ -7,6 +7,7 @@ import app.notification.client.dto.NotificationPreference;
 import app.notification.client.dto.NotificationRequest;
 import app.notification.client.dto.UpsertNotificationPreference;
 import app.progress.service.ProgressService;
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,25 +81,29 @@ public class NotificationService {
     }
 
     public NotificationPreference getNotificationPreference(UUID userId) {
-        ResponseEntity<NotificationPreference> response = notificationClient.getUserPreference(userId);
-
-        if (response == null || !response.getStatusCode().is2xxSuccessful()) {
-            log.error("Failed to retrieve preference for user [{}]", userId);
-            throw new NotificationServiceFeignCallException("Unable to get preference for userId=" + userId);
+        try {
+            ResponseEntity<NotificationPreference> response = notificationClient.getUserPreference(userId);
+            if (response == null || !response.getStatusCode().is2xxSuccessful()) {
+                throw new NotificationServiceFeignCallException("Unable to get preference for userId=" + userId);
+            }
+            return response.getBody();
+        } catch (FeignException e) {
+            log.warn("Feign exception when fetching preference for user {}: {}", userId, e.getMessage());
+            throw new NotificationServiceFeignCallException(failureMessage);
         }
-
-        return response.getBody();
     }
 
     public List<Notification> getNotificationHistory(UUID userId) {
-        ResponseEntity<List<Notification>> response = notificationClient.getNotificationHistory(userId);
-
-        if (response == null || !response.getStatusCode().is2xxSuccessful()) {
-            log.error("Failed to retrieve notification history for user [{}]", userId);
-            throw new NotificationServiceFeignCallException("Unable to get notification history.");
+        try {
+            ResponseEntity<List<Notification>> response = notificationClient.getNotificationHistory(userId);
+            if (response == null || !response.getStatusCode().is2xxSuccessful()) {
+                throw new NotificationServiceFeignCallException("Unable to get notification history.");
+            }
+            return response.getBody();
+        } catch (FeignException e) {
+            log.warn("Feign exception when fetching history for user {}: {}", userId, e.getMessage());
+            throw new NotificationServiceFeignCallException(failureMessage);
         }
-
-        return response.getBody();
     }
 
     public void updateNotificationPreference(UUID userId, boolean enabled) {
