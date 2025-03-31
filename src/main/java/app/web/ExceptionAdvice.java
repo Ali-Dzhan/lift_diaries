@@ -76,24 +76,6 @@ public class ExceptionAdvice {
         return modelAndView;
     }
 
-//    @ExceptionHandler(NotificationServiceFeignCallException.class)
-//    public String handleNotificationFeignCallException(
-//            RedirectAttributes redirectAttributes,
-//            NotificationServiceFeignCallException exception) {
-//
-//        redirectAttributes.addFlashAttribute("feignCallErrorMessage", exception.getMessage());
-//        return "redirect:/notifications";
-//    }
-
-//    @ExceptionHandler(NotificationServiceFeignCallException.class)
-//    public ModelAndView handleNotificationFeignCallException(NotificationServiceFeignCallException exception) {
-//        ModelAndView modelAndView = new ModelAndView("notifications");
-//        modelAndView.addObject("feignCallErrorMessage", exception.getMessage());
-//        modelAndView.addObject("notificationPreference", new NotificationPreference());
-//        modelAndView.addObject("notificationHistory", List.of());
-//        return modelAndView;
-//    }
-
     @ExceptionHandler(NotificationServiceFeignCallException.class)
     public ModelAndView handleNotificationFeignCallException(
             NotificationServiceFeignCallException exception,
