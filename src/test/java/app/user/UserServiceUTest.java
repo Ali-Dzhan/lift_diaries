@@ -266,4 +266,5 @@ class UserServiceUTest {
 
         assertThrows(DomainException.class, () -> userService.loadUserByUsername("unknownUser"));
     }
+public class UserServiceUTest {
 }
