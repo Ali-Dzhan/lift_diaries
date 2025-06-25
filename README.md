@@ -1,5 +1,5 @@
 # Lift Diaries Application
-![Lift Diaries Banner]("C:\Users\Али-Джан\Downloads\banner_lift.png")
+![Lift Diaries Banner](banner_lift.png)
 
 
 Lift Diaries is a comprehensive fitness tracking application designed to help users monitor their workout progress, track achievements, and manage personalized workouts efficiently.
