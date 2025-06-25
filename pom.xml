@@ -121,6 +121,7 @@
 			<scope>test</scope>
 		</dependency>
 
+<<<<<<< HEAD
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
@@ -128,6 +129,8 @@
 			<scope>test</scope>
 		</dependency>
 
+=======
+>>>>>>> d383567 (Add banner image and update README)
 	</dependencies>
 
 	<build>
